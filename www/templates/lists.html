@@ -1,9 +1,9 @@
-<ion-view view-title="Playlists">
-  <ion-content>
-    <ion-list>
-      <ion-item ng-repeat="playlist in playlists" href="#/app/playlists/{{playlist.id}}">
-        {{playlist.title}}
-      </ion-item>
-    </ion-list>
-  </ion-content>
+<ion-view view-title="Lists">
+    <ion-content>
+        <ion-list>
+            <ion-item ng-repeat="list in lists" href="#/app/lists/{{list.id}}">
+                {{list.title}}
+            </ion-item>
+        </ion-list>
+    </ion-content>
 </ion-view>
