@@ -53,7 +53,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
       url: '/playlists',
       views: {
         'menuContent': {
-          templateUrl: 'templates/playlists.html',
+          templateUrl: 'templates/lists.html',
           controller: 'PlaylistsCtrl'
         }
       }
@@ -63,7 +63,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     url: '/playlists/:playlistId',
     views: {
       'menuContent': {
-        templateUrl: 'templates/playlist.html',
+        templateUrl: 'templates/list.html',
         controller: 'PlaylistCtrl'
       }
     }
