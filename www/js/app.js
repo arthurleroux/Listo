@@ -43,11 +43,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
+            .state('app.register', {
+                url: '/register',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/auth/register.html',
+                        controller: "RegisterCtrl"
+                    }
+                }
+            })
+
             .state('app.login', {
                 url: '/login',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/login.html',
+                        templateUrl: 'templates/auth/login.html',
                         controller: "LoginCtrl"
                     }
                 }
@@ -67,21 +77,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 url: '/new_product',
                 views: {
                     'menuContent' : {
-                        templateUrl: 'templates/new_product.html',
+                        templateUrl: 'templates/product/new_product.html',
                         controller: "NewProductCtrl"
                     }
                 }
             })
 
-            .state('app.register', {
-                url: '/register',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/register.html',
-                        controller: "RegisterCtrl"
-                    }
-                }
-            })
 
             .state('app.single', {
                 url: '/lists/:listId',
