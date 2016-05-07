@@ -20,15 +20,21 @@ angular.module('starter.controllers', [])
 
     })
 
-    .controller('ListsCtrl', function ($scope, $stateParams) {
-
+    .controller('ListsCtrl', function ($scope, $state) {
+        $scope.showNewList = function() {
+            $state.go("app.new_list")
+        }
     })
 
     .controller('NewListCtrl', function ($scope) {
-
     })
 
-    .controller('ListCtrl', function ($scope, $stateParams, $http) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state) {
+
+        $scope.showNewProduct = function(listId) {
+            $state.go("app.new_product", {listId : listId})
+        }
+
         angular.forEach($scope.lists, function(list)
         {
             if(list.id == $stateParams['listId'])
@@ -73,6 +79,6 @@ angular.module('starter.controllers', [])
         );
     })
 
-    .controller('NewProductCtrl', function ($scope) {
-
+    .controller('NewProductCtrl', function ($scope, $stateParams) {
+        console.log($stateParams);
     });
