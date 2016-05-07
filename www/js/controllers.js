@@ -1,6 +1,8 @@
 angular.module('starter.controllers', [])
 
     .controller('AppCtrl', function ($scope) {
+
+
         $scope.lists = [
             {title: 'Ziland', id: 1},
             {title: 'Ziland LDC', id: 2},
