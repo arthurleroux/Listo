@@ -37,7 +37,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 url: '/lists',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/lists.html',
+                        templateUrl: 'templates/list/lists.html',
                         controller: 'ListsCtrl'
                     }
                 }
@@ -57,7 +57,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 url: '/new_list',
                 views: {
                     'menuContent' : {
-                        templateUrl: 'templates/new_list.html',
+                        templateUrl: 'templates/list/new_list.html',
                         controller: 'NewListCtrl'
                     }
                 }
@@ -87,7 +87,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 url: '/lists/:listId',
                 views: {
                     'menuContent': {
-                        templateUrl: 'templates/list.html',
+                        templateUrl: 'templates/list/list.html',
                         controller: 'ListCtrl'
                     }
                 }
