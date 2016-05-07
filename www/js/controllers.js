@@ -61,7 +61,7 @@ angular.module('starter.controllers', [])
 
         angular.forEach($scope.lists, function(list)
         {
-            if(list.id == $stateParams['listId'])
+            if(list.list_id == $stateParams['listId'])
                 $scope.list = list;
         });
 
