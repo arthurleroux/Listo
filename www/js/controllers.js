@@ -1,14 +1,37 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function ($scope) {
+    .controller('AppCtrl', function ($scope, $http) {
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
-        $scope.lists = [
-            {title: 'Ziland', id: 1},
-            {title: 'Ziland LDC', id: 2},
-            {title: 'Chill', id: 3}
-        ];
+        $scope.lists = {};
+
+        $http.post($scope.apiLink+"List/ListController.php",
+            {
+                type : 'list',
+                action : 'findAll',
+                user: {
+                    user_id : 1
+                }
+            })
+
+            .then(function (res){
+                var response = res.data;
+                console.log(response);
+                $scope.lists = response;
+
+            }, function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
+
+        //$scope.lists = [
+        //    {title: 'Ziland', id: 1},
+        //    {title: 'Ziland LDC', id: 2},
+        //    {title: 'Chill', id: 3}
+        //];
+
 
     })
 
@@ -20,8 +43,13 @@ angular.module('starter.controllers', [])
 
     })
 
-    .controller('ListsCtrl', function ($scope, $stateParams) {
+    .controller('ListsCtrl', function ($scope, $http, $stateParams) {
+        console.log('LISTS CONTROLLER');
 
+        console.log($scope.lists);
+        setTimeout(function(){
+            console.log($scope.lists);
+        }, 2000);
     })
 
     .controller('NewListCtrl', function ($scope) {
@@ -44,33 +72,6 @@ angular.module('starter.controllers', [])
             {name: 'Weed'},
             {name: 'Ricard'}
         ];
-
-        $http.post($scope.apiLink+"List/ListController.php",
-            {
-                type : 'list',
-                action : 'findAll',
-                user: {
-                    user_id : 1
-                }
-            })
-
-            .then(function (res){
-                var response = res.data;
-
-                if ('error' in response){
-
-                    $scope.errorForm = response.error;
-                }
-                else if ('success' in response){
-                    console.log("SUCCESS REQUEST");
-                    console.log(res);
-                }
-
-            }, function(error){
-                console.warn('ERROR FIND ALL LIST');
-                console.log(error);
-            }
-        );
     })
 
     .controller('NewProductCtrl', function ($scope) {
