@@ -4,7 +4,6 @@ angular.module('starter.controllers', [])
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
-
         $scope.lists = [
             {title: 'Ziland', id: 1},
             {title: 'Ziland LDC', id: 2},
