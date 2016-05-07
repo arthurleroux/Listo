@@ -1,4 +1,8 @@
 <ion-view view-title="Mes Listes">
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-ios-plus-outline" menu-toggle="right">
+        </button>
+    </ion-nav-buttons>
     <ion-content>
         <ion-list>
             <ion-item class="card item item-divider" ng-repeat="list in lists" href="#/app/lists/{{list.id}}">
