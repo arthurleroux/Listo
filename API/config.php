@@ -21,10 +21,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 class Database
 {
-    private static $dbName = 'listo_db' ;
-    private static $dbHost = 'localhost' ;
-    private static $dbUsername = 'root';
-    private static $dbUserPassword = '';
+    private static $dbName = 'arthurlebglisto' ;
+    private static $dbHost = 'arthurlebglisto.mysql.db' ;
+    private static $dbUsername = 'arthurlebglisto';
+    private static $dbUserPassword = 'ListoApp92';
 
     private static $cont  = null;
 

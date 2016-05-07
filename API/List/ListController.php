@@ -17,25 +17,28 @@ class ListController
 
     private function getParams()
     {
-        $this->params = array_merge($_GET,$_POST);
+        $this->params = array_merge($_GET, $_POST);
+        $this->params["type"] = "list";
+        $this->params["action"] = "findAll";
+        $this->params["user"]["user_id"] = "1";
     }
 
     private function initialize()
     {
-        if($this->params["type"] == "list"){
-            if ($this->params["action"] == "add"){
+        if ($this->params["type"] == "list") {
+            if ($this->params["action"] == "add") {
                 $this->addList();
             }
-            if ($this->params["action"] == "find"){
+            if ($this->params["action"] == "find") {
                 $this->findList();
             }
-            if ($this->params["action"] == "findAll"){
-                $this->findAllList();
+            if ($this->params["action"] == "findAll") {
+                $this->findAllList($this->params["user"]["user_id"]);
             }
-            if ($this->params["action"] == "update"){
+            if ($this->params["action"] == "update") {
                 $this->updateList();
             }
-            if ($this->params["action"] == "delete"){
+            if ($this->params["action"] == "delete") {
                 $this->deleteList();
             }
         }
@@ -70,7 +73,7 @@ class ListController
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "INSERT INTO list (list_id,list_name,user_id) values(?, ?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_id,$list_name,$user_id));
+                $q->execute(array($list_id, $list_name, $user_id));
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
@@ -110,16 +113,19 @@ class ListController
         }
     }
 
-    private function findAllList()
+    private function findAllList($userId)
     {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from list";
+        $sql = "SELECT *
+                FROM list l, user_list ul
+                WHERE l.list_id = ul.list_id
+                AND ul.user_id = ".$userId;
         $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
+//        var_dump($data);die;
         Database::disconnect();
-
         //RESPONSE
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -133,7 +139,6 @@ class ListController
 
             $list_id = $this->params['list']['list_id'];
             $list_name = $this->params['list']['list_name'];
-            $user_id = $this->params['list']['user_id'];
 
             $valid = true;
             if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
@@ -143,9 +148,9 @@ class ListController
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "UPDATE list set list_name = ?, user_id = ? WHERE list_id = ?";
+                $sql = "UPDATE list set list_name = ? WHERE list_id = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_name,$list_id,$user_id));
+                $q->execute(array($list_name, $list_id));
                 Database::disconnect();
 
                 //RESPONSE
