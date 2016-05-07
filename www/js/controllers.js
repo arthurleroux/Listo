@@ -20,6 +20,10 @@ angular.module('starter.controllers', [])
                 $scope.list = list;
         });
 
+        // REQUETE AJAX
+        
+        // RETOUR REQUETE
+
         $scope.products =  [
             {name: 'JackDa'},
             {name: 'Weed'},
