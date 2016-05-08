@@ -105,6 +105,29 @@ angular.module('starter.controllers', [])
                     console.log(error);
                 }
             );
+
+        $scope.editList = function(listId) {
+            $http.post($scope.apiLink+"List/ListController.php",
+                {
+                    type : 'list',
+                    action : 'update',
+                    list: {
+                        list_id : listId,
+                        list_name: $scope.listData.list_name
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        $state.go("app.lists");
+                        console.log(response);
+
+                    }, function(error){
+                        console.warn('ERROR UPDATE LIST');
+                        console.log(error);
+                    }
+                );
+        }
     })
 
     .controller('NewListCtrl', function ($scope, $state, $http) {
