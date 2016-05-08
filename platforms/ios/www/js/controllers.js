@@ -1,56 +1,117 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+    .controller('AppCtrl', function ($scope, $http) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+        $scope.apiLink = 'http://arthurleroux.fr/API/';
 
-  // Form data for the login modal
-  $scope.loginData = {};
+        $scope.lists = {};
 
-  // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
+        // Récupère toutes les listes de l'utilisateur
+        $http.post($scope.apiLink+"List/ListController.php",
+            {
+                type : 'list',
+                action : 'findAll',
+                user: {
+                    user_id : 1
+                }
+            })
 
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
+            .then(function (res){
+                var response = res.data;
+                $scope.lists = response;
 
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
+            }, function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
+        // / Récupère toutes les listes de l'utilisateur
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    })
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
-  };
-})
+    .controller('LoginCtrl', function ($scope) {
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
+    })
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+    .controller('RegisterCtrl', function ($scope) {
+
+    })
+
+    .controller('ListsCtrl', function ($scope, $http, $state) {
+
+        $scope.showNewList = function() {
+            $state.go("app.new_list")
+        }
+    })
+
+    .controller('NewListCtrl', function ($scope) {
+    })
+
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
+
+        // Récupère tous les produits de la liste
+        $http.post($scope.apiLink+"Product/ProductController.php",
+            {
+                type : 'product',
+                action : 'findAll',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                var response = res.data;
+                $scope.products = response;
+                console.log($scope.products);
+
+            }, function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
+        // / Récupère toutes les listes de l'utilisateur
+
+        $scope.showNewProduct = function(listId) {
+            $state.go("app.new_product", {listId : listId})
+        }
+
+        $scope.deleteProduct = function(productId) {
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'delete',
+                    product: {
+                        product_id : productId
+                    }
+                })
+
+                .then(function (res){
+                    var response = res.data;
+                    $state.go($state.current, {}, {reload: true});
+                    //$window.location.reload(true);
+                    console.log(response);
+
+
+                }, function(error){
+                    console.warn('ERROR DELETE PRODUCT');
+                    console.log(error);
+                }
+            );
+        }
+
+        angular.forEach($scope.lists, function(list)
+        {
+            if(list.list_id == $stateParams['listId'])
+                $scope.list = list;
+        });
+
+        //$scope.products =  [
+        //    {name: 'JackDa'},
+        //    {name: 'Weed'},
+        //    {name: 'Ricard'}
+        //];
+    })
+
+    .controller('NewProductCtrl', function ($scope, $stateParams) {
+        console.log($stateParams);
+    });
