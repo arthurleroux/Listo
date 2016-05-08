@@ -68,11 +68,11 @@ class ListController
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "INSERT INTO list (list_name) values(?)
                         SELECT @NewID = SCOPE_IDENTITY()
-                        INSERT list_id, user_id INTO user_list VALUES(@NewID, ".$user_id.");
+                        INSERT list_id, user_id INTO user_list VALUES(@NewID, ".$user_id.")";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_name));
                 Database::disconnect();
-                //RESPONSE
+//                RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
