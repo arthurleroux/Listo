@@ -7,7 +7,7 @@ $action = new ListController();
 
 class ListController
 {
-    var $params = array();
+    var $params;
 
     public function __construct()
     {
@@ -17,28 +17,26 @@ class ListController
 
     private function getParams()
     {
-        $this->params = array_merge($_GET, $_POST);
-        $this->params["type"] = "list";
-        $this->params["action"] = "findAll";
-        $this->params["user"]["user_id"] = "1";
+        $this->params = file_get_contents("php://input");
+        $this->params = json_decode($this->params);
     }
 
     private function initialize()
     {
-        if ($this->params["type"] == "list") {
-            if ($this->params["action"] == "add") {
+        if ($this->params->type == "list") {
+            if ($this->params->action == "add") {
                 $this->addList();
             }
-            if ($this->params["action"] == "find") {
+            if ($this->params->action == "find") {
                 $this->findList();
             }
-            if ($this->params["action"] == "findAll") {
-                $this->findAllList($this->params["user"]["user_id"]);
+            if ($this->params->action == "findAll") {
+                $this->findAllList($this->params->user->user_id);
             }
-            if ($this->params["action"] == "update") {
+            if ($this->params->action == "update") {
                 $this->updateList();
             }
-            if ($this->params["action"] == "delete") {
+            if ($this->params->action == "delete") {
                 $this->deleteList();
             }
         }
@@ -53,15 +51,14 @@ class ListController
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         header('Content-type: application/json');
-        echo json_encode($this->params);
         //
 
 
-        if (!empty($this->params['list'])) {
+        if (!empty($this->params->list)) {
 
-            $list_id = $this->params['list']['list_id'];
-            $list_name = $this->params['list']['list_name'];
-            $user_id = $this->params['user_id'];
+            $list_id = $this->params->list->list_id;
+            $list_name = $this->params->list->list_name;
+            $user_id = $this->params->user->user_id;
 
             $valid = true;
             if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
@@ -86,9 +83,9 @@ class ListController
 
     private function findList()
     {
-        if (!empty($this->params['list'])) {
+        if (!empty($this->params->list)) {
 
-            $list_id = $this->params['list']['list_id'];
+            $list_id = $this->params->list->list_id;
 
             $valid = true;
             if ((empty($list_id))) {
@@ -136,10 +133,10 @@ class ListController
 
     private function updateList()
     {
-        if (!empty($this->params['list'])) {
+        if (!empty($this->params->list)) {
 
-            $list_id = $this->params['list']['list_id'];
-            $list_name = $this->params['list']['list_name'];
+            $list_id = $this->params->list->list_id;
+            $list_name = $this->params->list->list_name;
 
             $valid = true;
             if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
@@ -166,9 +163,9 @@ class ListController
 
     private function deleteList()
     {
-        if (!empty($this->params['list'])) {
+        if (!empty($this->params->list)) {
 
-            $list_id = $this->params['list']['list_id'];
+            $list_id = $this->params->list->list_id;
 
             $valid = true;
             if ((empty($list_id))) {

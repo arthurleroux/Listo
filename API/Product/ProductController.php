@@ -17,25 +17,26 @@ class ProductController
 
     private function getParams()
     {
-        $this->params = array_merge($_GET,$_POST);
+        $this->params = file_get_contents("php://input");
+        $this->params = json_decode($this->params);
     }
 
     private function initialize()
     {
-        if($this->params["type"] == "product"){
-            if ($this->params["action"] == "add"){
+        if($this->params->type == "product"){
+            if ($this->params->action == "add"){
                 $this->addProduct();
             }
-            if ($this->params["action"] == "find"){
+            if ($this->params->action == "find"){
                 $this->findProduct();
             }
-            if ($this->params["action"] == "findAll"){
-                $this->findAllProduct();
+            if ($this->params->action == "findAll"){
+                $this->findAllProduct($this->params->list->list_id);
             }
-            if ($this->params["action"] == "update"){
+            if ($this->params->action == "update"){
                 $this->updateProduct();
             }
-            if ($this->params["action"] == "delete"){
+            if ($this->params->action == "delete"){
                 $this->deleteProduct();
             }
         }
@@ -110,11 +111,13 @@ class ProductController
         }
     }
 
-    private function findAllProduct()
+    private function findAllProduct($listId)
     {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from product";
+        $sql = "SELECT p.product_id, p.product_name
+                FROM product p
+                WHERE p.list_id = ".$listId;
         $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
