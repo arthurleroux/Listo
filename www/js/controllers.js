@@ -210,7 +210,7 @@ angular.module('starter.controllers', [])
     .controller('NewProductCtrl', function ($scope, $stateParams) {
 
         $scope.addProduct = function() {
-
+            console.log('ADD PRODUCT');
             // Créer un nouveau produit dans la list listId
             $http.post($scope.apiLink+"Product/ProductController.php",
                 {

@@ -25,17 +25,17 @@ class UserController
 
     private function initialize()
     {
-        if($this->params["type"] == "user"){
-            if ($this->params["action"] == "add"){
+        if($this->params->type == "user"){
+            if ($this->params->action == "add"){
                 $this->addUser();
             }
-            if ($this->params["action"] == "find"){
+            if ($this->params->action == "find"){
                 $this->findUser();
             }
-            if ($this->params["action"] == "findAll"){
+            if ($this->params->action == "findAll"){
                 $this->findAllUser();
             }
-            if ($this->params["action"] == "update"){
+            if ($this->params->action == "update"){
                 $this->updateUser();
             }
         }
@@ -45,14 +45,14 @@ class UserController
 
     private function addUser()
     {
-        if (!empty($this->params['data'])) {
+        if (!empty($this->params->data)) {
 
-            $user_id = $this->params['data']['user_id'];
-            $user_firstname = $this->params['data']['user_firstname'];
-            $user_lastname = $this->params['data']['user_lastname'];
-            $user_username = $this->params['data']['user_username'];
-            $user_email = $this->params['data']['user_email'];
-            $user_password = $this->params['data']['user_password'];
+            $user_id = $this->params->data->user_id;
+            $user_firstname = $this->params->data->user_firstname;
+            $user_lastname = $this->params->data->user_lastname;
+            $user_username = $this->params->data->user_username;
+            $user_email = $this->params->data->user_email;
+            $user_password = $this->params->data->user_password;
 
             $valid = true;
             if ((empty($user_id)) && (empty($user_firstname)) && (empty($user_lastname)) && (empty($user_username))
@@ -77,9 +77,9 @@ class UserController
 
     private function findUser()
     {
-        if (!empty($this->params['data'])) {
+        if (!empty($this->params->data)) {
 
-            $user_id = $this->params['data']['user_id'];
+            $user_id = $this->params->data->user_id;
 
             $valid = true;
             if ((empty($user_id))) {
@@ -120,14 +120,14 @@ class UserController
 
     private function updateUser()
     {
-        if (!empty($this->params['data'])) {
+        if (!empty($this->params->data)) {
 
-            $user_id = $this->params['data']['user_id'];
-            $user_firstname = $this->params['data']['user_firstname'];
-            $user_lastname = $this->params['data']['user_lastname'];
-            $user_username = $this->params['data']['user_username'];
-            $user_email = $this->params['data']['user_email'];
-            $user_password = $this->params['data']['user_password'];
+            $user_id = $this->params->data->user_id;
+            $user_firstname = $this->params->data->user_firstname;
+            $user_lastname = $this->params->data->user_lastname;
+            $user_username = $this->params->data->user_username;
+            $user_email = $this->params->data->user_email;
+            $user_password = $this->params->data->user_password;
 
             $valid = true;
             if ((empty($user_id)) && (empty($user_firstname)) && (empty($user_lastname)) && (empty($user_username))
