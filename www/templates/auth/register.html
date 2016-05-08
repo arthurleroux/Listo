@@ -1,0 +1,19 @@
+<ion-view view-title="S'enregistrer">
+    <ion-content>
+        <form ng-submit="doLogin()">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="Pseudo" ng-model="loginData.username">
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Mot de passe" ng-model="loginData.password">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">S'enregistrer</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+
