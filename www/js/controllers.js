@@ -9,7 +9,11 @@ angular.module('starter.controllers', [])
         };
 
         $scope.listData = {};
-        $scope.productData= {};
+        $scope.productData = {};
+        
+        // Nécessaire pour modifier le nom d'une liste
+        // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
+        $scope.list = {};
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
@@ -115,7 +119,7 @@ angular.module('starter.controllers', [])
                     action : 'update',
                     list: {
                         list_id : listId,
-                        list_name: $scope.listData.list_name
+                        list_name: $scope.list.list_name
                     }
                 })
 
@@ -151,9 +155,8 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                     var response = res.data;
-                    $state.go("app.single", {listId : response})
+                    $state.go('app.lists', {}, {reload: true});
                     console.log(response);
-
 
                 }, function(error){
                     console.warn('ERROR NEW LIST');
