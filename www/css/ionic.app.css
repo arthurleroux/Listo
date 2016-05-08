@@ -9789,6 +9789,6 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.button-balanced .button, .button-assertive .button {
+.button-positive .button, .button-assertive .button {
   font-size: 20px;
   color: #fff !important; }
