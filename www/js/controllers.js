@@ -149,5 +149,31 @@ angular.module('starter.controllers', [])
     })
 
     .controller('NewProductCtrl', function ($scope, $stateParams) {
+
+        $scope.addProduct = function() {
+
+            // Créer un nouveau produit dans la list listId
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'add',
+                    list: {
+                        list_id : $stateParams['listId']
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        console.log(response);
+
+                    }, function(error){
+                        console.warn('ERROR ADD PRODUCT');
+                        console.log(error);
+                    }
+                );
+            // / Créer un nouveau produit dans la list listId
+
+        }
+
         console.log($stateParams);
     });
