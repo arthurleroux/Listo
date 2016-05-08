@@ -251,8 +251,9 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go("app.single", {listId : response})
+                        $state.go("app.single", {listId : response});
                         console.log(response);
+                        $scope.productData.product_name = "";
 
                     }, function(error){
                         console.warn('ERROR ADD PRODUCT');
