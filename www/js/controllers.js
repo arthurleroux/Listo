@@ -2,6 +2,12 @@ angular.module('starter.controllers', [])
 
     .controller('AppCtrl', function ($scope, $http) {
 
+        $scope.currentUser = {
+            id: 1
+        };
+
+        $scope.listData = {};
+
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
         $scope.lists = {};
@@ -44,7 +50,37 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('NewListCtrl', function ($scope) {
+    .controller('NewListCtrl', function ($scope, $state, $http) {
+
+        $scope.createList = function(userId) {
+
+            console.warn('user id :' + userId);
+            $http.post($scope.apiLink+"List/ListController.php",
+                {
+                    type : 'list',
+                    action : 'add',
+                    list: {
+                        list_name: $scope.listData.list_name
+                    },
+                    user: {
+                        user_id : userId
+                    }
+                })
+
+                .then(function (res){
+                    var response = res.data;
+                    //$state.go("app.single", {listId : response.list_id})
+                    console.log(response);
+
+
+                }, function(error){
+                    console.warn('ERROR DELETE PRODUCT');
+                    console.log(error);
+                }
+            );
+
+        }
+
     })
 
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
@@ -113,5 +149,31 @@ angular.module('starter.controllers', [])
     })
 
     .controller('NewProductCtrl', function ($scope, $stateParams) {
+
+        $scope.addProduct = function() {
+
+            // Créer un nouveau produit dans la list listId
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'add',
+                    list: {
+                        list_id : $stateParams['listId']
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        console.log(response);
+
+                    }, function(error){
+                        console.warn('ERROR ADD PRODUCT');
+                        console.log(error);
+                    }
+                );
+            // / Créer un nouveau produit dans la list listId
+
+        }
+
         console.log($stateParams);
     });
