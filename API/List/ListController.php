@@ -70,7 +70,7 @@ class ListController
                         SELECT @NewID = SCOPE_IDENTITY()
                         INSERT list_id, user_id INTO user_list VALUES(@NewID, ".$user_id.");
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_name));
+                $q->execute(array($list_name))";
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');

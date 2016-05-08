@@ -1,0 +1,17 @@
+<ion-view view-title="Modifier liste">
+    <ion-content>
+        <form ng-submit="editList(list.list_id)">
+            <div class="list list-inset">
+                <label class="item item-input">
+                    {{list.list_name}}
+                    <input type="text" ng-model="listData.list_name">
+                </label>
+                <label class="item">
+                    <button class="button button-block button-positive" type="submit">Modifier</button>
+                </label>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+

@@ -1,5 +1,7 @@
 angular.module('starter.controllers', [])
 
+/**************************************** GLOBAL ****************************************/
+
     .controller('AppCtrl', function ($scope, $http) {
 
         $scope.currentUser = {
@@ -35,6 +37,8 @@ angular.module('starter.controllers', [])
 
     })
 
+/**************************************** AUTH ****************************************/
+
     .controller('LoginCtrl', function ($scope) {
 
     })
@@ -43,11 +47,64 @@ angular.module('starter.controllers', [])
 
     })
 
+/**************************************** LIST ****************************************/
+
     .controller('ListsCtrl', function ($scope, $http, $state) {
 
         $scope.showNewList = function() {
             $state.go("app.new_list")
         }
+
+
+        $scope.showEditList = function(listId) {
+            $state.go("app.edit_list", {listId : listId});
+        }
+
+        $scope.deleteList = function(listId) {
+            $http.post($scope.apiLink+"List/ListController.php",
+                {
+                    type : 'list',
+                    action : 'delete',
+                    list: {
+                        list_id : listId
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        $state.go($state.current, {}, {reload: true});
+                        //$window.location.reload(true);
+                        console.log(response);
+
+
+                    }, function(error){
+                        console.warn('ERROR DELETE LIST');
+                        console.log(error);
+                    }
+                );
+        }
+    })
+
+    .controller('EditListCtrl', function ($scope, $stateParams, $http, $state, $window) {
+        $http.post($scope.apiLink+"List/ListController.php",
+            {
+                type : 'list',
+                action : 'find',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+                    $scope.list = response;
+                    console.log($scope.list);
+
+                }, function(error){
+                    console.warn('ERROR FIND LIST');
+                    console.log(error);
+                }
+            );
     })
 
     .controller('NewListCtrl', function ($scope, $state, $http) {
@@ -147,6 +204,8 @@ angular.module('starter.controllers', [])
         //    {name: 'Ricard'}
         //];
     })
+
+/**************************************** PRODUCT ****************************************/
 
     .controller('NewProductCtrl', function ($scope, $stateParams) {
 
