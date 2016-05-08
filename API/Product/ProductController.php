@@ -163,9 +163,9 @@ class ProductController
 
     private function deleteProduct()
     {
-        if (!empty($this->params['product'])) {
+        if (!empty($this->params->product)) {
 
-            $product_id = $this->params['product']['product_id'];
+            $product_id = $this->params->product->product_id;
 
             $valid = true;
             if ((empty($product_id))) {

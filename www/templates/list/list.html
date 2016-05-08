@@ -10,13 +10,13 @@
                     Liste des produits
                 </div>
                 <ion-item ng-repeat="product in products">
-                    {{ product.name }}
+                    {{ product.product_name }}
                     <ion-option-button class="button-balanced" ng-click="">
                         <button class="button button-icon button-clear ion-edit" menu-toggle="right">
                         </button>
                     </ion-option-button>
                     <ion-option-button class="button-assertive" ng-click="">
-                        <button class="button button-icon button-clear ion-ios-trash" menu-toggle="right">
+                        <button class="button button-icon button-clear ion-ios-trash" ng-click="deleteProduct(product.product_id)" menu-toggle="right">
                         </button>
                     </ion-option-button>
                 </ion-item>

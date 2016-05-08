@@ -75,6 +75,28 @@ angular.module('starter.controllers', [])
             $state.go("app.new_product", {listId : listId})
         }
 
+        $scope.deleteProduct = function(productId) {
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'delete',
+                    product: {
+                        product_id : productId
+                    }
+                })
+
+                .then(function (res){
+                    var response = res.data;
+                    $state.go($state.current, {}, {reload: true});
+                    console.log(response);
+
+                }, function(error){
+                    console.warn('ERROR DELETE PRODUCT');
+                    console.log(error);
+                }
+            );
+        }
+
         angular.forEach($scope.lists, function(list)
         {
             if(list.list_id == $stateParams['listId'])
