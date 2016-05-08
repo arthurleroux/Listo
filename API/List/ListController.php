@@ -55,22 +55,22 @@ class ListController
 
 
         if (!empty($this->params->list)) {
-
-            $list_id = $this->params->list->list_id;
             $list_name = $this->params->list->list_name;
             $user_id = $this->params->user->user_id;
 
             $valid = true;
-            if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
+            if ((empty($list_name)) && (empty($user_id))) {
                 $valid = false;
             }
 
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO list (list_id,list_name,user_id) values(?, ?, ?)";
+                $sql = "INSERT INTO list (list_name) values(?)
+                        SELECT @NewID = SCOPE_IDENTITY()
+                        INSERT list_id, user_id INTO user_list VALUES(@NewID, ".$user_id.");
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_id, $list_name, $user_id));
+                $q->execute(array($list_name));
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
