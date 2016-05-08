@@ -51,33 +51,29 @@ class ProductController
         header('Cache-Control: no-cache, must-revalidate');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         header('Content-type: application/json');
-        echo json_encode($this->params);
         //
 
-
         if (!empty($this->params->product)) {
-
-            $product_id = $this->params->product->product_id;
             $product_name = $this->params->product->product_name;
-            $list_id = $this->params->list_id;
+            $list_id = $this->params->list->list_id;
 
             $valid = true;
-            if ((empty($product_id)) && (empty($product_name)) && (empty($list_id))) {
+            if ((empty($product_name)) && (empty($list_id))) {
                 $valid = false;
             }
 
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO product (product_id,product_name,list_id) values(?, ?, ?)";
+                $sql = "INSERT INTO product (product_name,list_id) values(?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($product_id,$product_name,$list_id));
+                $q->execute(array($product_name,$list_id));
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
-                echo json_encode($q);
+                echo json_encode($list_id);
             }
         }
     }

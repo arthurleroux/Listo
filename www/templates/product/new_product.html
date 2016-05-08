@@ -3,7 +3,7 @@
         <form ng-submit="addProduct()">
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input type="text" placeholder="Nom du produit">
+                    <input type="text" placeholder="Nom du produit" ng-model="productData.product_name">
                 </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Ajouter</button>

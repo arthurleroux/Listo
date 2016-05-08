@@ -9,6 +9,7 @@ angular.module('starter.controllers', [])
         };
 
         $scope.listData = {};
+        $scope.productData= {};
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
@@ -61,6 +62,7 @@ angular.module('starter.controllers', [])
         }
 
         $scope.deleteList = function(listId) {
+            console.log("DELETE LIST" + listId);
             $http.post($scope.apiLink+"List/ListController.php",
                 {
                     type : 'list',
@@ -72,7 +74,7 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go($state.current, {}, {reload: true});
+                        $state.go('app.lists', {}, {reload: true});
                         //$window.location.reload(true);
                         console.log(response);
 
@@ -207,7 +209,7 @@ angular.module('starter.controllers', [])
 
 /**************************************** PRODUCT ****************************************/
 
-    .controller('NewProductCtrl', function ($scope, $stateParams) {
+    .controller('NewProductCtrl', function ($scope, $stateParams, $http, $state) {
 
         $scope.addProduct = function() {
             console.log('ADD PRODUCT');
@@ -216,6 +218,9 @@ angular.module('starter.controllers', [])
                 {
                     type : 'product',
                     action : 'add',
+                    product: {
+                        product_name : $scope.productData.product_name
+                    },
                     list: {
                         list_id : $stateParams['listId']
                     }
@@ -223,6 +228,7 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
+                        $state.go("app.single", {listId : response})
                         console.log(response);
 
                     }, function(error){
