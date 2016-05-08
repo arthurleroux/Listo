@@ -10,7 +10,7 @@ angular.module('starter.controllers', [])
 
         $scope.listData = {};
         $scope.productData = {};
-        
+
         // Nécessaire pour modifier le nom d'une liste
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
@@ -194,7 +194,7 @@ angular.module('starter.controllers', [])
 
         $scope.showNewProduct = function(listId) {
             $state.go("app.new_product", {listId : listId})
-        }
+        };
 
         $scope.deleteProduct = function(productId) {
             $http.post($scope.apiLink+"Product/ProductController.php",
@@ -265,7 +265,7 @@ angular.module('starter.controllers', [])
                 );
             // / Créer un nouveau produit dans la list listId
 
-        }
+        };
 
         console.log($stateParams);
     });
