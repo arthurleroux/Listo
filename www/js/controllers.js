@@ -69,12 +69,12 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                     var response = res.data;
-                    //$state.go("app.single", {listId : response.list_id})
+                    $state.go("app.single", {listId : response})
                     console.log(response);
 
 
                 }, function(error){
-                    console.warn('ERROR DELETE PRODUCT');
+                    console.warn('ERROR NEW LIST');
                     console.log(error);
                 }
             );

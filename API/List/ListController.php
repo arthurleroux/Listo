@@ -47,12 +47,6 @@ class ListController
     private function addList()
     {
 
-        // test debug ajax
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Content-type: application/json');
-        //
-
 
         if (!empty($this->params->list)) {
             $list_name = $this->params->list->list_name;
@@ -66,17 +60,20 @@ class ListController
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO list (list_name) values(?)
-                        SELECT @NewID = SCOPE_IDENTITY()
-                        INSERT list_id, user_id INTO user_list VALUES(@NewID, ".$user_id.");
+                $sql = "INSERT INTO list (list_name) VALUES(?)";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_name));
+                $newId = $pdo->lastInsertId();
+                $sql2 = "INSERT INTO user_list (list_id, user_id) VALUES(".$newId.",".$user_id.")";
+                $q2 = $pdo->prepare($sql2);
+                $q2->execute();
+//                echo json_encode($q->insert_id());die;
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
-                echo json_encode($q);
+                echo json_encode($newId);
             }
         }
     }
