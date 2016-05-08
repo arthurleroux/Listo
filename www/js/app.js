@@ -32,16 +32,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 controller: 'AppCtrl'
             })
 
-
-            .state('app.lists', {
-                url: '/lists',
-                views: {
-                    'menuContent': {
-                        templateUrl: 'templates/list/lists.html',
-                        controller: 'ListsCtrl'
-                    }
-                }
-            })
+/**************************************** AUTH ****************************************/
 
             .state('app.register', {
                 url: '/register',
@@ -63,6 +54,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
+/**************************************** LIST ****************************************/
+
+            .state('app.lists', {
+                url: '/lists',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/list/lists.html',
+                        controller: 'ListsCtrl'
+                    }
+                }
+            })
+
             .state('app.new_list', {
                 url: '/new_list',
                 views: {
@@ -73,12 +76,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-            .state('app.new_product', {
-                url: '/new_product/:listId',
+            .state('app.edit_list', {
+                url: '/edit_list/:listId',
                 views: {
                     'menuContent' : {
-                        templateUrl: 'templates/product/new_product.html',
-                        controller: "NewProductCtrl"
+                        templateUrl: 'templates/list/edit_list.html',
+                        controller: 'EditListCtrl'
                     }
                 }
             })
@@ -91,7 +94,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                         controller: 'ListCtrl'
                     }
                 }
+            })
+
+/**************************************** PRODUCT ****************************************/
+
+            .state('app.new_product', {
+                url: '/new_product/:listId',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/product/new_product.html',
+                        controller: "NewProductCtrl"
+                    }
+                }
             });
+
+
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/lists');
     });

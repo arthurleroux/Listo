@@ -55,11 +55,11 @@ class ProductController
         //
 
 
-        if (!empty($this->params['product'])) {
+        if (!empty($this->params->product)) {
 
-            $product_id = $this->params['product']['product_id'];
-            $product_name = $this->params['product']['product_name'];
-            $list_id = $this->params['list_id'];
+            $product_id = $this->params->product->product_id;
+            $product_name = $this->params->product->product_name;
+            $list_id = $this->params->list_id;
 
             $valid = true;
             if ((empty($product_id)) && (empty($product_name)) && (empty($list_id))) {
@@ -84,9 +84,9 @@ class ProductController
 
     private function findProduct()
     {
-        if (!empty($this->params['product'])) {
+        if (!empty($this->params->product)) {
 
-            $product_id = $this->params['product']['product_id'];
+            $product_id = $this->params->product->product_id;
 
             $valid = true;
             if ((empty($product_id))) {
@@ -132,11 +132,11 @@ class ProductController
 
     private function updateProduct()
     {
-        if (!empty($this->params['product'])) {
+        if (!empty($this->params->product)) {
 
-            $product_id = $this->params['product']['product_id'];
-            $product_name = $this->params['product']['product_name'];
-            $list_id = $this->params['product']['list_id'];
+            $product_id = $this->params->product->product_id;
+            $product_name = $this->params->product->product_name;
+            $list_id = $this->params->product->list_id;
 
             $valid = true;
             if ((empty($product_id)) && (empty($product_name)) && (empty($list_id))) {
