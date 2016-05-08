@@ -6,6 +6,7 @@ angular.module('starter.controllers', [])
 
         $scope.lists = {};
 
+        // Récupère toutes les listes de l'utilisateur
         $http.post($scope.apiLink+"List/ListController.php",
             {
                 type : 'list',
@@ -17,7 +18,6 @@ angular.module('starter.controllers', [])
 
             .then(function (res){
                 var response = res.data;
-                console.log(response);
                 $scope.lists = response;
 
             }, function(error){
@@ -25,13 +25,7 @@ angular.module('starter.controllers', [])
                 console.log(error);
             }
         );
-
-        //$scope.lists = [
-        //    {title: 'Ziland', id: 1},
-        //    {title: 'Ziland LDC', id: 2},
-        //    {title: 'Chill', id: 3}
-        //];
-
+        // / Récupère toutes les listes de l'utilisateur
 
     })
 
@@ -53,10 +47,56 @@ angular.module('starter.controllers', [])
     .controller('NewListCtrl', function ($scope) {
     })
 
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
+
+        // Récupère tous les produits de la liste
+        $http.post($scope.apiLink+"Product/ProductController.php",
+            {
+                type : 'product',
+                action : 'findAll',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                var response = res.data;
+                $scope.products = response;
+                console.log($scope.products);
+
+            }, function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
+        // / Récupère toutes les listes de l'utilisateur
 
         $scope.showNewProduct = function(listId) {
             $state.go("app.new_product", {listId : listId})
+        }
+
+        $scope.deleteProduct = function(productId) {
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'delete',
+                    product: {
+                        product_id : productId
+                    }
+                })
+
+                .then(function (res){
+                    var response = res.data;
+                    $state.go($state.current, {}, {reload: true});
+                    //$window.location.reload(true);
+                    console.log(response);
+
+
+                }, function(error){
+                    console.warn('ERROR DELETE PRODUCT');
+                    console.log(error);
+                }
+            );
         }
 
         angular.forEach($scope.lists, function(list)
@@ -65,15 +105,11 @@ angular.module('starter.controllers', [])
                 $scope.list = list;
         });
 
-        // REQUETE AJAX
-
-        // RETOUR REQUETE
-
-        $scope.products =  [
-            {name: 'JackDa'},
-            {name: 'Weed'},
-            {name: 'Ricard'}
-        ];
+        //$scope.products =  [
+        //    {name: 'JackDa'},
+        //    {name: 'Weed'},
+        //    {name: 'Ricard'}
+        //];
     })
 
     .controller('NewProductCtrl', function ($scope, $stateParams) {
