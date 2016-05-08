@@ -1,4 +1,4 @@
-<ion-view view-title="{{ list.list_name }}">
+<ion-view view-title="{{ list.list_name }}" cache-view="false">
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-ios-plus-outline" menu-toggle="right" ng-click="showNewProduct(list.list_id)">
         </button>
@@ -15,8 +15,8 @@
                         <button class="button button-icon button-clear ion-checkmark" menu-toggle="right">
                         </button>
                     </ion-option-button>
-                    <ion-option-button class="button-assertive" ng-click="">
-                        <button class="button button-icon button-clear ion-ios-trash" ng-click="deleteProduct(product.product_id)" menu-toggle="right">
+                    <ion-option-button class="button-assertive" ng-click="deleteProduct(product.product_id)">
+                        <button class="button button-icon button-clear ion-ios-trash" menu-toggle="right">
                         </button>
                     </ion-option-button>
                 </ion-item>

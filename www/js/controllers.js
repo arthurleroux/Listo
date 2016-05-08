@@ -47,7 +47,7 @@ angular.module('starter.controllers', [])
     .controller('NewListCtrl', function ($scope) {
     })
 
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
 
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php",
@@ -88,7 +88,9 @@ angular.module('starter.controllers', [])
                 .then(function (res){
                     var response = res.data;
                     $state.go($state.current, {}, {reload: true});
+                    //$window.location.reload(true);
                     console.log(response);
+
 
                 }, function(error){
                     console.warn('ERROR DELETE PRODUCT');
