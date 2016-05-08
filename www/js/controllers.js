@@ -54,7 +54,7 @@ angular.module('starter.controllers', [])
 
 /**************************************** LIST ****************************************/
 
-    .controller('ListsCtrl', function ($scope, $http, $state) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window) {
 
         $scope.showNewList = function() {
             $state.go("app.new_list")
@@ -78,8 +78,8 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go('app.lists', {}, {reload: true});
-                        //$window.location.reload(true);
+                        $state.go('app.lists');
+                        $window.location.reload(true);
                         console.log(response);
 
 
@@ -126,6 +126,7 @@ angular.module('starter.controllers', [])
                 .then(function (res){
                         var response = res.data;
                         $state.go("app.lists");
+                        $window.location.reload(true);
                         console.log(response);
 
                     }, function(error){
@@ -136,7 +137,7 @@ angular.module('starter.controllers', [])
         }
     })
 
-    .controller('NewListCtrl', function ($scope, $state, $http) {
+    .controller('NewListCtrl', function ($scope, $state, $http, $window) {
 
         $scope.createList = function(userId) {
 
@@ -155,7 +156,8 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                     var response = res.data;
-                    $state.go('app.lists', {}, {reload: true});
+                    $state.go('app.lists');
+                    $window.location.reload(true);
                     console.log(response);
 
                 }, function(error){
