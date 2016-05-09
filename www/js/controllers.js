@@ -63,7 +63,7 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go("app.lists");
+
                         console.log(response);
                         $scope.userData = {};
 

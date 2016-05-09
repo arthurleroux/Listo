@@ -58,7 +58,7 @@ class UserController
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO user (user_name,user_password) values(?, ?)";
+                $sql = "INSERT INTO users (user_name, user_password) values(?, ?)";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_name, md5($user_password)));
                 Database::disconnect();
