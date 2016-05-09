@@ -45,8 +45,10 @@ angular.module('starter.controllers', [])
 
 /**************************************** AUTH ****************************************/
 
-    .controller('LoginCtrl', function ($scope) {
-
+    .controller('LoginCtrl', function ($scope, $state) {
+        $scope.showRegister = function() {
+            $state.go("app.register")
+        }
     })
 
     .controller('RegisterCtrl', function ($scope, $http, $state) {
@@ -74,6 +76,7 @@ angular.module('starter.controllers', [])
                     }
                 );
         };
+
     })
 
 /**************************************** LIST ****************************************/
@@ -83,7 +86,6 @@ angular.module('starter.controllers', [])
         $scope.showNewList = function() {
             $state.go("app.new_list")
         }
-
 
         $scope.showEditList = function(listId) {
             $state.go("app.edit_list", {listId : listId});
@@ -196,6 +198,10 @@ angular.module('starter.controllers', [])
 
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
 
+        // Ajouter nouveau collaborateur à la liste
+        $scope.addCollaborator = function() {
+            $state.go("app.add_user_to_list")
+        }
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php",
             {
