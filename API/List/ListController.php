@@ -174,6 +174,9 @@ class ListController
                 $sql = "DELETE FROM list  WHERE list_id = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_id));
+                $sql2 = "DELETE FROM product  WHERE list_id = ?";
+                $q2 = $pdo->prepare($sql2);
+                $q2->execute(array($list_id));
                 Database::disconnect();
 
                 //RESPONSE

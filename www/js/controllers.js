@@ -10,6 +10,7 @@ angular.module('starter.controllers', [])
 
         $scope.listData = {};
         $scope.productData = {};
+        $scope.userData = {};
 
         // Nécessaire pour modifier le nom d'une liste
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
@@ -48,8 +49,30 @@ angular.module('starter.controllers', [])
 
     })
 
-    .controller('RegisterCtrl', function ($scope) {
+    .controller('RegisterCtrl', function ($scope, $http, $state) {
+        $scope.register = function() {
+            $http.post($scope.apiLink+"User/UserController.php",
+                {
+                    type : 'user',
+                    action : 'add',
+                    user: {
+                        user_name : $scope.userData.user_name,
+                        user_password : $scope.userData.user_password
+                    }
+                })
 
+                .then(function (res){
+                        var response = res.data;
+                        $state.go("app.lists");
+                        console.log(response);
+                        $scope.userData = {};
+
+                    }, function(error){
+                        console.warn('ERROR REGISTER');
+                        console.log(error);
+                    }
+                );
+        };
     })
 
 /**************************************** LIST ****************************************/
@@ -80,30 +103,6 @@ angular.module('starter.controllers', [])
                         var response = res.data;
                         $state.go('app.lists');
                         $window.location.reload(true);
-                        console.log(response);
-
-
-                    }, function(error){
-                        console.warn('ERROR DELETE LIST');
-                        console.log(error);
-                    }
-                );
-        }
-
-        $scope.deleteProductOnCascade = function(listId) {
-            $http.post($scope.apiLink+"Product/ProductController.php",
-                {
-                    type : 'product',
-                    action : 'deleteOnCascade',
-                    product: {
-                        list_id : listId
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                    $state.go('app.lists');
-                    $window.location.reload(true);
                         console.log(response);
 
 
