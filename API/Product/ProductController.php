@@ -3,14 +3,11 @@ require("../config.php");
 
 header('Access-Control-Allow-Origin: *');
 
-$action = new UserController();
+$action = new ProductController();
 
-
-class UserController
+class ProductController
 {
-
     var $params = array();
-    var $url = '';
 
     public function __construct()
     {
@@ -26,136 +23,164 @@ class UserController
 
     private function initialize()
     {
-        if($this->params->type == "user"){
+        if($this->params->type == "product"){
             if ($this->params->action == "add"){
-                $this->addUser();
+                $this->addProduct();
             }
             if ($this->params->action == "find"){
-                $this->findUser();
+                $this->findProduct();
             }
             if ($this->params->action == "findAll"){
-                $this->findAllUser();
+                $this->findAllProduct($this->params->list->list_id);
             }
             if ($this->params->action == "update"){
-                $this->updateUser();
+                $this->updateProduct();
+            }
+            if ($this->params->action == "delete"){
+                $this->deleteProduct();
             }
         }
     }
 
-    /*************************** CRUD **********************************/
+    /********************************* CRUD **********************************/
 
-    private function addUser()
+    private function addProduct()
     {
 
-        if (!empty($this->params->user)) {
+        // test debug ajax
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
+        //
 
-            $user_name = $this->params->user->user_name;
-            $user_password = $this->params->user->user_password;
-            $user_password_confirmation = $this->params->user->user_password_confirmation;
-
-            if ( (!empty($user_name) && !empty($user_password) ) && ($user_password == $user_password_confirmation) ) {
-
-                $pdo = Database::connect();
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "SELECT user_name FROM users WHERE user_name = ?";
-                $q = $pdo->prepare($sql);
-                $q->execute(array($user_name));
-                $response= $q->fetch();
-                if($response == false) {
-                    $sql = "INSERT INTO users (user_name,user_password) values(?, ?)";
-                    $q = $pdo->prepare($sql);
-                    $q->execute(array($user_name, md5($user_password)));
-                    $result = $pdo->lastInsertId();
-                    if($result)
-                        $data["success"] = true;
-                    else
-                        $data["success"] = false;
-
-                    Database::disconnect();
-
-                    //RESPONSE
-                    header('Cache-Control: no-cache, must-revalidate');
-                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                    header('Content-type: application/json');
-
-                    echo json_encode($data);
-                }
-            }
-        }
-    }
-
-    private function findUser()
-    {
-        if (!empty($this->params->data)) {
-
-            $user_id = $this->params->data->user_id;
+        if (!empty($this->params->product)) {
+            $product_name = $this->params->product->product_name;
+            $list_id = $this->params->list->list_id;
 
             $valid = true;
-            if ((empty($user_id))) {
+            if ((empty($product_name)) || (empty($list_id))) {
                 $valid = false;
             }
 
-            if($valid)
-            {
+            if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "Select * from users Where user_id = ? ";
+                $sql = "INSERT INTO product (product_name,list_id) values(?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_id));
-                $data = $q->fetch(PDO::FETCH_ASSOC);
+                $q->execute(array($product_name,$list_id));
                 Database::disconnect();
-
-                $tab = json_encode($data);
-                var_dump($tab);
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($list_id);
             }
         }
     }
 
-    private function findAllUser()
+    private function findProduct()
     {
+        if (!empty($this->params->product)) {
 
+            $product_id = $this->params->product->product_id;
+
+            $valid = true;
+            if ((empty($product_id))) {
+                $valid = false;
+            }
+
+            if ($valid) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "SELECT * FROM product WHERE product_id = ? ";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($product_id));
+                $data = $q->fetch(PDO::FETCH_ASSOC);
+                Database::disconnect();
+
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }
+        }
+    }
+
+    private function findAllProduct($listId)
+    {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from users";
+        $sql = "SELECT p.product_id, p.product_name
+                FROM product p
+                WHERE p.list_id = ".$listId;
         $q = $pdo->prepare($sql);
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
         Database::disconnect();
 
-        $tab = json_encode($data);
-        var_dump($data);
-
+        //RESPONSE
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
+        echo json_encode($data);
     }
 
-    private function updateUser()
+    private function updateProduct()
     {
-        if (!empty($this->params->data)) {
+        if (!empty($this->params->product)) {
 
-            $user_id = $this->params->data->user_id;
-            $user_firstname = $this->params->data->user_firstname;
-            $user_lastname = $this->params->data->user_lastname;
-            $user_username = $this->params->data->user_username;
-            $user_email = $this->params->data->user_email;
-            $user_password = $this->params->data->user_password;
+            $product_id = $this->params->product->product_id;
+            $product_name = $this->params->product->product_name;
+            $list_id = $this->params->product->list_id;
 
             $valid = true;
-            if ((empty($user_id)) && (empty($user_firstname)) && (empty($user_lastname)) && (empty($user_username))
-                && (empty($user_email)) && (empty($user_password))) {
+            if ((empty($product_id)) && (empty($product_name)) && (empty($list_id))) {
                 $valid = false;
             }
-
 
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "UPDATE users set user_firstname = ?, user_lastname = ?, user_username = ?, user_email = ?, user_password = ? WHERE user_id = ?";
+                $sql = "UPDATE product set product_name = ?, list_id = ? WHERE product_id = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_firstname,$user_lastname,$user_username,$user_email,md5($user_password),$user_id,));
+                $q->execute(array($product_name,$list_id,$product_id));
                 Database::disconnect();
 
-                $tab = json_encode($q);
-                var_dump($tab);
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
 
+            }
+        }
+    }
+
+    private function deleteProduct()
+    {
+        if (!empty($this->params->product)) {
+
+            $product_id = $this->params->product->product_id;
+
+            $valid = true;
+            if ((empty($product_id))) {
+                $valid = false;
+            }
+
+            if ($valid) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "DELETE FROM product  WHERE product_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($product_id));
+                Database::disconnect();
+
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
             }
         }
     }
