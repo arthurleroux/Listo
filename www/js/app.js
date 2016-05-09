@@ -106,9 +106,21 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                         controller: "NewProductCtrl"
                     }
                 }
-            });
+            })
 
+/**************************************** USER ****************************************/
+
+            .state('app.add_user_to_list', {
+                url: '/add_user_to_list',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/user/add_user_to_list.html',
+                        controller: "AddUserToListCtrl"
+                    }
+                }
+            });
 
         // if none of the above states are matched, use this as the fallback
         $urlRouterProvider.otherwise('/app/lists');
     });
+

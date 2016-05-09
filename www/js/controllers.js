@@ -294,4 +294,10 @@ angular.module('starter.controllers', [])
         };
 
         console.log($stateParams);
+    })
+
+/**************************************** USER ****************************************/
+
+    .controller('AddUserToListCtrl', function ($scope) {
+
     });
