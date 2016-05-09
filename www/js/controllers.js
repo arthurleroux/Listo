@@ -66,8 +66,8 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go('app.login');
-                        console.log(response);
+                        if(response.success == true)
+                            $state.go('app.login');
                         $scope.userData = {};
 
                     }, function(error){
