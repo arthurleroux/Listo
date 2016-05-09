@@ -171,12 +171,19 @@ class ListController
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
                 $sql = "DELETE FROM list  WHERE list_id = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_id));
+
                 $sql2 = "DELETE FROM product  WHERE list_id = ?";
                 $q2 = $pdo->prepare($sql2);
                 $q2->execute(array($list_id));
+
+                $sql3 = "DELETE FROM user_list  WHERE list_id = ?";
+                $q3 = $pdo->prepare($sql3);
+                $q3->execute(array($list_id));
+
                 Database::disconnect();
 
                 //RESPONSE
@@ -187,5 +194,4 @@ class ListController
             }
         }
     }
-
 }
