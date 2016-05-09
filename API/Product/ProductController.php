@@ -39,6 +39,9 @@ class ProductController
             if ($this->params->action == "delete"){
                 $this->deleteProduct();
             }
+            if ($this->params->action == "deleteOnCascade"){
+                $this->deleteProductOnCascade();
+            }
         }
     }
 
@@ -185,4 +188,31 @@ class ProductController
         }
     }
 
+    private function deleteProductOnCascade()
+    {
+        if (!empty($this->params->product)) {
+
+            $list_id = $this->params->product->list_id;
+
+            $valid = true;
+            if ((empty($list_id))) {
+                $valid = false;
+            }
+
+            if ($valid) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "DELETE FROM product  WHERE list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($list_id));
+                Database::disconnect();
+
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
+            }
+        }
+    }
 }

@@ -89,6 +89,30 @@ angular.module('starter.controllers', [])
                     }
                 );
         }
+
+        $scope.deleteProductOnCascade = function(listId) {
+            $http.post($scope.apiLink+"Product/ProductController.php",
+                {
+                    type : 'product',
+                    action : 'deleteOnCascade',
+                    product: {
+                        list_id : listId
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                    $state.go('app.lists');
+                    $window.location.reload(true);
+                        console.log(response);
+
+
+                    }, function(error){
+                        console.warn('ERROR DELETE LIST');
+                        console.log(error);
+                    }
+                );
+        }
     })
 
     .controller('EditListCtrl', function ($scope, $stateParams, $http, $state, $window) {
