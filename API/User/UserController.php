@@ -20,7 +20,8 @@ class UserController
 
     private function getParams()
     {
-        $this->params = array_merge($_GET,$_POST);
+        $this->params = file_get_contents("php://input");
+        $this->params = json_decode($this->params);
     }
 
     private function initialize()
@@ -49,9 +50,10 @@ class UserController
 
             $user_name = $this->params->user->user_name;
             $user_password = $this->params->user->user_password;
+            $user_password_confirmation = $this->params->user->user_password_confirmation;
 
             $valid = true;
-            if ((empty($user_name)) && (empty($user_password))) {
+            if ( (empty($user_name) && empty($user_password) ) || ($user_password !== $user_password_confirmation) ) {
                 $valid = false;
             }
 

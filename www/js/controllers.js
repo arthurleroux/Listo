@@ -57,7 +57,8 @@ angular.module('starter.controllers', [])
                     action : 'add',
                     user: {
                         user_name : $scope.userData.user_name,
-                        user_password : $scope.userData.user_password
+                        user_password : $scope.userData.user_password,
+                        user_password_confirmation : $scope.userData.user_password_confirmation
                     }
                 })
 
