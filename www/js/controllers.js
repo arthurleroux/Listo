@@ -46,7 +46,9 @@ angular.module('starter.controllers', [])
 /**************************************** AUTH ****************************************/
 
     .controller('LoginCtrl', function ($scope) {
+        $scope.login = function(pseudo, password) {
 
+        }
     })
 
     .controller('RegisterCtrl', function ($scope, $http, $state) {
@@ -64,7 +66,7 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-
+                        $state.go('app.login');
                         console.log(response);
                         $scope.userData = {};
 

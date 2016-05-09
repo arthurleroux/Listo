@@ -53,7 +53,7 @@ class ListController
             $user_id = $this->params->user->user_id;
 
             $valid = true;
-            if ((empty($list_name)) && (empty($user_id))) {
+            if ((empty($list_name)) || (empty($user_id))) {
                 $valid = false;
             }
 
@@ -135,7 +135,7 @@ class ListController
             $list_name = $this->params->list->list_name;
 
             $valid = true;
-            if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
+            if ((empty($list_id)) || (empty($list_name)) || (empty($user_id))) {
                 $valid = false;
             }
 

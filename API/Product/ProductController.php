@@ -58,7 +58,7 @@ class ProductController
             $list_id = $this->params->list->list_id;
 
             $valid = true;
-            if ((empty($product_name)) && (empty($list_id))) {
+            if ((empty($product_name)) || (empty($list_id))) {
                 $valid = false;
             }
 
@@ -92,7 +92,7 @@ class ProductController
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "Select * from product Where product_id = ? ";
+                $sql = "SELECT * FROM product WHERE product_id = ? ";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($product_id));
                 $data = $q->fetch(PDO::FETCH_ASSOC);

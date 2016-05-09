@@ -52,8 +52,9 @@ class UserController
             $user_password = $this->params->user->user_password;
             $user_password_confirmation = $this->params->user->user_password_confirmation;
 
+
             $valid = true;
-            if ( (empty($user_name) && empty($user_password) ) || ($user_password !== $user_password_confirmation) ) {
+            if ( (empty($user_name) || empty($user_password) ) || ($user_password !== $user_password_confirmation) ) {
                 $valid = false;
             }
 
