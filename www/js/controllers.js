@@ -66,9 +66,10 @@ angular.module('starter.controllers', [])
 
                 .then(function (res){
                         var response = res.data;
-                        if(response.success == true)
+                        if(response.success == true) {
                             $state.go('app.login');
-                        $scope.userData = {};
+                            $scope.userData = {};
+                        }
 
                     }, function(error){
                         console.warn('ERROR REGISTER');
