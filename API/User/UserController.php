@@ -45,27 +45,28 @@ class UserController
 
     private function addUser()
     {
-        if (!empty($this->params->data)) {
+        if (!empty($this->params->user)) {
 
-            $user_name = $this->params->data->user_name;
-            $user_password = $this->params->data->user_password;
+            $user_name = $this->params->user->user_name;
+            $user_password = $this->params->user->user_password;
 
             $valid = true;
-            if ( (empty($user_name)) && (empty($user_password)) ) {
+            if ((empty($user_name)) && (empty($user_password))) {
                 $valid = false;
             }
 
             if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO users (user_name, user_password) values(?, ?)";
+                $sql = "INSERT INTO users (user_name,user_password) values(?, ?)";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_name, md5($user_password)));
                 Database::disconnect();
-
-                $tab = json_encode($q);
-                var_dump($tab);
-
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
             }
         }
     }
