@@ -75,12 +75,13 @@ angular.module('starter.controllers', [])
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
+                                $scope.userData.user_password = "";
                             }
 
                         },
                         function(error){
                             console.warn('ERROR REGISTER');
-                            console.log(error);
+                            $scope.userData = {};
                         }
                     );
             }
@@ -122,13 +123,14 @@ angular.module('starter.controllers', [])
 
                             },
                             function(error){
-                                console.warn('ERROR REGISTER');
+                                $scope.userData = {};
                                 console.log(error);
                             }
                         );
                 }
                 else {
                     $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $scope.userData.user_password_confirmation = "";
                 }
             }
             else {
