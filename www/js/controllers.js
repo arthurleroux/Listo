@@ -1,7 +1,6 @@
 angular.module('starter.controllers', [])
 
-/**************************************** GLOBAL ****************************************/
-
+    /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $http) {
 
         $scope.currentUser = {
@@ -20,6 +19,9 @@ angular.module('starter.controllers', [])
 
         $scope.lists = {};
 
+        $scope.error = "";
+
+
         // Récupère toutes les listes de l'utilisateur
         $http.post($scope.apiLink+"List/ListController.php",
             {
@@ -31,57 +33,63 @@ angular.module('starter.controllers', [])
             })
 
             .then(function (res){
-                var response = res.data;
-                $scope.lists = response;
+                    var response = res.data;
+                    $scope.lists = response;
 
-            }, function(error){
-                console.warn('ERROR FIND ALL LIST');
-                console.log(error);
-            }
-        );
+                }, function(error){
+                    console.warn('ERROR FIND ALL LIST');
+                    console.log(error);
+                }
+            );
         // / Récupère toutes les listes de l'utilisateur
 
     })
+    /**************************************** FIN AppCtrl ****************************************/
 
-/**************************************** AUTH ****************************************/
-
+    /**************************************** DEBUT LoginCtrl ****************************************/
     .controller('LoginCtrl', function ($scope, $state) {
         $scope.showRegister = function() {
             $state.go("app.register")
         }
     })
+    /**************************************** FIN LoginCtrl ****************************************/
 
+    /**************************************** DEBUT RegisterCtrl ****************************************/
     .controller('RegisterCtrl', function ($scope, $http, $state) {
         $scope.register = function() {
-            $http.post($scope.apiLink+"User/UserController.php",
-                {
-                    type : 'user',
-                    action : 'add',
-                    user: {
-                        user_name : $scope.userData.user_name,
-                        user_password : $scope.userData.user_password,
-                        user_password_confirmation : $scope.userData.user_password_confirmation
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        if(response.success == true) {
-                            $state.go('app.login');
-                            $scope.userData = {};
+            if ($scope.userData.user_password == $scope.userData.user_password_confirmation) {
+                $http.post($scope.apiLink+"User/UserController.php",
+                    {
+                        type : 'user',
+                        action : 'add',
+                        user: {
+                            user_name : $scope.userData.user_name,
+                            user_password : $scope.userData.user_password
                         }
+                    })
 
-                    }, function(error){
-                        console.warn('ERROR REGISTER');
-                        console.log(error);
-                    }
-                );
+                    .then(function (res){
+                            var response = res.data;
+                            if(response.success == true) {
+                                $state.go('app.login');
+                                $scope.userData = {};
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR REGISTER');
+                            console.log(error);
+                        }
+                    );
+            }
+            else {
+                $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+            }
         };
-
     })
+    /**************************************** FIN RegisterCtrl ****************************************/
 
-/**************************************** LIST ****************************************/
-
+    /**************************************** DEBUT ListesCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window) {
 
         $scope.showNewList = function() {
@@ -94,8 +102,7 @@ angular.module('starter.controllers', [])
 
         $scope.deleteList = function(listId) {
             console.log("DELETE LIST" + listId);
-            $http.post($scope.apiLink+"List/ListController.php",
-                {
+            $http.post($scope.apiLink+"List/ListController.php", {
                     type : 'list',
                     action : 'delete',
                     list: {
@@ -117,7 +124,9 @@ angular.module('starter.controllers', [])
                 );
         }
     })
+    /**************************************** FIN ListsCtrl ****************************************/
 
+    /**************************************** DEBUT EditListCtrl ****************************************/
     .controller('EditListCtrl', function ($scope, $stateParams, $http, $state, $window) {
         $http.post($scope.apiLink+"List/ListController.php",
             {
@@ -163,7 +172,9 @@ angular.module('starter.controllers', [])
                 );
         }
     })
+    /**************************************** FIN EditListCtrl ****************************************/
 
+    /**************************************** DEBUT NewListCtrl ****************************************/
     .controller('NewListCtrl', function ($scope, $state, $http, $window) {
 
         $scope.createList = function(userId) {
@@ -182,21 +193,23 @@ angular.module('starter.controllers', [])
                 })
 
                 .then(function (res){
-                    var response = res.data;
-                    $state.go('app.lists');
-                    $window.location.reload(true);
-                    console.log(response);
+                        var response = res.data;
+                        $state.go('app.lists');
+                        $window.location.reload(true);
+                        console.log(response);
 
-                }, function(error){
-                    console.warn('ERROR NEW LIST');
-                    console.log(error);
-                }
-            );
+                    }, function(error){
+                        console.warn('ERROR NEW LIST');
+                        console.log(error);
+                    }
+                );
 
         }
 
     })
+    /**************************************** FIN NewListCtrl ****************************************/
 
+    /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
 
         // Ajouter nouveau collaborateur à la liste
@@ -214,15 +227,15 @@ angular.module('starter.controllers', [])
             })
 
             .then(function (res){
-                var response = res.data;
-                $scope.products = response;
-                console.log($scope.products);
+                    var response = res.data;
+                    $scope.products = response;
+                    console.log($scope.products);
 
-            }, function(error){
-                console.warn('ERROR FIND ALL LIST');
-                console.log(error);
-            }
-        );
+                }, function(error){
+                    console.warn('ERROR FIND ALL LIST');
+                    console.log(error);
+                }
+            );
         // / Récupère toutes les listes de l'utilisateur
 
         $scope.showNewProduct = function(listId) {
@@ -240,17 +253,16 @@ angular.module('starter.controllers', [])
                 })
 
                 .then(function (res){
-                    var response = res.data;
-                    $state.go($state.current, {}, {reload: true});
-                    //$window.location.reload(true);
-                    console.log(response);
+                        var response = res.data;
+                        $state.go($state.current, {}, {reload: true});
+                        console.log(response);
 
 
-                }, function(error){
-                    console.warn('ERROR DELETE PRODUCT');
-                    console.log(error);
-                }
-            );
+                    }, function(error){
+                        console.warn('ERROR DELETE PRODUCT');
+                        console.log(error);
+                    }
+                );
         }
 
         angular.forEach($scope.lists, function(list)
@@ -265,9 +277,9 @@ angular.module('starter.controllers', [])
         //    {name: 'Ricard'}
         //];
     })
+    /**************************************** FIN ListCtrl ****************************************/
 
-/**************************************** PRODUCT ****************************************/
-
+    /**************************************** DEBUT NewProductCtrl ****************************************/
     .controller('NewProductCtrl', function ($scope, $stateParams, $http, $state) {
 
         $scope.addProduct = function() {
@@ -302,9 +314,10 @@ angular.module('starter.controllers', [])
 
         console.log($stateParams);
     })
+    /**************************************** FIN NewProductCtrl ****************************************/
 
-/**************************************** USER ****************************************/
-
+    /**************************************** DEBUT AddUserToListCtrl ****************************************/
     .controller('AddUserToListCtrl', function ($scope) {
 
     });
+/**************************************** Fin AddUserToListCtrl ****************************************/

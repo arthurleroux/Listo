@@ -46,30 +46,39 @@ class UserController
 
     private function addUser()
     {
+
         if (!empty($this->params->user)) {
 
             $user_name = $this->params->user->user_name;
             $user_password = $this->params->user->user_password;
-            $user_password_confirmation = $this->params->user->user_password_confirmation;
 
+            if ( (!empty($user_name) && !empty($user_password)) ) {
 
-            $valid = true;
-            if ( (empty($user_name) || empty($user_password) ) || ($user_password !== $user_password_confirmation) ) {
-                $valid = false;
-            }
-
-            if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO users (user_name,user_password) values(?, ?)";
+                $sql = "SELECT user_name FROM users WHERE user_name = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_name, md5($user_password)));
-                Database::disconnect();
-                //RESPONSE
-                header('Cache-Control: no-cache, must-revalidate');
-                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                header('Content-type: application/json');
-                echo json_encode($q);
+                $q->execute(array($user_name));
+                $response= $q->fetch();
+                if($response == false) {
+                    $sql = "INSERT INTO users (user_name,user_password) values(?, ?)";
+                    $q = $pdo->prepare($sql);
+                    $q->execute(array($user_name, md5($user_password)));
+                    $result = $pdo->lastInsertId();
+                    if($result)
+                        $data["success"] = true;
+                    else
+                        $data["success"] = false;
+
+                    Database::disconnect();
+
+                    //RESPONSE
+                    header('Cache-Control: no-cache, must-revalidate');
+                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                    header('Content-type: application/json');
+
+                    echo json_encode($data);
+                }
             }
         }
     }
