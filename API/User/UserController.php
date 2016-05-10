@@ -90,7 +90,7 @@ class UserController
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "SELECT user_name, user_id FROM users WHERE user_name = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_name, $user_password));
+                $q->execute(array($user_name, md5($user_password)));
                 $response= $q->fetch();
 
                 if ($response == false ) {
