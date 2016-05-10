@@ -1,6 +1,9 @@
 <ion-view view-title="Nouveau produit">
     <ion-content>
         <form ng-submit="addProduct()">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
             <div class="list list-inset">
                 <label class="item item-input">
                     <input type="text" placeholder="Nom du produit" ng-model="productData.product_name">

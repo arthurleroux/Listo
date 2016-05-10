@@ -57,33 +57,45 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT RegisterCtrl ****************************************/
     .controller('RegisterCtrl', function ($scope, $http, $state) {
         $scope.register = function() {
-            if ($scope.userData.user_password == $scope.userData.user_password_confirmation) {
-                $http.post($scope.apiLink+"User/UserController.php",
-                    {
-                        type : 'user',
-                        action : 'add',
-                        user: {
-                            user_name : $scope.userData.user_name,
-                            user_password : $scope.userData.user_password
-                        }
-                    })
+            if ($scope.userData.user_password
+                && $scope.userData.user_password_confirmation
+                && $scope.userData.user_name) {
 
-                    .then(function (res){
-                            var response = res.data;
-                            if(response.success == true) {
-                                $state.go('app.login');
-                                $scope.userData = {};
+                if ($scope.userData.user_password == $scope.userData.user_password_confirmation) {
+                    $scope.error = "";
+                    $http.post($scope.apiLink+"User/UserController.php",
+                        {
+                            type : 'user',
+                            action : 'add',
+                            user: {
+                                user_name : $scope.userData.user_name,
+                                user_password : $scope.userData.user_password
                             }
+                        })
 
-                        },
-                        function(error){
-                            console.warn('ERROR REGISTER');
-                            console.log(error);
-                        }
-                    );
+                        .then(function (res){
+                                var response = res.data;
+                                if(response.success == true) {
+                                    $state.go('app.login');
+                                    $scope.userData = {};
+                                }
+                                else {
+                                    $scope.error = "Ce pseudo est déjà utilisé";
+                                }
+
+                            },
+                            function(error){
+                                console.warn('ERROR REGISTER');
+                                console.log(error);
+                            }
+                        );
+                }
+                else {
+                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                }
             }
             else {
-                $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                $scope.error = "Erreur : tous les champs n'ont pas été remplis";
             }
         };
     })
@@ -179,31 +191,35 @@ angular.module('starter.controllers', [])
 
         $scope.createList = function(userId) {
 
-            console.warn('user id :' + userId);
-            $http.post($scope.apiLink+"List/ListController.php",
-                {
-                    type : 'list',
-                    action : 'add',
-                    list: {
-                        list_name: $scope.listData.list_name
-                    },
-                    user: {
-                        user_id : userId
-                    }
-                })
+            if ($scope.listData.list_name) {
+                $scope.error = "";
+                $http.post($scope.apiLink+"List/ListController.php",
+                    {
+                        type : 'list',
+                        action : 'add',
+                        list: {
+                            list_name: $scope.listData.list_name
+                        },
+                        user: {
+                            user_id : userId
+                        }
+                    })
 
-                .then(function (res){
-                        var response = res.data;
-                        $state.go('app.lists');
-                        $window.location.reload(true);
-                        console.log(response);
+                    .then(function (res){
+                            var response = res.data;
+                            $state.go('app.lists');
+                            $window.location.reload(true);
+                            console.log(response);
 
-                    }, function(error){
-                        console.warn('ERROR NEW LIST');
-                        console.log(error);
-                    }
-                );
-
+                        }, function(error){
+                            console.warn('ERROR NEW LIST');
+                            console.log(error);
+                        }
+                    );
+            }
+            else {
+                $scope.error = "Erreur : le nom de la liste est vide"
+            }
         }
 
     })
@@ -283,36 +299,36 @@ angular.module('starter.controllers', [])
     .controller('NewProductCtrl', function ($scope, $stateParams, $http, $state) {
 
         $scope.addProduct = function() {
-            console.log('ADD PRODUCT');
+            if ($scope.productData.product_name) {
             // Créer un nouveau produit dans la list listId
-            $http.post($scope.apiLink+"Product/ProductController.php",
-                {
-                    type : 'product',
-                    action : 'add',
-                    product: {
-                        product_name : $scope.productData.product_name
-                    },
-                    list: {
-                        list_id : $stateParams['listId']
-                    }
-                })
+                $http.post($scope.apiLink+"Product/ProductController.php",
+                    {
+                        type : 'product',
+                        action : 'add',
+                        product: {
+                            product_name : $scope.productData.product_name
+                        },
+                        list: {
+                            list_id : $stateParams['listId']
+                        }
+                    })
 
-                .then(function (res){
-                        var response = res.data;
-                        $state.go("app.single", {listId : response});
-                        console.log(response);
-                        $scope.productData.product_name = "";
+                    .then(function (res){
+                            var response = res.data;
+                            $state.go("app.single", {listId : response});
+                            console.log(response);
+                            $scope.productData.product_name = "";
 
-                    }, function(error){
-                        console.warn('ERROR ADD PRODUCT');
-                        console.log(error);
-                    }
-                );
-            // / Créer un nouveau produit dans la list listId
-
+                        }, function(error){
+                            console.warn('ERROR ADD PRODUCT');
+                            console.log(error);
+                        }
+                    );
+                }
+            else {
+                $scope.error = "Erreur : le nom du produit est vide"
+            }
         };
-
-        console.log($stateParams);
     })
     /**************************************** FIN NewProductCtrl ****************************************/
 
@@ -320,4 +336,4 @@ angular.module('starter.controllers', [])
     .controller('AddUserToListCtrl', function ($scope) {
 
     });
-/**************************************** Fin AddUserToListCtrl ****************************************/
+    /**************************************** FIN AddUserToListCtrl ****************************************/

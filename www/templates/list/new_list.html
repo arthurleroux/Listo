@@ -1,6 +1,9 @@
 <ion-view view-title="Nouvelle liste" cache-view="false">
     <ion-content>
         <form ng-submit="createList(currentUser.id)">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
             <div class="list list-inset">
                 <label class="item item-input">
                     <input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">
