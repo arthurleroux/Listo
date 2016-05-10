@@ -60,7 +60,7 @@ angular.module('starter.controllers', [])
                 $http.post($scope.apiLink+"User/UserController.php",
                     {
                         type : 'user',
-                        action : 'find',
+                        action : 'login',
                         user: {
                             user_name : $scope.userData.user_name,
                             user_password : $scope.userData.user_password
