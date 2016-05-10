@@ -47,9 +47,46 @@ angular.module('starter.controllers', [])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state) {
+    .controller('LoginCtrl', function ($scope, $state, $http) {
         $scope.showRegister = function() {
             $state.go("app.register")
+        };
+
+        $scope.login = function() {
+
+            if ($scope.userData.user_password
+                && $scope.userData.user_name) {
+
+                $http.post($scope.apiLink+"User/UserController.php",
+                    {
+                        type : 'user',
+                        action : 'find',
+                        user: {
+                            user_name : $scope.userData.user_name,
+                            user_password : $scope.userData.user_password
+                        }
+                    })
+
+                    .then(function (res){
+                            var response = res.data;
+                            if(response.success == true) {
+                                $state.go('app.lists');
+                                $scope.userData = {};
+                            }
+                            else {
+                                $scope.error = "Identifiants incorrects";
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR REGISTER');
+                            console.log(error);
+                        }
+                    );
+            }
+            else {
+                $scope.error = "Erreur : tous les champs n'ont pas été remplis";
+            }
         }
     })
     /**************************************** FIN LoginCtrl ****************************************/
@@ -106,11 +143,11 @@ angular.module('starter.controllers', [])
 
         $scope.showNewList = function() {
             $state.go("app.new_list")
-        }
+        };
 
         $scope.showEditList = function(listId) {
             $state.go("app.edit_list", {listId : listId});
-        }
+        };
 
         $scope.deleteList = function(listId) {
             console.log("DELETE LIST" + listId);

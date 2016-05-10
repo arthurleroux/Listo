@@ -1,18 +1,21 @@
 <ion-view view-title="Connexion">
     <ion-content>
-        <form ng-submit="doLogin()">
+        <form ng-submit="login()">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input type="text" placeholder="Pseudo" ng-model="loginData.username">
+                    <input type="text" placeholder="Pseudo" ng-model="userData.user_name">
                 </label>
                 <label class="item item-input">
-                    <input type="password"  placeholder="Mot de passe" ng-model="loginData.password">
+                    <input type="password"  placeholder="Mot de passe" ng-model="userData.user_password">
                 </label>
                 <label class="item">
                     <button class="button button-block button-positive" type="submit">Connexion</button>
                 </label>
                 <label class="item">
-                    <button class="button button-block button-balanced" ng-click="showRegister()">Créer un compte</button>
+                    <button class="button button-block button-balanced" type="button" ng-click="showRegister()">Créer un compte</button>
                 </label>
             </div>
         </form>

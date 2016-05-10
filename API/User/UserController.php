@@ -71,12 +71,6 @@ class UserController
                         $data["success"] = false;
 
                     Database::disconnect();
-
-                    //RESPONSE
-                    header('Cache-Control: no-cache, must-revalidate');
-                    header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                    header('Content-type: application/json');
-
                     echo json_encode($data);
                 }
             }
@@ -85,27 +79,28 @@ class UserController
 
     private function findUser()
     {
-        if (!empty($this->params->data)) {
+        if (!empty($this->params->user)) {
 
-            $user_id = $this->params->data->user_id;
+            $user_name = $this->params->user->user_name;
+            $user_password = $this->params->user->user_password;
 
-            $valid = true;
-            if ((empty($user_id))) {
-                $valid = false;
-            }
-
-            if($valid)
+            if ( (!empty($user_name) && !empty($user_password)) )
             {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "Select * from users Where user_id = ? ";
+                $sql = "SELECT user_name, user_id FROM users WHERE user_name = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_id));
-                $data = $q->fetch(PDO::FETCH_ASSOC);
-                Database::disconnect();
+                $q->execute(array($user_name, $user_password));
+                $response= $q->fetch();
 
-                $tab = json_encode($data);
-                var_dump($tab);
+                if ($response == false ) {
+                    $data["success"] = false;
+                }
+                else {
+                    $data["success"] = true;
+                }
+                Database::disconnect();
+                echo json_encode($data);
             }
         }
     }
