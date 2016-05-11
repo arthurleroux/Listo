@@ -120,7 +120,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             });
 
-        // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/lists');
+        //if(window.currentUserId = 1) {
+            $urlRouterProvider.otherwise('/app/lists');
+        /*}
+        else{
+            $urlRouterProvider.otherwise('/app/login');
+        }*/
+
     });
 

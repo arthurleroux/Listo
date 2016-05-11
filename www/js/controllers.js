@@ -3,9 +3,7 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http) {
 
-        $scope.currentUser = {
-            'id' : 1
-        };
+
 
         $scope.listData = {};
         $scope.productData = {};
@@ -138,6 +136,7 @@ angular.module('starter.controllers', [])
 
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window) {
+
 
         $scope.showNewList = function() {
             $state.go("app.new_list")
