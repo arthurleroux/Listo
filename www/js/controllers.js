@@ -139,25 +139,6 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window) {
 
-        $http.post($scope.apiLink+"List/ListController.php",
-            {
-                type : 'list',
-                action : 'findAll',
-                user: {
-                    user_id : 1
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.lists = response;
-
-                }, function(error){
-                    console.warn('ERROR FIND ALL LISTS');
-                    console.log(error);
-                }
-            );
-
         $scope.showNewList = function() {
             $state.go("app.new_list")
         };
