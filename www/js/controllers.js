@@ -1,10 +1,10 @@
 angular.module('starter.controllers', [])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $http) {
+    .controller('AppCtrl', function ($scope, $state, $http) {
 
         $scope.currentUser = {
-            id: 1
+            'id' : 1
         };
 
         $scope.listData = {};
@@ -21,8 +21,6 @@ angular.module('starter.controllers', [])
 
         $scope.error = "";
 
-
-        // Récupère toutes les listes de l'utilisateur
         $http.post($scope.apiLink+"List/ListController.php",
             {
                 type : 'list',
@@ -41,8 +39,6 @@ angular.module('starter.controllers', [])
                     console.log(error);
                 }
             );
-        // / Récupère toutes les listes de l'utilisateur
-
     })
     /**************************************** FIN AppCtrl ****************************************/
 
@@ -140,8 +136,27 @@ angular.module('starter.controllers', [])
     })
     /**************************************** FIN RegisterCtrl ****************************************/
 
-    /**************************************** DEBUT ListesCtrl ****************************************/
+    /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window) {
+
+        $http.post($scope.apiLink+"List/ListController.php",
+            {
+                type : 'list',
+                action : 'findAll',
+                user: {
+                    user_id : 1
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+                    $scope.lists = response;
+
+                }, function(error){
+                    console.warn('ERROR FIND ALL LISTS');
+                    console.log(error);
+                }
+            );
 
         $scope.showNewList = function() {
             $state.go("app.new_list")
@@ -194,7 +209,7 @@ angular.module('starter.controllers', [])
                     console.log($scope.list);
 
                 }, function(error){
-                    console.warn('ERROR FIND LIST');
+                    console.warn('ERROR FIND LIST TO EDIT');
                     console.log(error);
                 }
             );
@@ -310,6 +325,7 @@ angular.module('starter.controllers', [])
                 .then(function (res){
                         var response = res.data;
                         $state.go($state.current, {}, {reload: true});
+                        //$window.location.reload(true);
                         console.log(response);
 
 

@@ -27,6 +27,9 @@ class UserController
     private function initialize()
     {
         if($this->params->type == "user"){
+            if ($this->params->action == "login"){
+                $this->login();
+            }
             if ($this->params->action == "add"){
                 $this->addUser();
             }
@@ -77,7 +80,7 @@ class UserController
         }
     }
 
-    private function findUser()
+    private function login()
     {
         if (!empty($this->params->user)) {
 
@@ -91,7 +94,7 @@ class UserController
                 $sql = "SELECT user_name, user_id FROM users WHERE user_name = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_name, md5($user_password)));
-                $response= $q->fetch();
+                $response = $q->fetch();
 
                 if ($response == false ) {
                     $data["success"] = false;
