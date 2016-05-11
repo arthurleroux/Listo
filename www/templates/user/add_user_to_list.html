@@ -1,9 +1,12 @@
 <ion-view view-title="Ajouter une personne">
     <ion-content>
-        <form ng-submit="">
+        <form ng-submit="addUserToList()">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input type="text" placeholder="Pseudo de la personne à ajouter" ng-model="loginData.username">
+                    <input type="text" placeholder="Pseudo de la personne à ajouter" ng-model="userData.user_name">
                 </label>
                 <button class="button button-block button-positive" type="submit">Ajouter</button>
             </div>

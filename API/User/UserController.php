@@ -33,6 +33,9 @@ class UserController
             if ($this->params->action == "add"){
                 $this->addUser();
             }
+            if ($this->params->action == "addUserToList"){
+                $this->addUserToList();
+            }
             if ($this->params->action == "find"){
                 $this->findUser();
             }

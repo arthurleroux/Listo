@@ -74,7 +74,7 @@ class ListController
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
-                echo json_encode($data);
+                echo json_encode();
             }
         }
     }
@@ -118,14 +118,8 @@ class ListController
                 AND ul.user_id = ".$userId;
         $q = $pdo->prepare($sql);
         $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-//        var_dump($data);die;
+        $data = $q->fetchAll();
         Database::disconnect();
-        //RESPONSE
-        header('Access-Control-Allow-Origin: *');
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Content-type: application/json');
         echo json_encode($data);
     }
 

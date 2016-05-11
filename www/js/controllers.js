@@ -3,7 +3,11 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http) {
 
+/********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
 
+        $scope.currentUser  = {
+            'id' : 1
+        };
 
         $scope.listData = {};
         $scope.productData = {};
@@ -263,9 +267,10 @@ angular.module('starter.controllers', [])
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
 
         // Ajouter nouveau collaborateur à la liste
-        $scope.addCollaborator = function() {
-            $state.go("app.add_user_to_list")
-        }
+        $scope.showAddUserToList = function(listId) {
+            $state.go("app.add_user_to_list", {listId : listId});
+        };
+
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php",
             {
@@ -368,7 +373,35 @@ angular.module('starter.controllers', [])
     /**************************************** FIN NewProductCtrl ****************************************/
 
     /**************************************** DEBUT AddUserToListCtrl ****************************************/
-    .controller('AddUserToListCtrl', function ($scope) {
+    .controller('AddUserToListCtrl', function ($scope, $stateParams) {
+        $scope.addUserToList = function() {
+            if ($scope.userData.user_name) {
+                $http.post($scope.apiLink+"User/UserController.php",
+                    {
+                        type : 'user',
+                        action : 'addUserToList',
+                        list: {
+                            list_id : $stateParams['listId']
+                        },
+                        user: {
+                            user_name : $scope.userData.user_name
+                        }
+                    })
+                    .then(function (res){
+                            //var response = res.data;
+                            //$state.go("app.single", {listId : response});
+                            console.log(response);
+                            $scope.userData.user_name = "";
 
+                        }, function(error){
+                            console.warn('ERROR ADD USER TO LIST');
+                            console.log(error);
+                        }
+                    );
+            }
+            else {
+                $scope.error = "Erreur : le nom du beul est vide"
+            }
+        };
     });
     /**************************************** FIN AddUserToListCtrl ****************************************/
