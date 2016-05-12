@@ -80,7 +80,7 @@ angular.module('starter.controllers', [])
                     );
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas été remplis";
+                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
             }
         }
     })
@@ -128,7 +128,7 @@ angular.module('starter.controllers', [])
                 }
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas été remplis";
+                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
             }
         };
     })
@@ -139,10 +139,9 @@ angular.module('starter.controllers', [])
 
 
         $scope.showNewList = function(userId) {
-
             $ionicPopup.show({
                 template: '<input type="text" ng-model="listData.list_name">',
-                title: 'Veuillez ajouter le nom de la liste',
+                title: 'Nom de la liste à créer',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler' },
@@ -270,10 +269,49 @@ angular.module('starter.controllers', [])
 
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup) {
-
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
-            $state.go("app.add_user_to_list", {listId : listId});
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="userData.user_name">',
+                title: 'Nom de la personne à ajouter',
+                scope: $scope,
+                buttons: [
+                    { text: 'Annuler'},
+                    {
+                        text: '<b>Ajouter</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.userData.user_name) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } else {
+                                $http.post($scope.apiLink+"User/UserController.php",
+                                    {
+                                        type : 'user',
+                                        action : 'addUserToList',
+                                        list: {
+                                            list_id : $stateParams['listId']
+                                        },
+                                        user: {
+                                            user_name : $scope.userData.user_name
+                                        }
+                                    })
+                                    .then(function (res){
+                                        response = res.data;
+                                        //$state.go("app.single", {listId : response});
+                                        $scope.userData.user_name = "";
+                                        console.log(response);
+
+                                        }, function(error){
+                                            console.warn('ERROR ADD USER TO LIST');
+                                            console.log(error);
+                                        }
+                                    );
+                            }
+                        }
+                    }
+                ]
+            });
         };
 
         // Récupère tous les produits de la liste
@@ -301,7 +339,7 @@ angular.module('starter.controllers', [])
         $scope.showNewProduct = function(listId) {
             $ionicPopup.show({
                 template: '<input type="text" ng-model="productData.product_name">',
-                title: 'Ajouter un article à cette liste',
+                title: 'Nom du produit à ajouter',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler',
@@ -377,11 +415,6 @@ angular.module('starter.controllers', [])
                 $scope.list = list;
         });
 
-        //$scope.products =  [
-        //    {name: 'JackDa'},
-        //    {name: 'Weed'},
-        //    {name: 'Ricard'}
-        //];
     })
     /**************************************** FIN ListCtrl ****************************************/
 

@@ -76,18 +76,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-/**************************************** USER ****************************************/
-
-            .state('app.add_user_to_list', {
-                url: '/add_user_to_list/:listId',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/user/add_user_to_list.html',
-                        controller: "AddUserToListCtrl"
-                    }
-                }
-            });
-
         //if(window.currentUserId = 1) {
             $urlRouterProvider.otherwise('/app/lists');
         /*}

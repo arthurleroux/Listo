@@ -111,6 +111,35 @@ class UserController
         }
     }
 
+    private function addUserToList()
+    {
+        if (!empty($this->params->user)) {
+
+            $user_name = $this->params->user->user_name;
+            $list_id = $this->params->list->list_id;
+
+            if (!empty($user_name) && !empty($list_id))
+            {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $sql = "SELECT user_id FROM users WHERE user_name = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_name));
+                $response = $q->fetch(PDO::FETCH_ASSOC);
+                $user_id = $response['user_id'];
+
+                if(!empty($user_id)) {
+                    $sql = "INSERT INTO user_list (user_id, list_id) values(?, ?)";
+                    $q = $pdo->prepare($sql);
+                    $q->execute(array($user_id, $list_id));
+                }
+
+                Database::disconnect();
+            }
+        }
+    }
+
     private function findAllUser()
     {
 

@@ -9808,5 +9808,5 @@ a.button {
   padding: 5px 10px;
   background-color: #ef473a; }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   padding-left: 10px; }
