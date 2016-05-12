@@ -5,9 +5,7 @@ angular.module('starter.controllers', [])
 
 /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
-        $scope.currentUser  = {
-            'id' : 1
-        };
+        $scope.currentUser  = {};
 
         $scope.listData = {};
         $scope.productData = {};
@@ -63,15 +61,16 @@ angular.module('starter.controllers', [])
 
                     .then(function (res){
                             var response = res.data;
+
                             if(response.success == true) {
                                 $state.go('app.lists');
                                 $scope.userData = {};
+                                $scope.currentUser = response.user;
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
                                 $scope.userData.user_password = "";
                             }
-
                         },
                         function(error){
                             console.warn('ERROR REGISTER');
@@ -87,7 +86,7 @@ angular.module('starter.controllers', [])
     /**************************************** FIN LoginCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
-    .controller('RegisterCtrl', function ($scope, $http, $state) {
+    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicPopup) {
         $scope.register = function() {
             if ($scope.userData.user_password
                 && $scope.userData.user_password_confirmation
@@ -98,7 +97,7 @@ angular.module('starter.controllers', [])
                     $http.post($scope.apiLink+"User/UserController.php",
                         {
                             type : 'user',
-                            action : 'add',
+                            action : 'register',
                             user: {
                                 user_name : $scope.userData.user_name,
                                 user_password : $scope.userData.user_password
@@ -136,8 +135,7 @@ angular.module('starter.controllers', [])
 
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup) {
-
-
+        console.log($scope.currentUser.user_id);
         $scope.showNewList = function(userId) {
             $ionicPopup.show({
                 template: '<input type="text" ng-model="listData.list_name">',
@@ -268,7 +266,28 @@ angular.module('starter.controllers', [])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $timeout) {
+        // Récupère tous les produits de la liste
+        $http.post($scope.apiLink+"Product/ProductController.php",
+            {
+                type : 'product',
+                action : 'findAll',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+                    $scope.products = response;
+                    console.log($scope.products);
+
+                }, function(error){
+                    console.warn('ERROR FIND ALL LIST');
+                    console.log(error);
+                }
+            );
+
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
             $ionicPopup.show({
@@ -298,9 +317,15 @@ angular.module('starter.controllers', [])
                                     })
                                     .then(function (res){
                                         var response = res.data;
-                                        //$state.go("app.single", {listId : response});
                                         $scope.userData.user_name = "";
                                         console.log(response);
+                                        //var alertPopup = $ionicPopup.alert({
+                                        //    title: 'Beul',
+                                        //    template: response
+                                        //});
+                                        //$timeout(function() {
+                                        //    alertPopup.close(); //close the popup after 3 seconds for some reason
+                                        //}, 3000);
 
                                         }, function(error){
                                             console.warn('ERROR ADD USER TO LIST');
@@ -314,28 +339,7 @@ angular.module('starter.controllers', [])
             });
         };
 
-        // Récupère tous les produits de la liste
-        $http.post($scope.apiLink+"Product/ProductController.php",
-            {
-                type : 'product',
-                action : 'findAll',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.products = response;
-                    console.log($scope.products);
-
-                }, function(error){
-                    console.warn('ERROR FIND ALL LIST');
-                    console.log(error);
-                }
-            );
-        // / Récupère toutes les listes de l'utilisateur
-
+        //  Récupère toutes les listes de l'utilisateur
         $scope.showNewProduct = function(listId) {
             $ionicPopup.show({
                 template: '<input type="text" ng-model="productData.product_name">',
@@ -417,37 +421,3 @@ angular.module('starter.controllers', [])
 
     })
     /**************************************** FIN ListCtrl ****************************************/
-
-    /**************************************** DEBUT AddUserToListCtrl ****************************************/
-    .controller('AddUserToListCtrl', function ($scope, $stateParams) {
-        $scope.addUserToList = function() {
-            if ($scope.userData.user_name) {
-                $http.post($scope.apiLink+"User/UserController.php",
-                    {
-                        type : 'user',
-                        action : 'addUserToList',
-                        list: {
-                            list_id : $stateParams['listId']
-                        },
-                        user: {
-                            user_name : $scope.userData.user_name
-                        }
-                    })
-                    .then(function (res){
-                            //var response = res.data;
-                            //$state.go("app.single", {listId : response});
-                            console.log(response);
-                            $scope.userData.user_name = "";
-
-                        }, function(error){
-                            console.warn('ERROR ADD USER TO LIST');
-                            console.log(error);
-                        }
-                    );
-            }
-            else {
-                $scope.error = "Erreur : le nom du beul est vide"
-            }
-        };
-    });
-    /**************************************** FIN AddUserToListCtrl ****************************************/

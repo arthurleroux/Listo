@@ -30,8 +30,8 @@ class UserController
             if ($this->params->action == "login"){
                 $this->login();
             }
-            if ($this->params->action == "add"){
-                $this->addUser();
+            if ($this->params->action == "register"){
+                $this->register();
             }
             if ($this->params->action == "addUserToList"){
                 $this->addUserToList();
@@ -50,7 +50,7 @@ class UserController
 
     /*************************** CRUD **********************************/
 
-    private function addUser()
+    private function register()
     {
 
         if (!empty($this->params->user)) {

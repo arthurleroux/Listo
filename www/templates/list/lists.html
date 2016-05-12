@@ -1,11 +1,12 @@
 <ion-view view-title="Mes Listes" cache-view="false">
     <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-ios-plus-outline" menu-toggle="right" ng-click="showNewList(currentUser.id)">
+        <button class="button button-icon button-clear ion-ios-plus-outline" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
         </button>
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
             <div class="list list-inset">
+                {{ currentUser.user_id }}
                 <ion-item ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
                     {{list.list_name}}
                     <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)">
