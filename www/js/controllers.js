@@ -5,7 +5,9 @@ angular.module('starter.controllers', [])
 
         /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
-        $scope.currentUser  = {};
+        $scope.currentUser  = {
+            'user_id' : 1
+        };
 
         $scope.listData = {};
         $scope.productData = {};
@@ -66,8 +68,8 @@ angular.module('starter.controllers', [])
                             if(response.success == true) {
                                 $state.go('app.lists');
                                 $scope.userData = {};
-                                $scope.currentUser = response.user;
-                                console.log($scope.currentUser);
+                                //$scope.currentUser = response.user;
+                                //console.log($scope.currentUser);
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
@@ -137,7 +139,6 @@ angular.module('starter.controllers', [])
 
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup) {
-
 
         $scope.showNewList = function(userId) {
             $ionicPopup.show({
