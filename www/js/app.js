@@ -76,18 +76,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-/**************************************** PRODUCT ****************************************/
-
-            .state('app.new_product', {
-                url: '/new_product/:listId',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/product/new_product.html',
-                        controller: "NewProductCtrl"
-                    }
-                }
-            })
-
 /**************************************** USER ****************************************/
 
             .state('app.add_user_to_list', {

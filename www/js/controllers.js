@@ -4,7 +4,7 @@ angular.module('starter.controllers', [])
     .controller('AppCtrl', function ($scope, $state, $http) {
 
 /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
-
+        $scope.apiLink = 'http://arthurleroux.fr/API/';
         $scope.currentUser  = {
             'id' : 1
         };
@@ -16,11 +16,7 @@ angular.module('starter.controllers', [])
         // Nécessaire pour modifier le nom d'une liste
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
-
-        $scope.apiLink = 'http://arthurleroux.fr/API/';
-
         $scope.lists = {};
-
         $scope.error = "";
 
         $http.post($scope.apiLink+"List/ListController.php",
@@ -273,7 +269,7 @@ angular.module('starter.controllers', [])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup) {
 
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
@@ -303,7 +299,52 @@ angular.module('starter.controllers', [])
         // / Récupère toutes les listes de l'utilisateur
 
         $scope.showNewProduct = function(listId) {
-            $state.go("app.new_product", {listId : listId})
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="productData.product_name">',
+                title: 'Ajouter un article à cette liste',
+                scope: $scope,
+                buttons: [
+                    { text: 'Annuler',
+                        onTap:  function() {
+                            $state.go($state.current, {}, {reload: true})
+                        }
+                    },
+                    {
+                        text: '<b>Ajouter</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.productData.product_name) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } else {
+                                $http.post($scope.apiLink+"Product/ProductController.php",
+                                    {
+                                        type : 'product',
+                                        action : 'add',
+                                        product: {
+                                            product_name : $scope.productData.product_name
+                                        },
+                                        list: {
+                                            list_id : $stateParams['listId']
+                                        }
+                                    })
+
+                                    .then(function (res){
+                                            var response = res.data;
+                                            $state.go($state.current, {}, {reload: true});
+                                            console.log(response);
+                                            $scope.productData.product_name = "";
+
+                                        }, function(error){
+                                            console.warn('ERROR ADD PRODUCT');
+                                            console.log(error);
+                                        }
+                                    );
+                            }
+                        }
+                    }
+                ]
+            });
         };
 
         $scope.deleteProduct = function(productId) {
@@ -343,43 +384,6 @@ angular.module('starter.controllers', [])
         //];
     })
     /**************************************** FIN ListCtrl ****************************************/
-
-    /**************************************** DEBUT NewProductCtrl ****************************************/
-    .controller('NewProductCtrl', function ($scope, $stateParams, $http, $state) {
-
-        $scope.addProduct = function() {
-            if ($scope.productData.product_name) {
-            // Créer un nouveau produit dans la list listId
-                $http.post($scope.apiLink+"Product/ProductController.php",
-                    {
-                        type : 'product',
-                        action : 'add',
-                        product: {
-                            product_name : $scope.productData.product_name
-                        },
-                        list: {
-                            list_id : $stateParams['listId']
-                        }
-                    })
-
-                    .then(function (res){
-                            var response = res.data;
-                            $state.go("app.single", {listId : response});
-                            console.log(response);
-                            $scope.productData.product_name = "";
-
-                        }, function(error){
-                            console.warn('ERROR ADD PRODUCT');
-                            console.log(error);
-                        }
-                    );
-                }
-            else {
-                $scope.error = "Erreur : le nom du produit est vide"
-            }
-        };
-    })
-    /**************************************** FIN NewProductCtrl ****************************************/
 
     /**************************************** DEBUT AddUserToListCtrl ****************************************/
     .controller('AddUserToListCtrl', function ($scope, $stateParams) {
