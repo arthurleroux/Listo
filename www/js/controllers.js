@@ -3,7 +3,7 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http) {
 
-/********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
+        /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
         $scope.currentUser  = {};
 
@@ -41,7 +41,7 @@ angular.module('starter.controllers', [])
     /**************************************** DEBUT LoginCtrl ****************************************/
     .controller('LoginCtrl', function ($scope, $state, $http) {
         $scope.showRegister = function() {
-            $state.go("app.register")
+            $state.go("app.register");
             $scope.error = "";
         };
 
@@ -67,6 +67,7 @@ angular.module('starter.controllers', [])
                                 $state.go('app.lists');
                                 $scope.userData = {};
                                 $scope.currentUser = response.user;
+                                console.log($scope.currentUser);
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
@@ -154,25 +155,25 @@ angular.module('starter.controllers', [])
                                 e.preventDefault();
                             } else {
                                 $http.post($scope.apiLink+"List/ListController.php", {
-                                    type : 'list',
-                                    action : 'add',
-                                    list: {
-                                        list_name: $scope.listData.list_name
-                                    },
-                                    user: {
-                                        user_id : userId
-                                    }
-                                })
-                                .then(function (res) {
-                                        $state.go('app.lists');
-                                        $window.location.reload(true);
+                                        type : 'list',
+                                        action : 'add',
+                                        list: {
+                                            list_name: $scope.listData.list_name
+                                        },
+                                        user: {
+                                            user_id : userId
+                                        }
+                                    })
+                                    .then(function (res) {
+                                            $state.go('app.lists');
+                                            $window.location.reload(true);
 
-                                    },
-                                    function(error){
-                                        console.warn('ERROR NEW LIST');
-                                        console.log(error);
-                                    }
-                                );
+                                        },
+                                        function(error){
+                                            console.warn('ERROR NEW LIST');
+                                            console.log(error);
+                                        }
+                                    );
                             }
                         }
                     }
@@ -242,23 +243,23 @@ angular.module('starter.controllers', [])
             confirmPopup.then(function(res) {
                 if(res) {
                     $http.post($scope.apiLink+"List/ListController.php", {
-                        type : 'list',
-                        action : 'delete',
-                        list: {
-                            list_id : listId
-                        }
-                    })
+                            type : 'list',
+                            action : 'delete',
+                            list: {
+                                list_id : listId
+                            }
+                        })
 
-                    .then(function (res) {
-                        $state.go('app.lists');
-                        $window.location.reload(true);
+                        .then(function (res) {
+                                $state.go('app.lists');
+                                $window.location.reload(true);
 
-                        },
-                        function(error){
-                            console.warn('ERROR DELETE LIST');
-                            console.log(error);
-                        }
-                    );
+                            },
+                            function(error){
+                                console.warn('ERROR DELETE LIST');
+                                console.log(error);
+                            }
+                        );
                 } else {
                     $state.go($state.current, {}, {reload: true});
                 }
@@ -318,16 +319,16 @@ angular.module('starter.controllers', [])
                                         }
                                     })
                                     .then(function (res){
-                                        var response = res.data;
-                                        $scope.userData.user_name = "";
-                                        console.log(response);
-                                        //var alertPopup = $ionicPopup.alert({
-                                        //    title: 'Beul',
-                                        //    template: response
-                                        //});
-                                        //$timeout(function() {
-                                        //    alertPopup.close(); //close the popup after 3 seconds for some reason
-                                        //}, 3000);
+                                            var response = res.data;
+                                            $scope.userData.user_name = "";
+                                            console.log(response);
+                                            //var alertPopup = $ionicPopup.alert({
+                                            //    title: 'Beul',
+                                            //    template: response
+                                            //});
+                                            //$timeout(function() {
+                                            //    alertPopup.close(); //close the popup after 3 seconds for some reason
+                                            //}, 3000);
 
                                         }, function(error){
                                             console.warn('ERROR ADD USER TO LIST');
@@ -413,7 +414,7 @@ angular.module('starter.controllers', [])
                         console.log(error);
                     }
                 );
-        }
+        };
 
         angular.forEach($scope.lists, function(list)
         {
@@ -421,5 +422,5 @@ angular.module('starter.controllers', [])
                 $scope.list = list;
         });
 
-    })
-    /**************************************** FIN ListCtrl ****************************************/
+    });
+/**************************************** FIN ListCtrl ****************************************/
