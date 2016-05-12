@@ -186,25 +186,13 @@ angular.module('starter.controllers', [])
         };
 
         $scope.showEditList = function(listId) {
-            $http.post($scope.apiLink+"List/ListController.php",
-                {
-                    type : 'list',
-                    action : 'find',
-                    list: {
-                        list_id :listId
-                    }
-                })
 
-                .then(function (res){
-                        var response = res.data;
-                        $scope.list = response;
-                        console.log($scope.list);
+            angular.forEach($scope.lists, function(list)
+            {
+                if(list.list_id == listId)
+                    $scope.list = list;
+            });
 
-                    }, function(error){
-                        console.warn('ERROR FIND LIST TO EDIT');
-                        console.log(error);
-                    }
-                );
             $ionicPopup.show({
                 template: '<input type="text" ng-model="list.list_name">',
                 title: 'Modifier le nom de la liste',
