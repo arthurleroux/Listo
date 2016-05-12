@@ -130,12 +130,27 @@ class UserController
                 $user_id = $response['user_id'];
 
                 if(!empty($user_id)) {
-                    $sql = "INSERT INTO user_list (user_id, list_id) values(?, ?)";
+
+                    $sql = "SELECT user_list_id FROM user_list WHERE user_id = ? AND list_id = ?";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($user_id, $list_id));
-                }
+                    $exist = $q->fetch(PDO::FETCH_ASSOC);
+                    $list = $exist['user_list_id'];
 
+                    if ($list == false) {
+                        $sql = "INSERT INTO user_list (user_id, list_id) values(?, ?)";
+                        $q = $pdo->prepare($sql);
+                        $q->execute(array($user_id, $list_id));
+                    }
+                    else {
+                        $message = "Utilisateur deja ajoute";
+                    }
+                }
+                else {
+                    $message = "Aucun utilisateur trouve";
+                }
                 Database::disconnect();
+                echo json_encode($message);
             }
         }
     }

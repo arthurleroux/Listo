@@ -297,7 +297,7 @@ angular.module('starter.controllers', [])
                                         }
                                     })
                                     .then(function (res){
-                                        response = res.data;
+                                        var response = res.data;
                                         //$state.go("app.single", {listId : response});
                                         $scope.userData.user_name = "";
                                         console.log(response);
