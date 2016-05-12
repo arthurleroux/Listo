@@ -134,10 +134,9 @@ class UserController
                     $sql = "SELECT user_list_id FROM user_list WHERE user_id = ? AND list_id = ?";
                     $q = $pdo->prepare($sql);
                     $q->execute(array($user_id, $list_id));
-                    $exist = $q->fetch(PDO::FETCH_ASSOC);
-                    $list = $exist['user_list_id'];
+                    $exist = $q->fetch();
 
-                    if ($list == false) {
+                    if ($exist == false) {
                         $sql = "INSERT INTO user_list (user_id, list_id) values(?, ?)";
                         $q = $pdo->prepare($sql);
                         $q->execute(array($user_id, $list_id));
