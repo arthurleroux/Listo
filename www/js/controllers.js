@@ -42,6 +42,7 @@ angular.module('starter.controllers', [])
     .controller('LoginCtrl', function ($scope, $state, $http) {
         $scope.showRegister = function() {
             $state.go("app.register")
+            $scope.error = "";
         };
 
         $scope.login = function() {
@@ -135,7 +136,8 @@ angular.module('starter.controllers', [])
 
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup) {
-        console.log($scope.currentUser.user_id);
+
+
         $scope.showNewList = function(userId) {
             $ionicPopup.show({
                 template: '<input type="text" ng-model="listData.list_name">',
