@@ -139,129 +139,150 @@ angular.module('starter.controllers', [])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup) {
 
 
-        $scope.showNewList = function() {
-            $state.go("app.new_list")
+        $scope.showNewList = function(userId) {
+
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="listData.list_name">',
+                title: 'Veuillez ajouter le nom de la liste',
+                scope: $scope,
+                buttons: [
+                    { text: 'Annuler' },
+                    {
+                        text: '<b>Ajouter</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.listData.list_name) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } else {
+                                $http.post($scope.apiLink+"List/ListController.php", {
+                                    type : 'list',
+                                    action : 'add',
+                                    list: {
+                                        list_name: $scope.listData.list_name
+                                    },
+                                    user: {
+                                        user_id : userId
+                                    }
+                                })
+                                .then(function (res) {
+                                        $state.go('app.lists');
+                                        $window.location.reload(true);
+
+                                    },
+                                    function(error){
+                                        console.warn('ERROR NEW LIST');
+                                        console.log(error);
+                                    }
+                                );
+                            }
+                        }
+                    }
+                ]
+            });
         };
 
         $scope.showEditList = function(listId) {
-            $state.go("app.edit_list", {listId : listId});
-        };
-
-        $scope.deleteList = function(listId) {
-            console.log("DELETE LIST" + listId);
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'delete',
-                    list: {
-                        list_id : listId
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $state.go('app.lists');
-                        $window.location.reload(true);
-                        console.log(response);
-
-
-                    }, function(error){
-                        console.warn('ERROR DELETE LIST');
-                        console.log(error);
-                    }
-                );
-        }
-    })
-    /**************************************** FIN ListsCtrl ****************************************/
-
-    /**************************************** DEBUT EditListCtrl ****************************************/
-    .controller('EditListCtrl', function ($scope, $stateParams, $http, $state, $window) {
-        $http.post($scope.apiLink+"List/ListController.php",
-            {
-                type : 'list',
-                action : 'find',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.list = response;
-                    console.log($scope.list);
-
-                }, function(error){
-                    console.warn('ERROR FIND LIST TO EDIT');
-                    console.log(error);
-                }
-            );
-
-        $scope.editList = function(listId) {
             $http.post($scope.apiLink+"List/ListController.php",
                 {
                     type : 'list',
-                    action : 'update',
+                    action : 'find',
                     list: {
-                        list_id : listId,
-                        list_name: $scope.list.list_name
+                        list_id :listId
                     }
                 })
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go("app.lists");
-                        $window.location.reload(true);
-                        console.log(response);
+                        $scope.list = response;
+                        console.log($scope.list);
 
                     }, function(error){
-                        console.warn('ERROR UPDATE LIST');
+                        console.warn('ERROR FIND LIST TO EDIT');
                         console.log(error);
                     }
                 );
-        }
-    })
-    /**************************************** FIN EditListCtrl ****************************************/
-
-    /**************************************** DEBUT NewListCtrl ****************************************/
-    .controller('NewListCtrl', function ($scope, $state, $http, $window) {
-
-        $scope.createList = function(userId) {
-
-            if ($scope.listData.list_name) {
-                $scope.error = "";
-                $http.post($scope.apiLink+"List/ListController.php",
+            $ionicPopup.show({
+                template: '<input type="text" ng-model="list.list_name">',
+                title: 'Modifier le nom de la liste',
+                scope: $scope,
+                buttons: [
+                    { text: 'Annuler',
+                        onTap:  function() {
+                            $state.go($state.current, {}, {reload: true})
+                        }
+                    },
                     {
+                        text: '<b>Modifier</b>',
+                        type: 'button-positive',
+                        onTap: function(e) {
+                            if (!$scope.list.list_name) {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
+                            } else {
+                                $http.post($scope.apiLink+"List/ListController.php",
+                                    {
+                                        type : 'list',
+                                        action : 'update',
+                                        list: {
+                                            list_id : listId,
+                                            list_name: $scope.list.list_name
+                                        }
+                                    })
+
+                                    .then(function (res){
+                                            var response = res.data;
+                                            $state.go("app.lists");
+                                            $window.location.reload(true);
+                                            console.log(response);
+
+                                        }, function(error){
+                                            console.warn('ERROR UPDATE LIST');
+                                            console.log(error);
+                                        }
+                                    );
+                            }
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.deleteList = function(listId) {
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer cette liste ?',
+                template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés"
+            });
+            confirmPopup.then(function(res) {
+                if(res) {
+                    $http.post($scope.apiLink+"List/ListController.php", {
                         type : 'list',
-                        action : 'add',
+                        action : 'delete',
                         list: {
-                            list_name: $scope.listData.list_name
-                        },
-                        user: {
-                            user_id : userId
+                            list_id : listId
                         }
                     })
 
-                    .then(function (res){
-                            var response = res.data;
-                            $state.go('app.lists');
-                            $window.location.reload(true);
-                            console.log(response);
+                    .then(function (res) {
+                        $state.go('app.lists');
+                        $window.location.reload(true);
 
-                        }, function(error){
-                            console.warn('ERROR NEW LIST');
+                        },
+                        function(error){
+                            console.warn('ERROR DELETE LIST');
                             console.log(error);
                         }
                     );
-            }
-            else {
-                $scope.error = "Erreur : le nom de la liste est vide"
-            }
+                } else {
+                    $state.go($state.current, {}, {reload: true});
+                }
+            });
         }
-
     })
-    /**************************************** FIN NewListCtrl ****************************************/
+    /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $window) {

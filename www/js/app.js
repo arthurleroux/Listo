@@ -66,26 +66,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-            .state('app.new_list', {
-                url: '/new_list',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/list/new_list.html',
-                        controller: 'NewListCtrl'
-                    }
-                }
-            })
-
-            .state('app.edit_list', {
-                url: '/edit_list/:listId',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/list/edit_list.html',
-                        controller: 'EditListCtrl'
-                    }
-                }
-            })
-
             .state('app.single', {
                 url: '/lists/:listId',
                 views: {
