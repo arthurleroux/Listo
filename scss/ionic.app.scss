@@ -60,3 +60,14 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
+.item-options {
+  .button:nth-child(1) {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+  .button:nth-child(2) {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+  }
+}
+
