@@ -16,14 +16,11 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.lists = {};
         $scope.error = "";
 
-        $scope.currentUser = $localStorage.currentUser;
-
-
         $http.post($scope.apiLink+"List/ListController.php", {
             type : 'list',
             action : 'findAll',
             user: {
-                user_id : $scope.currentUser.user_id
+                user_id : $localStorage.currentUser.user_id
             }
         })
 
