@@ -1,13 +1,10 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage) {
 
         /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
-        $scope.currentUser  = {
-            'user_id' : 1
-        };
 
         $scope.listData = {};
         $scope.productData = {};
@@ -19,30 +16,32 @@ angular.module('starter.controllers', [])
         $scope.lists = {};
         $scope.error = "";
 
+        $scope.currentUser = $localStorage.currentUser;
 
-        $http.post($scope.apiLink+"List/ListController.php",
-            {
-                type : 'list',
-                action : 'findAll',
-                user: {
-                    user_id : 1
-                }
-            })
 
-            .then(function (res){
-                    var response = res.data;
-                    $scope.lists = response;
+        $http.post($scope.apiLink+"List/ListController.php", {
+            type : 'list',
+            action : 'findAll',
+            user: {
+                user_id : $scope.currentUser.user_id
+            }
+        })
 
-                }, function(error){
-                    console.warn('ERROR FIND ALL LIST');
-                    console.log(error);
-                }
-            );
+        .then(function (res){
+            var response = res.data;
+            $scope.lists = response;
+
+        },
+            function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
     })
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
@@ -73,9 +72,10 @@ angular.module('starter.controllers', [])
 
                             if(response.success == true) {
                                 $state.go('app.lists');
+                                $window.location.reload(true);
                                 $scope.userData = {};
-                                //$scope.currentUser = response.user;
-                                //console.log($scope.currentUser);
+                                $localStorage.currentUser = response.user;
+                                console.log($localStorage.currentUser);
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
@@ -144,7 +144,9 @@ angular.module('starter.controllers', [])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
+
+        $scope.currentUser = $localStorage.currentUser;
 
         $scope.showNewList = function(userId) {
             $ionicPopup.show({
