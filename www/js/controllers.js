@@ -51,6 +51,11 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT LoginCtrl ****************************************/
     .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
+        if ($localStorage.currentUser !== 0) {
+            $state.go('app.lists');
+            $window.location.reload(true);
+        }
+
         $ionicHistory.nextViewOptions({
             disableBack: true
         });
