@@ -355,16 +355,20 @@ angular.module('starter.controllers', ['ngStorage'])
                                     })
                                     .then(function (res){
                                             var response = res.data;
+                                            if (response.deja == true) {
+                                                $scope.message = "Cet utilisateur fait déjà parti de cette liste";
+                                            }
+                                            else if (response.inconnu == true) {
+                                                $scope.message = "Ce pseudo ne correspond à aucun utilisateur";
+                                            }
+                                            else {
+                                                $scope.message = "Utilisateur ajouté à cette liste avec succès !"
+                                            }
                                             $scope.userData.user_name = "";
                                             console.log(response);
-                                            //var alertPopup = $ionicPopup.alert({
-                                            //    title: 'Beul',
-                                            //    template: response
-                                            //});
-                                            //$timeout(function() {
-                                            //    alertPopup.close(); //close the popup after 3 seconds for some reason
-                                            //}, 3000);
-
+                                            $ionicPopup.alert({
+                                                title: $scope.message
+                                            });
                                         }, function(error){
                                             console.warn('ERROR ADD USER TO LIST');
                                             console.log(error);
