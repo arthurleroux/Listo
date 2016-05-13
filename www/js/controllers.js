@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http, $localStorage) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
 
         /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
@@ -16,24 +16,36 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.lists = {};
         $scope.error = "";
 
-        $http.post($scope.apiLink+"List/ListController.php", {
-            type : 'list',
-            action : 'findAll',
-            user: {
-                user_id : $localStorage.currentUser.user_id
-            }
-        })
+        if ($localStorage.currentUser !== 0) {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'findAll',
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
 
-        .then(function (res){
-            var response = res.data;
-            $scope.lists = response;
+                .then(function (res){
+                        var response = res.data;
+                        $scope.lists = response;
 
-        },
-            function(error){
-                console.warn('ERROR FIND ALL LIST');
-                console.log(error);
-            }
-        );
+                    },
+                    function(error){
+                        console.warn('ERROR FIND ALL LIST');
+                        console.log(error);
+                    }
+                );
+        }
+
+        $scope.logout = function () {
+            $localStorage.currentUser = 0;
+            $state.go('app.login');
+            $window.location.reload(true);
+        };
+
+        //Rend la variable accessible depuis les vues
+        $scope.currentUser = $localStorage.currentUser;
+
     })
     /**************************************** FIN AppCtrl ****************************************/
 
@@ -142,8 +154,6 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
-
-        $scope.currentUser = $localStorage.currentUser;
 
         $scope.showNewList = function(userId) {
             $ionicPopup.show({

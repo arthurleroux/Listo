@@ -18,8 +18,11 @@
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item menu-close href="#/app/login">
+        <ion-item ng-show="currentUser == 0" menu-close href="#/app/login">
           Connexion
+        </ion-item>
+        <ion-item ng-show="currentUser !== 0" menu-close ng-click="logout()">
+          Déconnexion
         </ion-item>
         <ion-item menu-close href="#/app/playlists">
           Mes listes

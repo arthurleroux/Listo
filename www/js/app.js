@@ -77,7 +77,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             })
 
         //if(window.currentUserId = 1) {
-            $urlRouterProvider.otherwise('/app/lists');
+            $urlRouterProvider.otherwise('/app/login');
         /*}
         else{
             $urlRouterProvider.otherwise('/app/login');
