@@ -110,7 +110,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN LoginCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
-    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory) {
+    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup) {
 
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -136,8 +136,20 @@ angular.module('starter.controllers', ['ngStorage'])
                         .then(function (res){
                                 var response = res.data;
                                 if(response.success == true) {
-                                    $state.go('app.login');
-                                    $scope.userData = {};
+                                    $ionicPopup.alert({
+                                        title: "Votre compte a bien été créé",
+                                        buttons: [
+                                            {
+                                                text: 'Ok',
+                                                type: 'button-positive',
+                                                onTap: function () {
+                                                    $state.go('app.login');
+                                                    $scope.userData = {};
+                                                }
+                                            }
+                                        ]
+                                    });
+
                                 }
                                 else {
                                     $scope.error = "Ce pseudo est déjà utilisé";
