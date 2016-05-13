@@ -110,7 +110,12 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN LoginCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
-    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicPopup) {
+    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory) {
+
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
         $scope.register = function() {
             if ($scope.userData.user_password
                 && $scope.userData.user_password_confirmation
