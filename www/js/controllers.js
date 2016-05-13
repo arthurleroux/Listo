@@ -41,10 +41,15 @@ angular.module('starter.controllers', [])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory) {
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
         $scope.showRegister = function() {
             $state.go("app.register");
             $scope.error = "";
+            $scope.userData = {};
         };
 
         $scope.login = function() {
