@@ -9810,3 +9810,8 @@ a.button {
 
 input[type="text"], input[type="password"] {
   padding-left: 10px; }
+
+.popup-container .popup {
+  border-radius: 3px; }
+  .popup-container .popup button {
+    border-radius: 3px; }

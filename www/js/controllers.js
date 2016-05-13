@@ -19,6 +19,7 @@ angular.module('starter.controllers', [])
         $scope.lists = {};
         $scope.error = "";
 
+
         $http.post($scope.apiLink+"List/ListController.php",
             {
                 type : 'list',

@@ -51,3 +51,12 @@ input[type="text"], input[type="password"] {
   padding-left: 10px;
 }
 
+.popup-container {
+  .popup {
+    border-radius: 3px;
+    button {
+      border-radius: 3px;
+    }
+  }
+}
+
