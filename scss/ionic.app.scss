@@ -47,12 +47,12 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   background-color: #ef473a;
 }
 
-input[type="text"], input[type="password"] {
-  padding-left: 10px;
-}
-
 .popup-container {
   .popup {
+    input[type="text"] {
+      border-radius: 3px;
+      padding-left: 10px;
+    }
     border-radius: 3px;
     button {
       border-radius: 3px;

@@ -9808,10 +9808,10 @@ a.button {
   padding: 5px 10px;
   background-color: #ef473a; }
 
-input[type="text"], input[type="password"] {
-  padding-left: 10px; }
-
 .popup-container .popup {
   border-radius: 3px; }
+  .popup-container .popup input[type="text"] {
+    border-radius: 3px;
+    padding-left: 10px; }
   .popup-container .popup button {
     border-radius: 3px; }
