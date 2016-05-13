@@ -244,31 +244,40 @@ angular.module('starter.controllers', [])
         $scope.deleteList = function(listId) {
             var confirmPopup = $ionicPopup.confirm({
                 title: 'Êtes vous sur de supprimer cette liste ?',
-                template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés"
-            });
-            confirmPopup.then(function(res) {
-                if(res) {
-                    $http.post($scope.apiLink+"List/ListController.php", {
-                            type : 'list',
-                            action : 'delete',
-                            list: {
-                                list_id : listId
-                            }
-                        })
+                template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
-                        .then(function (res) {
-                                $state.go('app.lists');
-                                $window.location.reload(true);
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"List/ListController.php", {
+                                type : 'list',
+                                action : 'delete',
+                                list: {
+                                    list_id : listId
+                                }
+                            })
 
-                            },
-                            function(error){
-                                console.warn('ERROR DELETE LIST');
-                                console.log(error);
-                            }
-                        );
-                } else {
-                    $state.go($state.current, {}, {reload: true});
-                }
+                            .then(function (res) {
+                                    $state.go('app.lists');
+                                    $window.location.reload(true);
+
+                                },
+                                function(error){
+                                    console.warn('ERROR DELETE LIST');
+                                    console.log(error);
+                                }
+                            );
+                        }
+                    }
+                ]
             });
         }
     })
@@ -399,28 +408,45 @@ angular.module('starter.controllers', [])
         };
 
         $scope.deleteProduct = function(productId) {
-            $http.post($scope.apiLink+"Product/ProductController.php",
-                {
-                    type : 'product',
-                    action : 'delete',
-                    product: {
-                        product_id : productId
+            var confirmPopup = $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer cet article ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"Product/ProductController.php", {
+                                type : 'product',
+                                action : 'delete',
+                                product: {
+                                    product_id : productId
+                                }
+                            })
+
+                            .then(function (res){
+                                    var response = res.data;
+                                    $state.go($state.current, {}, {reload: true});
+                                    //$window.location.reload(true);
+                                    console.log(response);
+
+
+                                }, function(error){
+                                    console.warn('ERROR DELETE PRODUCT');
+                                    console.log(error);
+                                }
+                            );
+                        }
                     }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $state.go($state.current, {}, {reload: true});
-                        //$window.location.reload(true);
-                        console.log(response);
-
-
-                    }, function(error){
-                        console.warn('ERROR DELETE PRODUCT');
-                        console.log(error);
-                    }
-                );
+                ]
+            });
         };
+
 
         angular.forEach($scope.lists, function(list)
         {
