@@ -6,9 +6,6 @@
     <ion-content>
         <ion-list>
             <div class="list list-inset">
-                <div class="text-center">
-                    <h2>Salut {{ currentUser.user_name }}</h2>
-                </div>
                 <ion-item ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
                     {{list.list_name}}
                     <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)">
@@ -18,6 +15,9 @@
                         <button class="button button-icon button-clear ion-android-delete"></button>
                     </ion-option-button>
                 </ion-item>
+                <div ng-show="listsEmpty == true" class="text-center">
+                    <h3>Créez une liste !</h3>
+                </div>
             </div>
         </ion-list>
         <script type="text/ng-template">

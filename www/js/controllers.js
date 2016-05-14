@@ -28,6 +28,12 @@ angular.module('starter.controllers', ['ngStorage'])
                 .then(function (res){
                         var response = res.data;
                         $scope.lists = response;
+                        if (Object.keys($scope.lists).length == 0) {
+                            $scope.listsEmpty = true;
+                        }
+                        else {
+                            $scope.listsEmpty = false;
+                        }
 
                     },
                     function(error){
@@ -330,7 +336,12 @@ angular.module('starter.controllers', ['ngStorage'])
             .then(function (res){
                     var response = res.data;
                     $scope.products = response;
-                    console.log($scope.products);
+                    if (Object.keys($scope.products).length == 0) {
+                        $scope.listEmpty = true;
+                    }
+                    else {
+                        $scope.listEmpty = false;
+                    }
 
                 }, function(error){
                     console.warn('ERROR FIND ALL LIST');
@@ -491,4 +502,4 @@ angular.module('starter.controllers', ['ngStorage'])
         });
 
     });
-/**************************************** FIN ListCtrl ****************************************/
+    /**************************************** FIN ListCtrl ****************************************/

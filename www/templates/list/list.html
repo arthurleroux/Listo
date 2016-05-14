@@ -5,7 +5,7 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <div class="list list-inset">
+            <div ng-show="listEmpty == false" class="list list-inset">
                 <div class="item item-divider">
                     Liste des produits
                 </div>
@@ -21,12 +21,15 @@
                     </ion-option-button>
                 </ion-item>
             </div>
-            <div class="list list-inset">
-                <button class="button button-block button-balanced" ng-click="showAddUserToList(list.list_id)">
-                    Ajouter un collaborateur
-                </button>
+            <div ng-show="listEmpty == true" class="text-center list list-inset">
+                <h3>Ajoutez un article !</h3>
             </div>
         </ion-list>
+        <div class="list list-inset">
+            <button class="button button-block button-balanced" ng-click="showAddUserToList(list.list_id)">
+                Ajouter un collaborateur
+            </button>
+        </div>
         <script type="text/ng-template">
             <input type="text" ng-model="productData.product_name">
         </script>
