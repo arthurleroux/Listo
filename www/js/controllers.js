@@ -280,7 +280,7 @@ angular.module('starter.controllers', ['ngStorage'])
         };
 
         $scope.deleteList = function(listId) {
-            var confirmPopup = $ionicPopup.confirm({
+            $ionicPopup.confirm({
                 title: 'Êtes vous sur de supprimer cette liste ?',
                 template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
@@ -322,7 +322,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $timeout) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup) {
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php",
             {
@@ -454,8 +454,30 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
 
+        $scope.updateProduct = function(productId, action) {
+            $http.post($scope.apiLink+"Product/ProductController.php", {
+                type : 'product',
+                action : 'update',
+                product: {
+                    product_id : productId,
+                    product_status: action
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+                    $state.go($state.current, {}, {reload: true});
+                    console.log(response);
+
+                }, function(error){
+                    console.warn('ERROR UPDATE PRODUCT');
+                    console.log(error);
+                }
+            );
+        };
+
         $scope.deleteProduct = function(productId) {
-            var confirmPopup = $ionicPopup.confirm({
+            $ionicPopup.confirm({
                 title: 'Êtes vous sur de supprimer cet article ?',
                 buttons: [
                     {

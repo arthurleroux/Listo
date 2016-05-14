@@ -9789,16 +9789,14 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.button-assertive .ion-android-delete {
-  color: #fff;
-  font-size: 20px; }
+.margin-top-10 {
+  margin-top: 10px; }
 
-.button-positive .ion-checkmark {
-  color: #fff;
-  font-size: 20px; }
+.margin-bottom-20 {
+  margin-bottom: 20px; }
 
-.button-positive .ion-android-create {
-  color: #fff;
+.button .ion-android-cart, .button .ion-android-create, .button .ion-bag, .button .ion-android-delete {
+  color: #fff !important;
   font-size: 20px; }
 
 .error {
@@ -9816,10 +9814,10 @@ a.button {
   .popup-container .popup button {
     border-radius: 3px; }
 
-.item-options .button:nth-child(1) {
+.item-options .button:first-child {
   border-top-left-radius: 2px;
   border-bottom-left-radius: 2px; }
 
-.item-options .button:nth-child(2) {
+.item-options .button:last-child {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px; }

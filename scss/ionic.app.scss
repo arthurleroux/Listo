@@ -21,23 +21,21 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-.button-assertive {
-  .ion-android-delete {
-    color: #fff;
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+.button {
+  .ion-android-cart, .ion-android-create, .ion-bag, .ion-android-delete {
+    color: #fff !important;
     font-size: 20px;
   }
 }
 
-.button-positive {
-  .ion-checkmark {
-    color: #fff;
-    font-size: 20px;
-  }
-  .ion-android-create {
-    color: #fff;
-    font-size: 20px;
-  }
-}
 
 .error {
   border-radius: 2px;
@@ -61,13 +59,14 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 
 .item-options {
-  .button:nth-child(1) {
+  .button:first-child {
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
   }
-  .button:nth-child(2) {
+  .button:last-child {
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
 }
+
 

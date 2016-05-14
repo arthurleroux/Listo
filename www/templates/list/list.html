@@ -5,14 +5,28 @@
     </ion-nav-buttons>
     <ion-content>
         <ion-list>
-            <div ng-show="listEmpty == false" class="list list-inset">
-                <div class="item item-divider">
+            <div class="list list-inset">
+                <div ng-show="listEmpty == false" class="item item-divider">
                     Liste des produits
                 </div>
                 <ion-item ng-repeat="product in products">
-                    {{ product.product_name }}
-                    <ion-option-button class="button-positive" ng-click="">
-                        <button class="button button-icon button-clear ion-checkmark" menu-toggle="right">
+                    <div class="row">
+                        <div class="col col-80">
+                            {{ product.product_name }}
+                        </div>
+                        <div ng-show="product.product_status == 'Pris en charge'" class="col text-right">
+                            <span class="ion-android-cart"></span>
+                        </div>
+                        <div ng-show="product.product_status == 'Achete'" class="col text-right">
+                            <span class="ion-bag"></span>
+                        </div>
+                    </div>
+                    <ion-option-button class="button-energized" ng-click="updateProduct(product.product_id, 'Pris en charge')">
+                        <button class="button button-icon button-clear ion-android-cart" menu-toggle="right">
+                        </button>
+                    </ion-option-button>
+                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')">
+                        <button class="button button-icon button-clear ion-bag" menu-toggle="right">
                         </button>
                     </ion-option-button>
                     <ion-option-button class="button-assertive" ng-click="deleteProduct(product.product_id)">
@@ -20,15 +34,15 @@
                         </button>
                     </ion-option-button>
                 </ion-item>
-            </div>
-            <div ng-show="listEmpty == true" class="text-center list list-inset">
-                <h3>Ajoutez un article !</h3>
+                <div ng-show="listEmpty == true" class="text-center margin-top-10 margin-bottom-20">
+                    <h3>Ajoutez un article !</h3>
+                </div>
+                <button class="button button-block button-balanced" ng-click="showAddUserToList(list.list_id)">
+                    Ajouter un collaborateur
+                </button>
             </div>
         </ion-list>
         <div class="list list-inset">
-            <button class="button button-block button-balanced" ng-click="showAddUserToList(list.list_id)">
-                Ajouter un collaborateur
-            </button>
         </div>
         <script type="text/ng-template">
             <input type="text" ng-model="productData.product_name">
