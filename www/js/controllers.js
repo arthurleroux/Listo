@@ -190,9 +190,9 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.showNewList = function() {
             $ionicPopup.show({
                 template:
-                    '<input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">' +
-                    '<br>' +
-                    '<textarea placeholder="Description de la liste" ng-model="listData.list_description"></textarea>',
+                '<input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">' +
+                '<br>' +
+                '<textarea placeholder="Description de la liste" ng-model="listData.list_description"></textarea>',
                 title: 'Créer une liste',
                 scope: $scope,
                 buttons: [
@@ -244,9 +244,9 @@ angular.module('starter.controllers', ['ngStorage'])
 
             $ionicPopup.show({
                 template:
-                    '<input type="text" placeholder="Nom de la liste" ng-model="list.list_name">' +
-                    '<br>' +
-                    '<textarea placeholder="Description de la liste" ng-model="list.list_description"></textarea>',
+                '<input type="text" placeholder="Nom de la liste" ng-model="list.list_name">' +
+                '<br>' +
+                '<textarea placeholder="Description de la liste" ng-model="list.list_description"></textarea>',
                 title: 'Modifier les informations de la liste',
                 scope: $scope,
                 buttons: [
@@ -563,4 +563,4 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
     });
-    /**************************************** FIN ListCtrl ****************************************/
+/**************************************** FIN ListCtrl ****************************************/
