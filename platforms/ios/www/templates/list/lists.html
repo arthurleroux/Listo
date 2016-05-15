@@ -1,6 +1,6 @@
 <ion-view view-title="Mes Listes" cache-view="false">
     <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-ios-plus-outline" menu-toggle="right" ng-click="showNewList()">
+        <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
         </button>
     </ion-nav-buttons>
     <ion-content>
@@ -15,7 +15,16 @@
                         <button class="button button-icon button-clear ion-android-delete"></button>
                     </ion-option-button>
                 </ion-item>
+                <div ng-show="listsEmpty == true" class="text-center margin-top-10">
+                    <h3>Créez une liste !</h3>
+                </div>
             </div>
         </ion-list>
+        <script type="text/ng-template">
+            <input type="text" ng-model="listData.list_name">
+        </script>
+        <script type="text/ng-template">
+            <input type="text" ng-model="list.list_name">
+        </script>
     </ion-content>
 </ion-view>

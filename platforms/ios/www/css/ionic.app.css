@@ -9789,14 +9789,46 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-.button-assertive .ion-android-delete {
-  color: #fff !important;
-  font-size: 20px !important; }
+.margin-top-10 {
+  margin-top: 10px; }
 
-.button-positive .ion-checkmark {
-  color: #fff !important;
-  font-size: 20px !important; }
+.margin-bottom-20 {
+  margin-bottom: 20px; }
 
-.button-positive .ion-android-create {
+.button .ion-android-cart, .button .ion-android-create, .button .ion-bag, .button .ion-android-delete {
   color: #fff !important;
-  font-size: 20px !important; }
+  font-size: 20px; }
+
+.ion-person-add {
+  font-size: 30px; }
+
+.error {
+  border-radius: 2px;
+  color: #fff;
+  margin: 10px 10px;
+  padding: 5px 10px;
+  background-color: #ef473a; }
+
+.popup-container .popup {
+  border-radius: 3px; }
+  .popup-container .popup input[type="text"] {
+    border-radius: 3px;
+    padding-left: 10px; }
+  .popup-container .popup textarea {
+    border-radius: 3px;
+    padding: 10px;
+    max-width: 100%;
+    min-height: 150px; }
+  .popup-container .popup button {
+    border-radius: 3px; }
+
+.item-options .button:first-child {
+  border-top-left-radius: 2px;
+  border-bottom-left-radius: 2px; }
+
+.item-options .button:last-child {
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px; }
+
+.item-complex .item-content {
+  padding: 16px 16px 16px 16px; }

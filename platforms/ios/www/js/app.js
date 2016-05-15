@@ -66,26 +66,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-            .state('app.new_list', {
-                url: '/new_list',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/list/new_list.html',
-                        controller: 'NewListCtrl'
-                    }
-                }
-            })
-
-            .state('app.edit_list', {
-                url: '/edit_list/:listId',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/list/edit_list.html',
-                        controller: 'EditListCtrl'
-                    }
-                }
-            })
-
             .state('app.single', {
                 url: '/lists/:listId',
                 views: {
@@ -96,19 +76,12 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-/**************************************** PRODUCT ****************************************/
+        //if(window.currentUserId = 1) {
+            $urlRouterProvider.otherwise('/app/login');
+        /*}
+        else{
+            $urlRouterProvider.otherwise('/app/login');
+        }*/
 
-            .state('app.new_product', {
-                url: '/new_product/:listId',
-                views: {
-                    'menuContent' : {
-                        templateUrl: 'templates/product/new_product.html',
-                        controller: "NewProductCtrl"
-                    }
-                }
-            });
-
-
-        // if none of the above states are matched, use this as the fallback
-        $urlRouterProvider.otherwise('/app/lists');
     });
+
