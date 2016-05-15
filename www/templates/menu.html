@@ -1,33 +1,39 @@
 <ion-side-menus enable-menu-with-back-views="false">
-  <ion-side-menu-content>
-    <ion-nav-bar class="bar-stable">
-      <ion-nav-back-button>
-      </ion-nav-back-button>
+    <ion-side-menu-content>
+        <ion-nav-bar class="bar-stable">
+            <ion-nav-back-button>
+            </ion-nav-back-button>
 
-      <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
-        </button>
-      </ion-nav-buttons>
-    </ion-nav-bar>
-    <ion-nav-view name="menuContent"></ion-nav-view>
-  </ion-side-menu-content>
+            <ion-nav-buttons side="left">
+                <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+                </button>
+            </ion-nav-buttons>
+        </ion-nav-bar>
+        <ion-nav-view name="menuContent"></ion-nav-view>
+    </ion-side-menu-content>
 
-  <ion-side-menu side="left">
-    <ion-header-bar class="bar-stable">
-        <h1 ng-show="currentUser !== 0" class="title">Bienvenue {{ currentUser.user_name }} !</h1>
-    </ion-header-bar>
-    <ion-content>
-      <ion-list>
-        <ion-item ng-show="currentUser == 0" menu-close href="#/app/login">
-          Connexion
-        </ion-item>
-        <ion-item menu-close href="#/app/playlists">
-          Mes listes
-        </ion-item>
-          <ion-item ng-show="currentUser !== 0" menu-close ng-click="logout()">
-              Déconnexion
-          </ion-item>
-      </ion-list>
-    </ion-content>
-  </ion-side-menu>
+    <ion-side-menu side="left">
+        <ion-header-bar class="bar-stable">
+            <h1 ng-show="currentUser !== 0" class="title">Bienvenue {{ currentUser.user_name }} !</h1>
+        </ion-header-bar>
+        <ion-content>
+            <ion-list>
+                <ion-item ng-show="currentUser == 0" menu-close href="#/app/login">
+                    <h2><i class="ion-log-in"></i> Connexion</h2>
+                </ion-item>
+                <ion-item menu-close ng-show="currentUser !== 0" href="#/app/playlists">
+                    <h2><i class="ion-ios-list-outline"></i> Mes listes</h2>
+                </ion-item>
+                <ion-item menu-close ng-show="currentUser !== 0">
+                    <h2><i class="ion-person"></i> Mon compte</h2>
+                </ion-item>
+                <ion-item menu-close>
+                    <h2><i class="ion-ios-information"></i> À propos</h2>
+                </ion-item>
+                <ion-item ng-show="currentUser !== 0" menu-close ng-click="logout()">
+                    <h2><i class="ion-log-out"></i> Déconnexion</h2>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
 </ion-side-menus>

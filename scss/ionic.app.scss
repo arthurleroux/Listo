@@ -36,6 +36,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 
+.ion-person-add {
+  font-size: 30px;
+}
+
 
 .error {
   border-radius: 2px;
@@ -68,5 +72,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     border-bottom-right-radius: 2px;
   }
 }
+
+.item-complex .item-content {
+  padding: 16px 16px 16px 16px;
+}
+
 
 

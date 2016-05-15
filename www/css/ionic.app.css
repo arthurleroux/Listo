@@ -9799,6 +9799,9 @@ a.button {
   color: #fff !important;
   font-size: 20px; }
 
+.ion-person-add {
+  font-size: 30px; }
+
 .error {
   border-radius: 2px;
   color: #fff;
@@ -9821,3 +9824,6 @@ a.button {
 .item-options .button:last-child {
   border-top-right-radius: 2px;
   border-bottom-right-radius: 2px; }
+
+.item-complex .item-content {
+  padding: 16px 16px 16px 16px; }

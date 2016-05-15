@@ -296,23 +296,23 @@ angular.module('starter.controllers', ['ngStorage'])
                         type: 'button-assertive',
                         onTap: function() {
                             $http.post($scope.apiLink+"List/ListController.php", {
-                                type : 'list',
-                                action : 'delete',
-                                list: {
-                                    list_id : listId
-                                }
-                            })
+                                    type : 'list',
+                                    action : 'delete',
+                                    list: {
+                                        list_id : listId
+                                    }
+                                })
 
-                            .then(function (res) {
-                                    $state.go('app.lists');
-                                    $window.location.reload(true);
+                                .then(function (res) {
+                                        $state.go('app.lists');
+                                        $window.location.reload(true);
 
-                                },
-                                function(error){
-                                    console.warn('ERROR DELETE LIST');
-                                    console.log(error);
-                                }
-                            );
+                                    },
+                                    function(error){
+                                        console.warn('ERROR DELETE LIST');
+                                        console.log(error);
+                                    }
+                                );
                         }
                     }
                 ]
@@ -325,28 +325,28 @@ angular.module('starter.controllers', ['ngStorage'])
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage) {
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php", {
-            type : 'product',
-            action : 'findAll',
-            list: {
-                list_id : $stateParams['listId']
-            }
-        })
-
-        .then(function (res){
-                var response = res.data;
-                $scope.products = response;
-                if (Object.keys($scope.products).length == 0) {
-                    $scope.listEmpty = true;
+                type : 'product',
+                action : 'findAll',
+                list: {
+                    list_id : $stateParams['listId']
                 }
-                else {
-                    $scope.listEmpty = false;
-                }
+            })
 
-            }, function(error){
-                console.warn('ERROR FIND ALL LIST');
-                console.log(error);
-            }
-        );
+            .then(function (res){
+                    var response = res.data;
+                    $scope.products = response;
+                    if (Object.keys($scope.products).length == 0) {
+                        $scope.listEmpty = true;
+                    }
+                    else {
+                        $scope.listEmpty = false;
+                    }
+
+                }, function(error){
+                    console.warn('ERROR FIND ALL LIST');
+                    console.log(error);
+                }
+            );
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -479,27 +479,27 @@ angular.module('starter.controllers', ['ngStorage'])
 
         $scope.updateProduct = function(productId, action) {
             $http.post($scope.apiLink+"Product/ProductController.php", {
-                type : 'product',
-                action : 'update',
-                product: {
-                    product_id : productId,
-                    product_status: action
-                },
-                user: {
-                    by_user_name: $localStorage.currentUser.user_name
-                }
-            })
+                    type : 'product',
+                    action : 'update',
+                    product: {
+                        product_id : productId,
+                        product_status: action
+                    },
+                    user: {
+                        by_user_name: $localStorage.currentUser.user_name
+                    }
+                })
 
-            .then(function (res){
-                    var response = res.data;
-                    $state.go($state.current, {}, {reload: true});
-                    console.log(response);
+                .then(function (res){
+                        var response = res.data;
+                        $state.go($state.current, {}, {reload: true});
+                        console.log(response);
 
-                }, function(error){
-                    console.warn('ERROR UPDATE PRODUCT');
-                    console.log(error);
-                }
-            );
+                    }, function(error){
+                        console.warn('ERROR UPDATE PRODUCT');
+                        console.log(error);
+                    }
+                );
         };
 
         $scope.deleteProduct = function(productId) {
@@ -517,25 +517,25 @@ angular.module('starter.controllers', ['ngStorage'])
                         type: 'button-assertive',
                         onTap: function() {
                             $http.post($scope.apiLink+"Product/ProductController.php", {
-                                type : 'product',
-                                action : 'delete',
-                                product: {
-                                    product_id : productId
-                                }
-                            })
+                                    type : 'product',
+                                    action : 'delete',
+                                    product: {
+                                        product_id : productId
+                                    }
+                                })
 
-                            .then(function (res){
-                                    var response = res.data;
-                                    $state.go($state.current, {}, {reload: true});
-                                    //$window.location.reload(true);
-                                    console.log(response);
+                                .then(function (res){
+                                        var response = res.data;
+                                        $state.go($state.current, {}, {reload: true});
+                                        //$window.location.reload(true);
+                                        console.log(response);
 
 
-                                }, function(error){
-                                    console.warn('ERROR DELETE PRODUCT');
-                                    console.log(error);
-                                }
-                            );
+                                    }, function(error){
+                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.log(error);
+                                    }
+                                );
                         }
                     }
                 ]
