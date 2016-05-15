@@ -322,32 +322,52 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage) {
         // Récupère tous les produits de la liste
-        $http.post($scope.apiLink+"Product/ProductController.php",
+        $http.post($scope.apiLink+"Product/ProductController.php", {
+            type : 'product',
+            action : 'findAll',
+            list: {
+                list_id : $stateParams['listId']
+            }
+        })
+
+        .then(function (res){
+                var response = res.data;
+                $scope.products = response;
+                if (Object.keys($scope.products).length == 0) {
+                    $scope.listEmpty = true;
+                }
+                else {
+                    $scope.listEmpty = false;
+                }
+
+            }, function(error){
+                console.warn('ERROR FIND ALL LIST');
+                console.log(error);
+            }
+        );
+
+        $scope.showInfos = function(productId) {
+            angular.forEach($scope.products, function(product)
             {
-                type : 'product',
-                action : 'findAll',
-                list: {
-                    list_id : $stateParams['listId']
-                }
+                if(product.product_id == productId)
+                    $scope.product = product;
+            });
+            if ($scope.product.product_status == "Achete") {
+                $scope.info = ", et acheté par " + $scope.product.by_user_name;
+            }
+            else if ($scope.product.product_status == 'Pris en charge') {
+                $scope.info = ", et pris en charge par " + $scope.product.by_user_name;
+            }
+            else if ($scope.product.product_status == "En attente") {
+                $scope.info = ", et en attente";
+            }
+            $ionicPopup.alert({
+                title: "Informations sur " + '"' + $scope.product.product_name + '"',
+                template: "Produit ajouté par " + $scope.product.user_name + $scope.info
             })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.products = response;
-                    if (Object.keys($scope.products).length == 0) {
-                        $scope.listEmpty = true;
-                    }
-                    else {
-                        $scope.listEmpty = false;
-                    }
-
-                }, function(error){
-                    console.warn('ERROR FIND ALL LIST');
-                    console.log(error);
-                }
-            );
+        };
 
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
@@ -433,6 +453,9 @@ angular.module('starter.controllers', ['ngStorage'])
                                         },
                                         list: {
                                             list_id : $stateParams['listId']
+                                        },
+                                        user: {
+                                            user_name : $localStorage.currentUser.user_name
                                         }
                                     })
 
@@ -461,6 +484,9 @@ angular.module('starter.controllers', ['ngStorage'])
                 product: {
                     product_id : productId,
                     product_status: action
+                },
+                user: {
+                    by_user_name: $localStorage.currentUser.user_name
                 }
             })
 

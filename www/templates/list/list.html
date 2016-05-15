@@ -9,10 +9,13 @@
                 <div ng-show="listEmpty == false" class="item item-divider">
                     Liste des produits
                 </div>
-                <ion-item ng-repeat="product in products">
+                <ion-item ng-repeat="product in products" ng-click="showInfos(product.product_id)">
                     <div class="row">
                         <div class="col col-80">
                             {{ product.product_name }}
+                        </div>
+                        <div ng-show="product.product_status == 'En attente'" class="col text-right">
+                            <span class="ion-more"></span>
                         </div>
                         <div ng-show="product.product_status == 'Pris en charge'" class="col text-right">
                             <span class="ion-android-cart"></span>
