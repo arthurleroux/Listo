@@ -54,20 +54,18 @@ class ProductController
         //
 
         if (!empty($this->params->product)) {
+
             $product_name = $this->params->product->product_name;
             $list_id = $this->params->list->list_id;
+            $user_name = $this->params->user->user_name;
 
-            $valid = true;
-            if ((empty($product_name)) || (empty($list_id))) {
-                $valid = false;
-            }
+            if ((!empty($product_name)) && (!empty($list_id)) && (!empty($user_name))) {
 
-            if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO product (product_name,list_id) values(?, ?)";
+                $sql = "INSERT INTO product (product_name,list_id, user_name) values(?, ?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($product_name,$list_id));
+                $q->execute(array($product_name, $list_id, $user_name));
                 Database::disconnect();
                 //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
@@ -111,7 +109,7 @@ class ProductController
     {
         $pdo = Database::connect();
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT p.product_id, p.product_name
+        $sql = "SELECT *
                 FROM product p
                 WHERE p.list_id = ".$listId;
         $q = $pdo->prepare($sql);
@@ -131,20 +129,15 @@ class ProductController
         if (!empty($this->params->product)) {
 
             $product_id = $this->params->product->product_id;
-            $product_name = $this->params->product->product_name;
-            $list_id = $this->params->product->list_id;
+            $product_status = $this->params->product->product_status;
+            $by_user_name = $this->params->user->by_user_name;
 
-            $valid = true;
-            if ((empty($product_id)) && (empty($product_name)) && (empty($list_id))) {
-                $valid = false;
-            }
-
-            if ($valid) {
+            if ( (!empty($product_status)) && (!empty($product_id)) && (!empty($by_user_name))) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "UPDATE product set product_name = ?, list_id = ? WHERE product_id = ?";
+                $sql = "UPDATE product SET product_status = ?, by_user_name = ? WHERE product_id = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($product_name,$list_id,$product_id));
+                $q->execute(array($product_status, $by_user_name, $product_id));
                 Database::disconnect();
 
                 //RESPONSE
@@ -152,7 +145,6 @@ class ProductController
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
                 echo json_encode($q);
-
             }
         }
     }

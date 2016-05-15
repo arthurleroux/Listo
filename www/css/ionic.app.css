@@ -9814,6 +9814,10 @@ a.button {
   .popup-container .popup input[type="text"] {
     border-radius: 3px;
     padding-left: 10px; }
+  .popup-container .popup textarea {
+    border-radius: 3px;
+    padding: 10px;
+    max-width: 100%; }
   .popup-container .popup button {
     border-radius: 3px; }
 

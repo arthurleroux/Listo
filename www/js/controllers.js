@@ -183,10 +183,13 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
 
-        $scope.showNewList = function(userId) {
+        $scope.showNewList = function() {
             $ionicPopup.show({
-                template: '<input type="text" ng-model="listData.list_name">',
-                title: 'Nom de la liste à créer',
+                template:
+                    '<input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">' +
+                    '<br>' +
+                    '<textarea placeholder="Description de la liste" ng-model="listData.list_description"></textarea>',
+                title: 'Créer une liste',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler' },
@@ -202,10 +205,12 @@ angular.module('starter.controllers', ['ngStorage'])
                                         type : 'list',
                                         action : 'add',
                                         list: {
-                                            list_name: $scope.listData.list_name
+                                            list_name: $scope.listData.list_name,
+                                            list_description: $scope.listData.list_description
                                         },
                                         user: {
-                                            user_id : userId
+                                            user_id : $localStorage.currentUser.user_id,
+                                            user_name : $localStorage.currentUser.user_name
                                         }
                                     })
                                     .then(function (res) {
@@ -234,8 +239,11 @@ angular.module('starter.controllers', ['ngStorage'])
             });
 
             $ionicPopup.show({
-                template: '<input type="text" ng-model="list.list_name">',
-                title: 'Modifier le nom de la liste',
+                template:
+                    '<input type="text" placeholder="Nom de la liste" ng-model="list.list_name">' +
+                    '<br>' +
+                    '<textarea placeholder="Description de la liste" ng-model="list.list_description"></textarea>',
+                title: 'Modifier les informations de la liste',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler',
@@ -247,7 +255,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         text: '<b>Modifier</b>',
                         type: 'button-positive',
                         onTap: function(e) {
-                            if (!$scope.list.list_name) {
+                            if (!$scope.list.list_name && !$scope.list.list_description) {
                                 //don't allow the user to close unless he enters wifi password
                                 e.preventDefault();
                             } else {
@@ -257,7 +265,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                         action : 'update',
                                         list: {
                                             list_id : listId,
-                                            list_name: $scope.list.list_name
+                                            list_name: $scope.list.list_name,
+                                            list_description: $scope.list.list_description
                                         }
                                     })
 

@@ -75,10 +75,9 @@ class UserController
                         $data["success"] = true;
                     else
                         $data["success"] = false;
-
-                    Database::disconnect();
-                    echo json_encode($data);
                 }
+                Database::disconnect();
+                echo json_encode($data);
             }
         }
     }
@@ -94,12 +93,14 @@ class UserController
             {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
                 $sql = "SELECT user_name, user_id FROM users WHERE user_name = ? AND user_password = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_name, md5($user_password)));
-                $response = $q->fetch();
+                $response = $q->fetch(PDO::FETCH_ASSOC);
+                $data['user'] = $response;
 
-                if ($response == false ) {
+                if ($response == false) {
                     $data["success"] = false;
                 }
                 else {
@@ -142,14 +143,14 @@ class UserController
                         $q->execute(array($user_id, $list_id));
                     }
                     else {
-                        $message = "Utilisateur deja ajoute";
+                        $data['deja'] = true;
                     }
                 }
                 else {
-                    $message = "Aucun utilisateur trouve";
+                    $data['inconnu'] = true;
                 }
                 Database::disconnect();
-                echo json_encode($message);
+                echo json_encode($data);
             }
         }
     }

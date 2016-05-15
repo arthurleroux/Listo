@@ -50,19 +50,17 @@ class ListController
 
         if (!empty($this->params->list)) {
             $list_name = $this->params->list->list_name;
+            $list_description = $this->params->list->list_description;
             $user_id = $this->params->user->user_id;
+            $user_name = $this->params->user->user_name;
 
-            $valid = true;
-            if ((empty($list_name)) || (empty($user_id))) {
-                $valid = false;
-            }
+            if ((!empty($list_name)) && (!empty($user_id)) && (!empty($list_description)) && (!empty($user_name))) {
 
-            if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "INSERT INTO list (list_name) VALUES(?)";
+                $sql = "INSERT INTO list (list_name, list_description, user_name) VALUES(?, ?, ?)";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_name));
+                $q->execute(array($list_name, $list_description, $user_name));
                 $newId = $pdo->lastInsertId();
                 $sql2 = "INSERT INTO user_list (list_id, user_id) VALUES(".$newId.",".$user_id.")";
                 $q2 = $pdo->prepare($sql2);
@@ -85,15 +83,11 @@ class ListController
 
             $list_id = $this->params->list->list_id;
 
-            $valid = true;
-            if ((empty($list_id))) {
-                $valid = false;
-            }
+            if (!empty($list_id)) {
 
-            if ($valid) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "Select * from list Where list_id = ? ";
+                $sql = "SELECT * FROM list WHERE list_id = ? ";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_id));
                 $data = $q->fetch(PDO::FETCH_ASSOC);
@@ -129,18 +123,14 @@ class ListController
 
             $list_id = $this->params->list->list_id;
             $list_name = $this->params->list->list_name;
+            $list_description = $this->params->list->list_description;
 
-            $valid = true;
-            if ((empty($list_id)) && (empty($list_name)) && (empty($user_id))) {
-                $valid = false;
-            }
-
-            if ($valid) {
+            if ((!empty($list_id)) && (!empty($list_name)) && (!empty($list_description)) ) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "UPDATE list set list_name = ? WHERE list_id = ?";
+                $sql = "UPDATE list SET list_name = ?, list_description = ? WHERE list_id = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($list_name, $list_id));
+                $q->execute(array($list_name, $list_description, $list_id));
                 Database::disconnect();
 
                 //RESPONSE
