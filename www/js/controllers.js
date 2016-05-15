@@ -332,6 +332,14 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage) {
+        angular.forEach($scope.lists, function(list)
+        {
+            if(list.list_id == $stateParams['listId'])
+                $scope.list = list;
+        });
+
+        console.log($scope.list);
+
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php", {
                 type : 'product',
@@ -364,10 +372,10 @@ angular.module('starter.controllers', ['ngStorage'])
                     $scope.product = product;
             });
             if ($scope.product.product_status == "Achete") {
-                $scope.info = ", et acheté par " + $scope.product.by_user_name;
+                $scope.info = ", et <b>acheté</b> par <b>" + $scope.product.by_user_name + "</b>";
             }
             else if ($scope.product.product_status == 'Pris en charge') {
-                $scope.info = ", et pris en charge par " + $scope.product.by_user_name;
+                $scope.info = ", et <b>pris en charge</b> par <b>" + $scope.product.by_user_name + "</b>";
             }
             else if ($scope.product.product_status == "En attente") {
                 $scope.info = ", et en attente";
@@ -381,8 +389,8 @@ angular.module('starter.controllers', ['ngStorage'])
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
             $ionicPopup.show({
-                template: '<input type="text" ng-model="userData.user_name">',
-                title: 'Nom de la personne à ajouter',
+                template: '<input type="text" placeholder="Pseudo de la personne" ng-model="userData.user_name">',
+                title: 'Ajouter une personne',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler'},
@@ -436,8 +444,8 @@ angular.module('starter.controllers', ['ngStorage'])
         //  Récupère toutes les listes de l'utilisateur
         $scope.showNewProduct = function(listId) {
             $ionicPopup.show({
-                template: '<input type="text" ng-model="productData.product_name">',
-                title: 'Nom du produit à ajouter',
+                template: '<input type="text" placeholder="Nom du produit" ng-model="productData.product_name">',
+                title: 'Ajouter un produit',
                 scope: $scope,
                 buttons: [
                     { text: 'Annuler',
@@ -550,13 +558,5 @@ angular.module('starter.controllers', ['ngStorage'])
                 ]
             });
         };
-
-
-        angular.forEach($scope.lists, function(list)
-        {
-            if(list.list_id == $stateParams['listId'])
-                $scope.list = list;
-        });
-
     });
     /**************************************** FIN ListCtrl ****************************************/
