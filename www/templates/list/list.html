@@ -58,17 +58,20 @@
                     Personnes qui ont accès
                 </div>
                 <div class="item item-text-wrap">
-                    <ion-item ng-repeat="user in users">
+                    <div ng-show="usersEmpty == true" class="text-center margin-top-10 margin-bottom-20">
+                        <h3>Ajoutez un utilisateur pour partager cette liste !</h3>
+                    </div>
+                    <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
                         {{ user.user_name }}
-                        <ion-option-button ng-show="currentUser.user_id !== user.user_id" class="button-assertive" ng-click="deleteUserFromList(user.user_id)">
+                        <ion-option-button ng-show="currentUser.user_id !== user.user_id" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name)">
                             <button class="button button-icon button-clear ion-android-delete" menu-toggle="right">
                             </button>
                         </ion-option-button>
                     </ion-item>
+                    <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
+                    </button>
                     <button class="button button-block button-assertive" ng-click="quitList()">
                         Quitter cette liste
-                    </button>
-                    <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
                     </button>
                 </div>
             </div>

@@ -382,12 +382,12 @@ angular.module('starter.controllers', ['ngStorage'])
                     var response = res.data;
                     $scope.users= response;
                     console.log($scope.users);
-                    /*if (Object.keys($scope.users).length > 1) {
+                    if (Object.keys($scope.users).length == 1) {
                      $scope.usersEmpty = true;
                      }
                      else {
                      $scope.usersEmpty = false;
-                     }*/
+                     }
 
                 }, function(error){
                     console.warn('ERROR FIND USERS');
@@ -524,7 +524,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
         $scope.quitList = function() {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer quitter cette liste ?',
+                title: 'Êtes vous sur de quitter cette liste ?',
                 buttons: [
                     {
                         text: 'Non',
