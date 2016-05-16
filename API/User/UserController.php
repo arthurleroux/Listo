@@ -51,6 +51,9 @@ class UserController
             if ($this->params->action == "update"){
                 $this->updateUser();
             }
+            if ($this->params->action == "delete"){
+                $this->deleteUser();
+            }
         }
     }
 
@@ -198,6 +201,32 @@ class UserController
                 Database::disconnect();
                 echo json_encode($data);
             }
+        }
+    }
+
+    private function deleteUser() {
+
+        $user_id = $this->params->user->user_id;
+
+        if(!empty($user_id)) {
+
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "DELETE FROM users WHERE user_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($user_id));
+
+            $sql = "DELETE FROM user_list WHERE user_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($user_id));
+
+            Database::disconnect();
+            //RESPONSE
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Content-type: application/json');
+            echo json_encode($q);
         }
     }
 

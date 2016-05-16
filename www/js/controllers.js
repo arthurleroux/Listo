@@ -171,6 +171,45 @@ angular.module('starter.controllers', ['ngStorage'])
                 $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
             }
         }
+
+        $scope.deleteUser = function () {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer votre compte ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'delete',
+                                    user: {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $scope.logout();
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        }
     })
 
     /**************************************** FIN AccountCtrl ****************************************/
