@@ -9,17 +9,14 @@
             on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
-            <!--<div class="card">
+            <div class="card">
                 <div class="item item-divider">
                     Description
                 </div>
                 <div class="item item-text-wrap">
                    {{ list.list_description }}
                 </div>
-                <div class="item item-divider">
-                    Personnes qui ont accès
-                </div>
-            </div>-->
+            </div>
             <div class="list list-inset">
                 <div ng-show="listEmpty == false" class="item item-divider">
                     Liste des produits
@@ -55,8 +52,18 @@
                 <div ng-show="listEmpty == true" class="text-center margin-top-10 margin-bottom-20">
                     <h3>Ajoutez un article !</h3>
                 </div>
-                <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
-                </button>
+            </div>
+            <div class="card">
+                <div class="item item-divider">
+                    Personnes qui ont accès
+                </div>
+                <div class="item item-text-wrap">
+                    <ion-item ng-repeat="user in users">
+                        {{ user.user_id }}
+                    </ion-item>
+                    <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
+                    </button>
+                </div>
             </div>
         </ion-list>
         <div class="list list-inset">

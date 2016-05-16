@@ -39,6 +39,9 @@ class UserController
             if ($this->params->action == "find"){
                 $this->findUser();
             }
+            if ($this->params->action == "findUsers"){
+                $this->findUsers();
+            }
             if ($this->params->action == "findAll"){
                 $this->findAllUser();
             }
@@ -109,6 +112,23 @@ class UserController
                 Database::disconnect();
                 echo json_encode($data);
             }
+        }
+    }
+
+    private function findUsers() {
+        $list_id = $this->params->list->list_id;
+
+        if (!empty($list_id)) {
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "SELECT * FROM user_list WHERE list_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($list_id));
+            $response = $q->fetchAll(PDO::FETCH_ASSOC);
+            // $user_id = $response['user_id'];
+            Database::disconnect();
+            echo json_encode($response);
         }
     }
 
