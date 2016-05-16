@@ -49,6 +49,10 @@ angular.module('starter.controllers', ['ngStorage'])
             $window.location.reload(true);
         };
 
+        $scope.doRefresh = function() {
+            $state.go($state.current, {}, {reload: true});
+        };
+
         //Rend la variable accessible depuis les vues
         $scope.currentUser = $localStorage.currentUser;
 
@@ -114,6 +118,101 @@ angular.module('starter.controllers', ['ngStorage'])
         }
     })
     /**************************************** FIN LoginCtrl ****************************************/
+
+    /**************************************** DEBUT AccountCtrl ****************************************/
+
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage) {
+        $scope.updateUser = function() {
+            if ($scope.userData.user_password
+                && $scope.userData.user_password_confirmation) {
+
+                if ($scope.userData.user_password == $scope.userData.user_password_confirmation) {
+                    $scope.error = "";
+
+                    $http.post($scope.apiLink+"User/UserController.php",
+                        {
+                            type : 'user',
+                            action : 'update',
+                            user: {
+                                user_password : $scope.userData.user_password,
+                                user_id : $localStorage.currentUser.user_id
+                            }
+                        })
+
+                        .then(function (res){
+                                var response = res.data;
+                                $ionicPopup.alert({
+                                    title: "Votre mot de passe a bien été modifié",
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-positive',
+                                            onTap: function () {
+                                                $state.go($state.current, {}, {reload: true});
+                                                $scope.userData = {};
+                                            }
+                                        }
+                                    ]
+                                });
+                            },
+                            function(error){
+                                console.log('ERROR UPDATE USER');
+                                $scope.userData = {};
+                                console.log(error);
+                            }
+                        );
+                }
+                else {
+                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $scope.userData.user_password_confirmation = "";
+                }
+            }
+            else {
+                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+            }
+        }
+
+        $scope.deleteUser = function () {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer votre compte ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'delete',
+                                    user: {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $scope.logout();
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        }
+    })
+
+    /**************************************** FIN AccountCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
     .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup) {
@@ -186,9 +285,9 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.showNewList = function() {
             $ionicPopup.show({
                 template:
-                    '<input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">' +
-                    '<br>' +
-                    '<textarea placeholder="Description de la liste" ng-model="listData.list_description"></textarea>',
+                '<input type="text" placeholder="Nom de la liste" ng-model="listData.list_name">' +
+                '<br>' +
+                '<textarea placeholder="Description de la liste" ng-model="listData.list_description"></textarea>',
                 title: 'Créer une liste',
                 scope: $scope,
                 buttons: [
@@ -197,10 +296,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         text: '<b>Ajouter</b>',
                         type: 'button-positive',
                         onTap: function(e) {
-                            if (!$scope.listData.list_name) {
-                                //don't allow the user to close unless he enters wifi password
-                                e.preventDefault();
-                            } else {
+                            if ($scope.listData.list_name && $scope.listData.list_description) {
                                 $http.post($scope.apiLink+"List/ListController.php", {
                                         type : 'list',
                                         action : 'add',
@@ -223,6 +319,11 @@ angular.module('starter.controllers', ['ngStorage'])
                                             console.log(error);
                                         }
                                     );
+
+                            }
+                            else {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
                             }
                         }
                     }
@@ -240,9 +341,9 @@ angular.module('starter.controllers', ['ngStorage'])
 
             $ionicPopup.show({
                 template:
-                    '<input type="text" placeholder="Nom de la liste" ng-model="list.list_name">' +
-                    '<br>' +
-                    '<textarea placeholder="Description de la liste" ng-model="list.list_description"></textarea>',
+                '<input type="text" placeholder="Nom de la liste" ng-model="list.list_name">' +
+                '<br>' +
+                '<textarea placeholder="Description de la liste" ng-model="list.list_description"></textarea>',
                 title: 'Modifier les informations de la liste',
                 scope: $scope,
                 buttons: [
@@ -331,7 +432,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window) {
         angular.forEach($scope.lists, function(list)
         {
             if(list.list_id == $stateParams['listId'])
@@ -360,7 +461,32 @@ angular.module('starter.controllers', ['ngStorage'])
                     }
 
                 }, function(error){
-                    console.warn('ERROR FIND ALL LIST');
+                    console.warn('ERROR FIND ALL PRODUCTS');
+                    console.log(error);
+                }
+            );
+
+        $http.post($scope.apiLink+"User/UserController.php", {
+                type : 'user',
+                action : 'findUsers',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+                    $scope.users= response;
+                    console.log($scope.users);
+                    if (Object.keys($scope.users).length == 1) {
+                     $scope.usersEmpty = true;
+                     }
+                     else {
+                     $scope.usersEmpty = false;
+                     }
+
+                }, function(error){
+                    console.warn('ERROR FIND USERS');
                     console.log(error);
                 }
             );
@@ -416,18 +542,29 @@ angular.module('starter.controllers', ['ngStorage'])
                                     .then(function (res){
                                             var response = res.data;
                                             if (response.deja == true) {
-                                                $scope.message = "Cet utilisateur fait déjà parti de cette liste";
+                                                $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
                                             }
                                             else if (response.inconnu == true) {
-                                                $scope.message = "Ce pseudo ne correspond à aucun utilisateur";
+                                                $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
                                             }
                                             else {
-                                                $scope.message = "Utilisateur ajouté à cette liste avec succès !"
+                                                $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
                                             }
                                             $scope.userData.user_name = "";
                                             console.log(response);
                                             $ionicPopup.alert({
-                                                title: $scope.message
+                                                title: $scope.message,
+                                                buttons: [
+                                                    {
+                                                        text: '<b>Ok</b>',
+                                                        type: 'button-positive',
+                                                        onTap: function() {
+                                                                $state.go($state.current, {}, {reload: true});
+                                                            }
+                                                    }
+                                                ]
+
+
                                             });
                                         }, function(error){
                                             console.warn('ERROR ADD USER TO LIST');
@@ -435,6 +572,86 @@ angular.module('starter.controllers', ['ngStorage'])
                                         }
                                     );
                             }
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.deleteUserFromList = function(userId, userName) {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'deleteUserFromList',
+                                    user : {
+                                        user_id : userId
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $state.go($state.current, {}, {reload: true});
+                                        //$window.location.reload(true);
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE USER');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.quitList = function() {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de quitter cette liste ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'deleteUserFromList',
+                                    user : {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $state.go('app.lists');
+                                        $window.location.reload(true);
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE USER');
+                                        console.log(error);
+                                    }
+                                );
                         }
                     }
                 ]
@@ -558,5 +775,6 @@ angular.module('starter.controllers', ['ngStorage'])
                 ]
             });
         };
+        console.log($scope.list);
     });
-    /**************************************** FIN ListCtrl ****************************************/
+/**************************************** FIN ListCtrl ****************************************/

@@ -1,5 +1,5 @@
 <ion-view view-title="Connexion">
-    <ion-content>
+    <ion-content ng-show="currentUser == 0">
         <form ng-submit="login()">
             <div class="error text-center" ng-show="error != ''">
                 {{ error }}
