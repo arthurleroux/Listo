@@ -201,10 +201,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         text: '<b>Ajouter</b>',
                         type: 'button-positive',
                         onTap: function(e) {
-                            if (!$scope.listData.list_name) {
-                                //don't allow the user to close unless he enters wifi password
-                                e.preventDefault();
-                            } else {
+                            if ($scope.listData.list_name && $scope.listData.list_description) {
                                 $http.post($scope.apiLink+"List/ListController.php", {
                                         type : 'list',
                                         action : 'add',
@@ -227,6 +224,11 @@ angular.module('starter.controllers', ['ngStorage'])
                                             console.log(error);
                                         }
                                     );
+
+                            }
+                            else {
+                                //don't allow the user to close unless he enters wifi password
+                                e.preventDefault();
                             }
                         }
                     }
