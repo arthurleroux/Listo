@@ -369,6 +369,7 @@ angular.module('starter.controllers', ['ngStorage'])
                 }
             );
 
+
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
             {
