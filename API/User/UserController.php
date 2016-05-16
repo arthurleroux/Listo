@@ -36,6 +36,9 @@ class UserController
             if ($this->params->action == "addUserToList"){
                 $this->addUserToList();
             }
+            if ($this->params->action == "deleteUserFromList"){
+                $this->deleteUserFromList();
+            }
             if ($this->params->action == "find"){
                 $this->findUser();
             }
@@ -116,20 +119,22 @@ class UserController
     }
 
     private function findUsers() {
-        $list_id = $this->params->list->list_id;
 
-        if (!empty($list_id)) {
-            $pdo = Database::connect();
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $listId = $this->params->list->list_id;
 
-            $sql = "SELECT * FROM user_list WHERE list_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($list_id));
-            $response = $q->fetchAll(PDO::FETCH_ASSOC);
-            // $user_id = $response['user_id'];
-            Database::disconnect();
-            echo json_encode($response);
-        }
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT *
+                FROM users u, user_list ul
+                WHERE u.user_id = ul.user_id
+                AND ul.list_id = ".$listId;
+        $q = $pdo->prepare($sql);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        echo json_encode($data);
+
+
     }
 
     private function addUserToList()
@@ -173,6 +178,25 @@ class UserController
                 echo json_encode($data);
             }
         }
+    }
+
+    private function deleteUserFromList()
+    {
+        $user_id = $this->params->user->user_id;
+
+        if (!empty($user_id)) {
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "DELETE FROM user_list WHERE user_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($user_id));
+            Database::disconnect();
+            //RESPONSE
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Content-type: application/json');
+        }
+
     }
 
     private function findAllUser()

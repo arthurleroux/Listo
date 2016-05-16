@@ -337,7 +337,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window) {
         angular.forEach($scope.lists, function(list)
         {
             if(list.list_id == $stateParams['listId'])
@@ -383,11 +383,11 @@ angular.module('starter.controllers', ['ngStorage'])
                     $scope.users= response;
                     console.log($scope.users);
                     /*if (Object.keys($scope.users).length > 1) {
-                        $scope.usersEmpty = true;
-                    }
-                    else {
-                        $scope.usersEmpty = false;
-                    }*/
+                     $scope.usersEmpty = true;
+                     }
+                     else {
+                     $scope.usersEmpty = false;
+                     }*/
 
                 }, function(error){
                     console.warn('ERROR FIND USERS');
@@ -446,18 +446,29 @@ angular.module('starter.controllers', ['ngStorage'])
                                     .then(function (res){
                                             var response = res.data;
                                             if (response.deja == true) {
-                                                $scope.message = "Cet utilisateur fait déjà parti de cette liste";
+                                                $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
                                             }
                                             else if (response.inconnu == true) {
-                                                $scope.message = "Ce pseudo ne correspond à aucun utilisateur";
+                                                $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
                                             }
                                             else {
-                                                $scope.message = "Utilisateur ajouté à cette liste avec succès !"
+                                                $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
                                             }
                                             $scope.userData.user_name = "";
                                             console.log(response);
                                             $ionicPopup.alert({
-                                                title: $scope.message
+                                                title: $scope.message,
+                                                buttons: [
+                                                    {
+                                                        text: '<b>Ok</b>',
+                                                        type: 'button-positive',
+                                                        onTap: function() {
+                                                                $state.go($state.current, {}, {reload: true});
+                                                            }
+                                                    }
+                                                ]
+
+
                                             });
                                         }, function(error){
                                             console.warn('ERROR ADD USER TO LIST');
@@ -465,6 +476,86 @@ angular.module('starter.controllers', ['ngStorage'])
                                         }
                                     );
                             }
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.deleteUserFromList = function(userId, userName) {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'deleteUserFromList',
+                                    user : {
+                                        user_id : userId
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $state.go($state.current, {}, {reload: true});
+                                        //$window.location.reload(true);
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE USER');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.quitList = function() {
+            $ionicPopup.confirm({
+                title: 'Êtes vous sur de supprimer quitter cette liste ?',
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"User/UserController.php", {
+                                    type : 'user',
+                                    action : 'deleteUserFromList',
+                                    user : {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res){
+                                        var response = res.data;
+                                        $state.go('app.lists');
+                                        $window.location.reload(true);
+                                        console.log(response);
+
+
+                                    }, function(error){
+                                        console.warn('ERROR DELETE USER');
+                                        console.log(error);
+                                    }
+                                );
                         }
                     }
                 ]
