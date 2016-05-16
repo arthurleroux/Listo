@@ -1,0 +1,26 @@
+<ion-view view-title="Mon compte">
+    <ion-content>
+        <form ng-submit="updateUser()">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
+            <div class="list list-inset">
+                <div class="item item-divider">
+                    Modifier mon mot de passe
+                </div>
+                <div class="item tex-center">
+                    {{ currentUser.user_name }}
+                </div>
+                <label class="item item-input">
+                    <input type="password" placeholder="Nouveau mot de passe" ng-model="userData.user_password">
+                </label>
+                <label class="item item-input">
+                    <input type="password" placeholder="Confirmation du nouveau mot de passe" ng-model="userData.user_password_confirmation">
+                </label>
+                <button class="button button-block button-positive" type="submit">S'enregistrer</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+

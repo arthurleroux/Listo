@@ -54,6 +54,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
+            .state('app.account', {
+                url: '/account',
+                views: {
+                    'menuContent': {
+                        templateUrl: 'templates/auth/account.html',
+                        controller: "AccountCtrl"
+                    }
+                }
+            })
+
 /**************************************** LIST ****************************************/
 
             .state('app.lists', {

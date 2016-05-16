@@ -83,5 +83,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   padding: 16px 16px 16px 16px;
 }
 
+.list-inset .item.item-input input {
+  padding-right: 0;
+}
+
 
 

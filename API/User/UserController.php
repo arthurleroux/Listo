@@ -118,6 +118,28 @@ class UserController
         }
     }
 
+    private function updateUser() {
+        if (!empty($this->params->user)) {
+
+            $user_password = $this->params->user->user_password;
+            $user_id = $this->params->user->user_id;
+
+            if ( (!empty($user_password)) && (!empty($user_id)) ) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "UPDATE users SET user_password = ? WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array(md5($user_password), $user_id));
+                Database::disconnect();
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($q);
+            }
+        }
+    }
+
     private function findUsers() {
 
         $listId = $this->params->list->list_id;
@@ -133,7 +155,6 @@ class UserController
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
         Database::disconnect();
         echo json_encode($data);
-
 
     }
 
@@ -215,37 +236,6 @@ class UserController
 
     }
 
-    private function updateUser()
-    {
-        if (!empty($this->params->data)) {
 
-            $user_id = $this->params->data->user_id;
-            $user_firstname = $this->params->data->user_firstname;
-            $user_lastname = $this->params->data->user_lastname;
-            $user_username = $this->params->data->user_username;
-            $user_email = $this->params->data->user_email;
-            $user_password = $this->params->data->user_password;
-
-            $valid = true;
-            if ((empty($user_id)) && (empty($user_firstname)) && (empty($user_lastname)) && (empty($user_username))
-                && (empty($user_email)) && (empty($user_password))) {
-                $valid = false;
-            }
-
-
-            if ($valid) {
-                $pdo = Database::connect();
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "UPDATE users set user_firstname = ?, user_lastname = ?, user_username = ?, user_email = ?, user_password = ? WHERE user_id = ?";
-                $q = $pdo->prepare($sql);
-                $q->execute(array($user_firstname,$user_lastname,$user_username,$user_email,md5($user_password),$user_id,));
-                Database::disconnect();
-
-                $tab = json_encode($q);
-                var_dump($tab);
-
-            }
-        }
-    }
 
 }

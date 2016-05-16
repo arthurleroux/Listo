@@ -119,6 +119,62 @@ angular.module('starter.controllers', ['ngStorage'])
     })
     /**************************************** FIN LoginCtrl ****************************************/
 
+    /**************************************** DEBUT AccountCtrl ****************************************/
+
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage) {
+        $scope.updateUser = function() {
+            if ($scope.userData.user_password
+                && $scope.userData.user_password_confirmation) {
+
+                if ($scope.userData.user_password == $scope.userData.user_password_confirmation) {
+                    $scope.error = "";
+
+                    $http.post($scope.apiLink+"User/UserController.php",
+                        {
+                            type : 'user',
+                            action : 'update',
+                            user: {
+                                user_password : $scope.userData.user_password,
+                                user_id : $localStorage.currentUser.user_id
+                            }
+                        })
+
+                        .then(function (res){
+                                var response = res.data;
+                                $ionicPopup.alert({
+                                    title: "Votre mot de passe a bien été modifié",
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-positive',
+                                            onTap: function () {
+                                                $state.go($state.current, {}, {reload: true});
+                                                $scope.userData = {};
+                                            }
+                                        }
+                                    ]
+                                });
+                            },
+                            function(error){
+                                console.log('ERROR UPDATE USER');
+                                $scope.userData = {};
+                                console.log(error);
+                            }
+                        );
+                }
+                else {
+                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $scope.userData.user_password_confirmation = "";
+                }
+            }
+            else {
+                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+            }
+        }
+    })
+
+    /**************************************** FIN AccountCtrl ****************************************/
+
     /**************************************** DEBUT RegisterCtrl ****************************************/
     .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup) {
 
@@ -344,6 +400,7 @@ angular.module('starter.controllers', ['ngStorage'])
                 $scope.list = list;
         });
 
+        console.log($scope.list);
 
         // Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php", {
@@ -679,5 +736,6 @@ angular.module('starter.controllers', ['ngStorage'])
                 ]
             });
         };
+        console.log($scope.list);
     });
 /**************************************** FIN ListCtrl ****************************************/
