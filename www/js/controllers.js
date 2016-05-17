@@ -482,54 +482,49 @@ angular.module('starter.controllers', ['ngStorage'])
         console.log($scope.list);
 
         /*// Récupère tous les produits de la liste
-        $http.post($scope.apiLink+"Product/ProductController.php", {
-                type : 'product',
-                action : 'findAll',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.products = response;
-                    if (Object.keys($scope.products).length == 0) {
-                        $scope.listEmpty = true;
-                    }
-                    else {
-                        $scope.listEmpty = false;
-                    }
-
-                }, function(error){
-                    console.warn('ERROR FIND ALL PRODUCTS');
-                    console.log(error);
-                }
-            );
-
-        $http.post($scope.apiLink+"User/UserController.php", {
-                type : 'user',
-                action : 'findUsers',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-                    $scope.users= response;
-                    console.log($scope.users);
-                    if (Object.keys($scope.users).length == 1) {
-                     $scope.usersEmpty = true;
-                     }
-                     else {
-                     $scope.usersEmpty = false;
-                     }
-
-                }, function(error){
-                    console.warn('ERROR FIND USERS');
-                    console.log(error);
-                }
-            );*/
+         $http.post($scope.apiLink+"Product/ProductController.php", {
+         type : 'product',
+         action : 'findAll',
+         list: {
+         list_id : $stateParams['listId']
+         }
+         })
+         .then(function (res){
+         var response = res.data;
+         $scope.products = response;
+         if (Object.keys($scope.products).length == 0) {
+         $scope.listEmpty = true;
+         }
+         else {
+         $scope.listEmpty = false;
+         }
+         }, function(error){
+         console.warn('ERROR FIND ALL PRODUCTS');
+         console.log(error);
+         }
+         );
+         $http.post($scope.apiLink+"User/UserController.php", {
+         type : 'user',
+         action : 'findUsers',
+         list: {
+         list_id : $stateParams['listId']
+         }
+         })
+         .then(function (res){
+         var response = res.data;
+         $scope.users= response;
+         console.log($scope.users);
+         if (Object.keys($scope.users).length == 1) {
+         $scope.usersEmpty = true;
+         }
+         else {
+         $scope.usersEmpty = false;
+         }
+         }, function(error){
+         console.warn('ERROR FIND USERS');
+         console.log(error);
+         }
+         );*/
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -599,8 +594,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                                         text: '<b>Ok</b>',
                                                         type: 'button-positive',
                                                         onTap: function() {
-                                                                $state.go($state.current, {}, {reload: true});
-                                                            }
+                                                            $state.go($state.current, {}, {reload: true});
+                                                        }
                                                     }
                                                 ]
 

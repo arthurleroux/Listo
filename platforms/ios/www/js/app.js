@@ -32,7 +32,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 controller: 'AppCtrl'
             })
 
-/**************************************** AUTH ****************************************/
+            /**************************************** AUTH ****************************************/
 
             .state('app.register', {
                 url: '/register',
@@ -54,6 +54,8 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
+
+
             .state('app.account', {
                 url: '/account',
                 views: {
@@ -64,7 +66,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-/**************************************** LIST ****************************************/
+            /**************************************** LIST ****************************************/
 
             .state('app.lists', {
                 url: '/lists',
@@ -86,16 +88,17 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-/**************************************** ABOUT ****************************************/
+            /**************************************** ABOUT ****************************************/
 
-        .state('app.about', {
-            url: '/about',
-            views: {
-                'menuContent' : {
-                    templateUrl: 'templates/about.html'
+            .state('app.about', {
+                url: '/lists',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/list/lists.html',
+                        controller: 'ListsCtrl'
+                    }
                 }
-            }
-        });
+            });
 
         $urlRouterProvider.otherwise('/app/login');
 
