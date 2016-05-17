@@ -16,7 +16,14 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.lists = {};
         $scope.error = "";
 
-        if ($localStorage.currentUser !== 0) {
+        if (angular.isDefined($localStorage.currentUser)) {
+            $scope.logged = true;
+        }
+        else {
+            $scope.logged = false;
+        }
+
+        if ($scope.logged == true) {
             $http.post($scope.apiLink+"List/ListController.php", {
                     type : 'list',
                     action : 'findAll',
@@ -43,25 +50,26 @@ angular.module('starter.controllers', ['ngStorage'])
                 );
         }
 
-        $scope.logout = function () {
-            $localStorage.currentUser = 0;
-            $state.go('app.login');
-            $window.location.reload(true);
-        };
-
         $scope.doRefresh = function() {
             $state.go($state.current, {}, {reload: true});
         };
 
         //Rend la variable accessible depuis les vues
-        $scope.currentUser = $localStorage.currentUser;
+        if (angular.isDefined($localStorage.currentUser)) {
+            $scope.currentUser = $localStorage.currentUser;
+        }
 
+        $scope.logout = function () {
+            delete $localStorage.currentUser;
+            $state.go('app.login');
+            $window.location.reload(true);
+        };
     })
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
     .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
-        if ($localStorage.currentUser !== 0) {
+        if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             $window.location.reload(true);
         }

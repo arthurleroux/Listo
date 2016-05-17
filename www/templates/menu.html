@@ -14,23 +14,26 @@
 
     <ion-side-menu side="left">
         <ion-header-bar class="bar-stable">
-            <h1 ng-show="currentUser !== 0" class="title">Bienvenue {{ currentUser.user_name }} !</h1>
+            <div ng-switch="logged">
+                <h1 ng-switch-when="true" class="title">Bienvenue {{ currentUser.user_name }} !</h1>
+                <h1 ng-switch-when="false" class="title">Bienvenue !</h1>
+            </div>
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item ng-show="currentUser == 0" menu-close href="#/app/login">
+                <ion-item ng-show="logged == false" menu-close href="#/app/login">
                     <h2><i class="ion-log-in"></i> Connexion</h2>
                 </ion-item>
-                <ion-item menu-close ng-show="currentUser !== 0" href="#/app/lists">
+                <ion-item menu-close ng-show="logged == true" href="#/app/lists">
                     <h2><i class="ion-ios-list-outline"></i> Mes listes</h2>
                 </ion-item>
-                <ion-item menu-close ng-show="currentUser !== 0" href="#/app/account">
+                <ion-item menu-close ng-show="logged == true" href="#/app/account">
                     <h2><i class="ion-person"></i> Mon compte</h2>
                 </ion-item>
                 <ion-item menu-close>
                     <h2><i class="ion-ios-information"></i> À propos</h2>
                 </ion-item>
-                <ion-item ng-show="currentUser !== 0" menu-close ng-click="logout()">
+                <ion-item ng-show="logged == true" menu-close ng-click="logout()">
                     <h2><i class="ion-log-out"></i> Déconnexion</h2>
                 </ion-item>
             </ion-list>
