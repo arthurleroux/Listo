@@ -604,7 +604,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                     type : 'user',
                                     action : 'deleteUserFromList',
                                     user : {
-                                        user_id : userId
+                                        user_id : userId,
+                                        user_name : userName
                                     }
                                 })
 
@@ -644,7 +645,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                     type : 'user',
                                     action : 'deleteUserFromList',
                                     user : {
-                                        user_id : $localStorage.currentUser.user_id
+                                        user_id : $localStorage.currentUser.user_id,
+                                        user_name : $localStorage.currentUser.user_name
                                     }
                                 })
 

@@ -233,13 +233,20 @@ class UserController
     private function deleteUserFromList()
     {
         $user_id = $this->params->user->user_id;
+        $user_name = $this->params->user->user_name;
 
         if (!empty($user_id)) {
             $pdo = Database::connect();
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
             $sql = "DELETE FROM user_list WHERE user_id = ?";
             $q = $pdo->prepare($sql);
             $q->execute(array($user_id));
+
+            $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($user_name));
+
             Database::disconnect();
             //RESPONSE
             header('Cache-Control: no-cache, must-revalidate');
