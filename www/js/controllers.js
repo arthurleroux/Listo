@@ -25,7 +25,6 @@ angular.module('starter.controllers', ['ngStorage'])
 
         $scope.doRefresh = function() {
             $state.go($state.current, {}, {reload: true});
-            $window.location.reload(true);
         };
 
         //Rend la variable accessible depuis les vues
@@ -45,7 +44,7 @@ angular.module('starter.controllers', ['ngStorage'])
     .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
-            $window.location.reload(true);
+            //$window.location.reload(true);
         }
 
         $ionicHistory.nextViewOptions({

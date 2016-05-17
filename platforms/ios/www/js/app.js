@@ -86,12 +86,18 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-        //if(window.currentUserId = 1) {
-            $urlRouterProvider.otherwise('/app/login');
-        /*}
-        else{
-            $urlRouterProvider.otherwise('/app/login');
-        }*/
+/**************************************** ABOUT ****************************************/
+
+        .state('app.about', {
+            url: '/about',
+            views: {
+                'menuContent' : {
+                    templateUrl: 'templates/about.html'
+                }
+            }
+        });
+
+        $urlRouterProvider.otherwise('/app/login');
 
     });
 
