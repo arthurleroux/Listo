@@ -6,7 +6,7 @@
     <ion-content>
         <ion-refresher
             pulling-text="Rafraichir la page ..."
-            on-refresh="doRefresh()">
+            on-refresh="doRefreshList()">
         </ion-refresher>
         <ion-list>
             <div class="card">
@@ -50,7 +50,7 @@
                     </ion-option-button>
                 </ion-item>
                 <div ng-show="listEmpty == true" class="text-center margin-top-10 margin-bottom-20">
-                    <h3>Ajoutez un produit à la liste !</h3>
+                    <h3>Ajoutez un produit !</h3>
                 </div>
             </div>
             <div class="card">

@@ -50,9 +50,13 @@ angular.module('starter.controllers', ['ngStorage'])
                 );
         }
 
-        $scope.doRefresh = function() {
-            $state.go($state.current, {});
+        $scope.doRefreshLists = function() {
+            $state.go($state.current, {}, {reload: true});
             $window.location.reload(true);
+        };
+
+        $scope.doRefreshList = function() {
+            $state.go($state.current, {}, {reload: true});
         };
 
         //Rend la variable accessible depuis les vues
