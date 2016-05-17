@@ -62,24 +62,38 @@ class ListController
             }
         }
     }
-    private function findList()
-    {
-        if (!empty($this->params->list)) {
-            $list_id = $this->params->list->list_id;
-            if (!empty($list_id)) {
-                $pdo = Database::connect();
-                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $sql = "SELECT * FROM list WHERE list_id = ? ";
-                $q = $pdo->prepare($sql);
-                $q->execute(array($list_id));
-                $data = $q->fetch(PDO::FETCH_ASSOC);
-                Database::disconnect();
-                //RESPONSE
-                header('Cache-Control: no-cache, must-revalidate');
-                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-                header('Content-type: application/json');
-                echo json_encode($data);
-            }
+    private function findList() {
+        $list_id = $this->params->list->list_id;
+
+        if (!empty($list_id)) {
+
+            $pdo = Database::connect();
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $sql = "SELECT * FROM list WHERE list_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($list_id));
+            $data['list'] = $q->fetch(PDO::FETCH_ASSOC);
+
+            $sql = "SELECT * FROM product WHERE list_id = ?";
+            $q = $pdo->prepare($sql);
+            $q->execute(array($list_id));
+            $data['products'] = $q->fetchAll(PDO::FETCH_ASSOC);
+
+            $sql = "SELECT *
+                    FROM users u, user_list ul
+                    WHERE u.user_id = ul.user_id
+                    AND ul.list_id = ".$list_id;
+            $q = $pdo->prepare($sql);
+            $q->execute();
+            $data['users'] = $q->fetchAll(PDO::FETCH_ASSOC);
+
+            Database::disconnect();
+            //RESPONSE
+            header('Cache-Control: no-cache, must-revalidate');
+            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+            header('Content-type: application/json');
+            echo json_encode($data);
         }
     }
     private function findAllList($userId)

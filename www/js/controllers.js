@@ -23,7 +23,6 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.logged = false;
         }
 
-
         $scope.doRefresh = function() {
             $state.go($state.current, {}, {reload: true});
             $window.location.reload(true);
