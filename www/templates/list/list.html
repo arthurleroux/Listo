@@ -1,4 +1,7 @@
-<ion-view view-title="{{ list.list_name }}" cache-view="false">
+<ion-view cache-view="false">
+    <ion-nav-title>
+        {{ list.list_name }}
+    </ion-nav-title>
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewProduct(list.list_id)">
         </button>
@@ -6,7 +9,7 @@
     <ion-content>
         <ion-refresher
             pulling-text="Rafraichir la page ..."
-            on-refresh="doRefreshList()">
+            on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
             <div class="card">

@@ -1,4 +1,7 @@
-<ion-view view-title="Mes Listes" cache-view="false">
+<ion-view cache-view="false">
+    <ion-nav-title>
+        Mes listes
+    </ion-nav-title>
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
         </button>
@@ -6,7 +9,7 @@
     <ion-content>
         <ion-refresher
             pulling-text="Rafraichir la page ..."
-            on-refresh="doRefreshLists()">
+            on-refresh="doRefresh()">
         </ion-refresher>
         <ion-list>
             <div class="list list-inset">

@@ -23,40 +23,10 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.logged = false;
         }
 
-        if ($scope.logged == true) {
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'findAll',
-                    user: {
-                        user_id : $localStorage.currentUser.user_id
-                    }
-                })
 
-                .then(function (res){
-                        var response = res.data;
-                        $scope.lists = response;
-                        if (Object.keys($scope.lists).length == 0) {
-                            $scope.listsEmpty = true;
-                        }
-                        else {
-                            $scope.listsEmpty = false;
-                        }
-
-                    },
-                    function(error){
-                        console.warn('ERROR FIND ALL LIST');
-                        console.log(error);
-                    }
-                );
-        }
-
-        $scope.doRefreshLists = function() {
+        $scope.doRefresh = function() {
             $state.go($state.current, {}, {reload: true});
             $window.location.reload(true);
-        };
-
-        $scope.doRefreshList = function() {
-            $state.go($state.current, {}, {reload: true});
         };
 
         //Rend la variable accessible depuis les vues
@@ -296,6 +266,33 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
 
+        if ($scope.logged == true) {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'findAll',
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        $scope.lists = response;
+                        if (Object.keys($scope.lists).length == 0) {
+                            $scope.listsEmpty = true;
+                        }
+                        else {
+                            $scope.listsEmpty = false;
+                        }
+
+                    },
+                    function(error){
+                        console.warn('ERROR FIND ALL LIST');
+                        console.log(error);
+                    }
+                );
+        }
+
         $scope.showNewList = function() {
             $ionicPopup.show({
                 template:
@@ -447,15 +444,46 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window) {
-        angular.forEach($scope.lists, function(list)
-        {
-            if(list.list_id == $stateParams['listId'])
-                $scope.list = list;
-        });
+
+        $http.post($scope.apiLink+"List/ListController.php", {
+                type : 'list',
+                action : 'find',
+                list: {
+                    list_id : $stateParams['listId']
+                }
+            })
+
+            .then(function (res){
+                    var response = res.data;
+
+                    $scope.list = response['list'];
+
+                    $scope.products = response['products'];
+                    if (Object.keys($scope.products).length == 0) {
+                        $scope.listEmpty = true;
+                    }
+                    else {
+                        $scope.listEmpty = false;
+                    }
+
+                    $scope.users = response['users'];
+                    console.log($scope.users);
+                    if (Object.keys($scope.users).length == 1) {
+                        $scope.usersEmpty = true;
+                    }
+                    else {
+                        $scope.usersEmpty = false;
+                    }
+                },
+                function(error){
+                    console.warn('ERROR FIND LIST');
+                    console.log(error);
+                }
+            );
 
         console.log($scope.list);
 
-        // Récupère tous les produits de la liste
+        /*// Récupère tous les produits de la liste
         $http.post($scope.apiLink+"Product/ProductController.php", {
                 type : 'product',
                 action : 'findAll',
@@ -503,7 +531,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     console.warn('ERROR FIND USERS');
                     console.log(error);
                 }
-            );
+            );*/
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
