@@ -198,7 +198,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                     type : 'user',
                                     action : 'delete',
                                     user: {
-                                        user_id : $localStorage.currentUser.user_id
+                                        user_id : $localStorage.currentUser.user_id,
+                                        user_name : $localStorage.currentUser.user_name
                                     }
                                 })
 
