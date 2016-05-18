@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http, $sessionStorage, $window) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
 
         /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
@@ -16,7 +16,7 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.lists = {};
         $scope.error = "";
 
-        if (angular.isDefined($sessionStorage.currentUser)) {
+        if (angular.isDefined($localStorage.currentUser)) {
             $scope.logged = true;
         }
         else {
@@ -28,12 +28,12 @@ angular.module('starter.controllers', ['ngStorage'])
         };
 
         //Rend la variable accessible depuis les vues
-        if (angular.isDefined($sessionStorage.currentUser)) {
-            $scope.currentUser = $sessionStorage.currentUser;
+        if (angular.isDefined($localStorage.currentUser)) {
+            $scope.currentUser = $localStorage.currentUser;
         }
 
         $scope.logout = function () {
-            $sessionStorage.$reset();
+            delete $localStorage.currentUser;
             $state.go('app.login');
             $window.location.reload(true);
         };
@@ -41,8 +41,8 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $sessionStorage, $window) {
-        if (angular.isDefined($sessionStorage.currentUser)) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
+        if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
         }
@@ -79,8 +79,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                 $state.go('app.lists');
                                 $window.location.reload(true);
                                 $scope.userData = {};
-                                $sessionStorage.currentUser = response.user;
-                                console.log($sessionStorage.currentUser);
+                                $localStorage.currentUser = response.user;
+                                console.log($localStorage.currentUser);
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
@@ -102,7 +102,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AccountCtrl ****************************************/
 
-    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $sessionStorage) {
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage) {
         $scope.updateUser = function() {
             if ($scope.userData.user_password
                 && $scope.userData.user_password_confirmation) {
@@ -116,7 +116,7 @@ angular.module('starter.controllers', ['ngStorage'])
                             action : 'update',
                             user: {
                                 user_password : $scope.userData.user_password,
-                                user_id : $sessionStorage.currentUser.user_id
+                                user_id : $localStorage.currentUser.user_id
                             }
                         })
 
@@ -171,8 +171,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                     type : 'user',
                                     action : 'delete',
                                     user: {
-                                        user_id : $sessionStorage.currentUser.user_id,
-                                        user_name : $sessionStorage.currentUser.user_name
+                                        user_id : $localStorage.currentUser.user_id,
+                                        user_name : $localStorage.currentUser.user_name
                                     }
                                 })
 
@@ -262,14 +262,14 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $sessionStorage) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
 
         if ($scope.logged == true) {
             $http.post($scope.apiLink+"List/ListController.php", {
                     type : 'list',
                     action : 'findAll',
                     user: {
-                        user_id : $sessionStorage.currentUser.user_id
+                        user_id : $localStorage.currentUser.user_id
                     }
                 })
 
@@ -314,8 +314,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                             list_description: $scope.listData.list_description
                                         },
                                         user: {
-                                            user_id : $sessionStorage.currentUser.user_id,
-                                            user_name : $sessionStorage.currentUser.user_name
+                                            user_id : $localStorage.currentUser.user_id,
+                                            user_name : $localStorage.currentUser.user_name
                                         }
                                     })
                                     .then(function (res) {
@@ -441,7 +441,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $sessionStorage, $window) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window) {
 
         $http.post($scope.apiLink+"List/ListController.php", {
                 type : 'list',
@@ -672,8 +672,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                     type : 'user',
                                     action : 'deleteUserFromList',
                                     user : {
-                                        user_id : $sessionStorage.currentUser.user_id,
-                                        user_name : $sessionStorage.currentUser.user_name
+                                        user_id : $localStorage.currentUser.user_id,
+                                        user_name : $localStorage.currentUser.user_name
                                     }
                                 })
 
@@ -726,7 +726,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                             list_id : $stateParams['listId']
                                         },
                                         user: {
-                                            user_name : $sessionStorage.currentUser.user_name
+                                            user_name : $localStorage.currentUser.user_name
                                         }
                                     })
 
@@ -757,7 +757,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         product_status: action
                     },
                     user: {
-                        by_user_name: $sessionStorage.currentUser.user_name
+                        by_user_name: $localStorage.currentUser.user_name
                     }
                 })
 

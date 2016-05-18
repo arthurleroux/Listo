@@ -54,8 +54,6 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
-
-
             .state('app.account', {
                 url: '/account',
                 views: {
@@ -91,11 +89,10 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             /**************************************** ABOUT ****************************************/
 
             .state('app.about', {
-                url: '/lists',
+                url: '/about',
                 views: {
                     'menuContent' : {
-                        templateUrl: 'templates/list/lists.html',
-                        controller: 'ListsCtrl'
+                        templateUrl: 'templates/about.html'
                     }
                 }
             });
@@ -103,4 +100,3 @@ angular.module('starter', ['ionic', 'starter.controllers'])
         $urlRouterProvider.otherwise('/app/login');
 
     });
-

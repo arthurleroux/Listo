@@ -86,6 +86,11 @@ class UserController
                         $data["success"] = false;
                 }
                 Database::disconnect();
+                Database::disconnect();
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
                 echo json_encode($data);
             }
         }
@@ -116,6 +121,11 @@ class UserController
                     $data["success"] = true;
                 }
                 Database::disconnect();
+                Database::disconnect();
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
                 echo json_encode($data);
             }
         }
@@ -157,6 +167,10 @@ class UserController
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
         Database::disconnect();
+        //RESPONSE
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
         echo json_encode($data);
 
     }
@@ -167,6 +181,8 @@ class UserController
 
             $user_name = $this->params->user->user_name;
             $list_id = $this->params->list->list_id;
+            $data['deja'] = false;
+            $data['inconnu'] = false;
 
             if (!empty($user_name) && !empty($list_id))
             {
@@ -199,6 +215,10 @@ class UserController
                     $data['inconnu'] = true;
                 }
                 Database::disconnect();
+                //RESPONSE
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
                 echo json_encode($data);
             }
         }
@@ -231,6 +251,7 @@ class UserController
             header('Cache-Control: no-cache, must-revalidate');
             header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
             header('Content-type: application/json');
+
             echo json_encode($q);
         }
     }
