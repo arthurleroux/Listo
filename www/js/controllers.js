@@ -3,7 +3,6 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
 
-        /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
         $scope.listData = {};

@@ -39,15 +39,15 @@
                             <span class="ion-bag"></span>
                         </div>
                     </div>
-                    <ion-option-button class="button-energized" ng-click="updateProduct(product.product_id, 'Pris en charge')">
+                    <ion-option-button class="button-energized" ng-click="updateProduct(product.product_id, 'Pris en charge')" ng-show="product.product_status == 'En attente' ">
                         <button class="button button-icon button-clear ion-android-cart" menu-toggle="right">
                         </button>
                     </ion-option-button>
-                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')">
+                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')" ng-show="product.product_status !== 'Achete' && product.by_user_name == currentUser.user_name">
                         <button class="button button-icon button-clear ion-bag" menu-toggle="right">
                         </button>
                     </ion-option-button>
-                    <ion-option-button class="button-assertive" ng-click="deleteProduct(product.product_id)">
+                    <ion-option-button class="button-assertive" ng-click="deleteProduct(product.product_id)" ng-show="list.user_name == currentUser.user_name">
                         <button class="button button-icon button-clear ion-android-delete" menu-toggle="right">
                         </button>
                     </ion-option-button>
@@ -66,7 +66,7 @@
                     </div>
                     <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
                         {{ user.user_name }}
-                        <ion-option-button ng-show="currentUser.user_id !== user.user_id" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name)">
+                        <ion-option-button ng-show="currentUser.user_id !== user.user_id && list.user_name == currentUser.user_name" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name)">
                             <button class="button button-icon button-clear ion-android-delete" menu-toggle="right">
                             </button>
                         </ion-option-button>
