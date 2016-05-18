@@ -269,10 +269,10 @@ angular.module('starter.controllers', ['ngStorage'])
 
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
         }
-        $ionicHistory.nextViewOptions({
-            disableBack: true
-        });
 
         if ($scope.logged == true) {
             $http.post($scope.apiLink+"List/ListController.php", {
