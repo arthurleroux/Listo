@@ -105,7 +105,14 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AccountCtrl ****************************************/
 
-    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage) {
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage, $ionicHistory) {
+        if (!angular.isDefined($localStorage.currentUser)) {
+            $state.go('app.login');
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+        }
+
         $scope.updateUser = function() {
             if ($scope.userData.user_password
                 && $scope.userData.user_password_confirmation) {
@@ -451,7 +458,13 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory) {
+        if (!angular.isDefined($localStorage.currentUser)) {
+            $state.go('app.login');
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+        }
 
         $http.post($scope.apiLink+"List/ListController.php", {
                 type : 'list',
