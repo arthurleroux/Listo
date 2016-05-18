@@ -3,7 +3,6 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
 
-        /********** POURQUOI TOUTES LES REQUETES SONT EN POST ??? */
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
         $scope.listData = {};
@@ -33,7 +32,7 @@ angular.module('starter.controllers', ['ngStorage'])
         }
 
         $scope.logout = function () {
-            delete $localStorage.currentUser;
+            $localStorage.$reset();
             $state.go('app.login');
             $window.location.reload(true);
         };
@@ -41,7 +40,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout) {
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -74,13 +73,17 @@ angular.module('starter.controllers', ['ngStorage'])
 
                     .then(function (res){
                             var response = res.data;
+                            //alert("test");
 
                             if(response.success == true) {
-                                $state.go('app.lists');
-                                $window.location.reload(true);
                                 $scope.userData = {};
                                 $localStorage.currentUser = response.user;
-                                console.log($localStorage.currentUser);
+                                $timeout(function(){
+                                    $state.go('app.lists');
+                                    $window.location.reload(true);
+                                    console.log($localStorage.currentUser);
+                                }, 200);
+
                             }
                             else {
                                 $scope.error = "Identifiants incorrects";
@@ -262,7 +265,14 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory) {
+
+        if (!angular.isDefined($localStorage.currentUser)) {
+            $state.go('app.login');
+        }
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
 
         if ($scope.logged == true) {
             $http.post($scope.apiLink+"List/ListController.php", {
