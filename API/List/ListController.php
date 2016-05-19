@@ -38,7 +38,7 @@ class ListController
     /********************************* CRUD **********************************/
     private function addList()
     {
-        if (!empty($this->params->list)) {
+        if (!empty($this->params->list) && !empty($this->params->user)) {
             $list_name = $this->params->list->list_name;
             $list_description = $this->params->list->list_description;
             $user_id = $this->params->user->user_id;
@@ -54,7 +54,7 @@ class ListController
                 $q2 = $pdo->prepare($sql2);
                 $q2->execute();
                 Database::disconnect();
-//                RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -63,37 +63,40 @@ class ListController
         }
     }
     private function findList() {
-        $list_id = $this->params->list->list_id;
+        if (!empty($this->params->list)) {
 
-        if (!empty($list_id)) {
+            $list_id = $this->params->list->list_id;
 
-            $pdo = Database::connect();
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if (!empty($list_id)) {
 
-            $sql = "SELECT * FROM list WHERE list_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($list_id));
-            $data['list'] = $q->fetch(PDO::FETCH_ASSOC);
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $sql = "SELECT * FROM product WHERE list_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($list_id));
-            $data['products'] = $q->fetchAll(PDO::FETCH_ASSOC);
+                $sql = "SELECT * FROM list WHERE list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($list_id));
+                $data['list'] = $q->fetch(PDO::FETCH_ASSOC);
 
-            $sql = "SELECT *
-                    FROM users u, user_list ul
-                    WHERE u.user_id = ul.user_id
-                    AND ul.list_id = ".$list_id;
-            $q = $pdo->prepare($sql);
-            $q->execute();
-            $data['users'] = $q->fetchAll(PDO::FETCH_ASSOC);
+                $sql = "SELECT * FROM product WHERE list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($list_id));
+                $data['products'] = $q->fetchAll(PDO::FETCH_ASSOC);
 
-            Database::disconnect();
-            //RESPONSE
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Content-type: application/json');
-            echo json_encode($data);
+                $sql = "SELECT *
+                        FROM users u, user_list ul
+                        WHERE u.user_id = ul.user_id
+                        AND ul.list_id = ".$list_id;
+                $q = $pdo->prepare($sql);
+                $q->execute();
+                $data['users'] = $q->fetchAll(PDO::FETCH_ASSOC);
+
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }
         }
     }
     private function findAllList($userId)
@@ -108,6 +111,9 @@ class ListController
         $q->execute();
         $data = $q->fetchAll(PDO::FETCH_ASSOC);
         Database::disconnect();
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
         echo json_encode($data);
     }
     private function updateList()
@@ -123,7 +129,7 @@ class ListController
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_name, $list_description, $list_id));
                 Database::disconnect();
-                //RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -135,11 +141,8 @@ class ListController
     {
         if (!empty($this->params->list)) {
             $list_id = $this->params->list->list_id;
-            $valid = true;
-            if ((empty($list_id))) {
-                $valid = false;
-            }
-            if ($valid) {
+
+            if (!empty($list_id)) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "DELETE FROM list  WHERE list_id = ?";
@@ -152,7 +155,7 @@ class ListController
                 $q3 = $pdo->prepare($sql3);
                 $q3->execute(array($list_id));
                 Database::disconnect();
-                //RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');

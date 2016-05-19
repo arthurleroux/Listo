@@ -39,15 +39,6 @@ class UserController
             if ($this->params->action == "deleteUserFromList"){
                 $this->deleteUserFromList();
             }
-            if ($this->params->action == "find"){
-                $this->findUser();
-            }
-            if ($this->params->action == "findUsers"){
-                $this->findUsers();
-            }
-            if ($this->params->action == "findAll"){
-                $this->findAllUser();
-            }
             if ($this->params->action == "update"){
                 $this->updateUser();
             }
@@ -86,8 +77,7 @@ class UserController
                         $data["success"] = false;
                 }
                 Database::disconnect();
-                Database::disconnect();
-                //RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -121,8 +111,7 @@ class UserController
                     $data["success"] = true;
                 }
                 Database::disconnect();
-                Database::disconnect();
-                //RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -144,7 +133,6 @@ class UserController
                 $q = $pdo->prepare($sql);
                 $q->execute(array(md5($user_password), $user_id));
                 Database::disconnect();
-                //RESPONSE
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -153,31 +141,9 @@ class UserController
         }
     }
 
-    private function findUsers() {
-
-        $listId = $this->params->list->list_id;
-
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "SELECT *
-                FROM users u, user_list ul
-                WHERE u.user_id = ul.user_id
-                AND ul.list_id = ".$listId;
-        $q = $pdo->prepare($sql);
-        $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-        Database::disconnect();
-        //RESPONSE
-        header('Cache-Control: no-cache, must-revalidate');
-        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-        header('Content-type: application/json');
-        echo json_encode($data);
-
-    }
-
     private function addUserToList()
     {
-        if (!empty($this->params->user)) {
+        if (!empty($this->params->user) && !empty($this->params->list)) {
 
             $user_name = $this->params->user->user_name;
             $list_id = $this->params->list->list_id;
@@ -215,7 +181,7 @@ class UserController
                     $data['inconnu'] = true;
                 }
                 Database::disconnect();
-                //RESPONSE
+
                 header('Cache-Control: no-cache, must-revalidate');
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
@@ -226,78 +192,63 @@ class UserController
 
     private function deleteUser() {
 
-        $user_id = $this->params->user->user_id;
-        $user_name = $this->params->user->user_name;
+        if (!empty($this->params->user)) {
 
-        if (!empty($user_id) && !empty($user_name)) {
+            $user_id = $this->params->user->user_id;
+            $user_name = $this->params->user->user_name;
 
-            $pdo = Database::connect();
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if (!empty($user_id) && !empty($user_name)) {
 
-            $sql = "DELETE FROM users WHERE user_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_id));
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $sql = "DELETE FROM user_list WHERE user_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_id));
+                $sql = "DELETE FROM users WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id));
 
-            $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_name));
+                $sql = "DELETE FROM user_list WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id));
 
-            Database::disconnect();
-            //RESPONSE
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Content-type: application/json');
+                $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_name));
 
-            echo json_encode($q);
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+
+                echo json_encode($q);
+            }
         }
     }
 
     private function deleteUserFromList()
     {
-        $user_id = $this->params->user->user_id;
-        $user_name = $this->params->user->user_name;
+        if (!empty($this->params->user)) {
+            $user_id = $this->params->user->user_id;
+            $user_name = $this->params->user->user_name;
 
-        if (!empty($user_id) && !empty($user_name)) {
-            $pdo = Database::connect();
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            if (!empty($user_id) && !empty($user_name)) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $sql = "DELETE FROM user_list WHERE user_id = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_id));
+                $sql = "DELETE FROM user_list WHERE user_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id));
 
-            $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
-            $q = $pdo->prepare($sql);
-            $q->execute(array($user_name));
+                $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_name));
 
-            Database::disconnect();
-            //RESPONSE
-            header('Cache-Control: no-cache, must-revalidate');
-            header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
-            header('Content-type: application/json');
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+            }
         }
-
     }
-
-    private function findAllUser()
-    {
-
-        $pdo = Database::connect();
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $sql = "Select * from users";
-        $q = $pdo->prepare($sql);
-        $q->execute();
-        $data = $q->fetchAll(PDO::FETCH_ASSOC);
-        Database::disconnect();
-
-        $tab = json_encode($data);
-        var_dump($data);
-
-    }
-
-
-
 }
