@@ -73,7 +73,7 @@
                     </ion-item>
                     <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
                     </button>
-                    <button ng-show="usersEmpty !== true" class="button button-block button-assertive" ng-click="quitList()">
+                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block button-assertive" ng-click="quitList()">
                         Quitter cette liste
                     </button>
                 </div>
