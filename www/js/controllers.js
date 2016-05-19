@@ -593,7 +593,7 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
 
-        $scope.deleteUserFromList = function(userId, userName) {
+        $scope.deleteUserFromList = function(userId, userName, listId) {
             $ionicPopup.confirm({
                 title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
                 buttons: [
@@ -613,7 +613,11 @@ angular.module('starter.controllers', ['ngStorage'])
                                     user : {
                                         user_id : userId,
                                         user_name : userName
+                                    },
+                                    list : {
+                                        list_id : listId
                                     }
+
                                 })
 
                                 .then(function (res){
@@ -634,7 +638,7 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
 
-        $scope.quitList = function() {
+        $scope.quitList = function(listId) {
             $ionicPopup.confirm({
                 title: 'Êtes vous sur de quitter cette liste ?',
                 buttons: [
@@ -654,6 +658,9 @@ angular.module('starter.controllers', ['ngStorage'])
                                     user : {
                                         user_id : $localStorage.currentUser.user_id,
                                         user_name : $localStorage.currentUser.user_name
+                                    },
+                                    list : {
+                                        list_id : listId
                                     }
                                 })
 

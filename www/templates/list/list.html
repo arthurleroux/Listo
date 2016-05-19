@@ -66,14 +66,14 @@
                     </div>
                     <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
                         {{ user.user_name }}
-                        <ion-option-button ng-show="currentUser.user_id !== user.user_id && list.user_name == currentUser.user_name" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name)">
+                        <ion-option-button ng-show="currentUser.user_id !== user.user_id && list.user_name == currentUser.user_name" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name, list.list_id)">
                             <button class="button button-icon button-clear ion-android-delete">
                             </button>
                         </ion-option-button>
                     </ion-item>
                     <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
                     </button>
-                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block button-assertive" ng-click="quitList()">
+                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block button-assertive" ng-click="quitList(list.list_id)">
                         Quitter cette liste
                     </button>
                 </div>

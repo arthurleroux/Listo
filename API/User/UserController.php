@@ -227,17 +227,18 @@ class UserController
 
     private function deleteUserFromList()
     {
-        if (!empty($this->params->user)) {
+        if (!empty($this->params->user) && !empty($this->params->list)) {
             $user_id = $this->params->user->user_id;
             $user_name = $this->params->user->user_name;
+            $list_id = $this->params->list->list_id;
 
             if (!empty($user_id) && !empty($user_name)) {
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-                $sql = "DELETE FROM user_list WHERE user_id = ?";
+                $sql = "DELETE FROM user_list WHERE user_id = ? AND list_id = ?";
                 $q = $pdo->prepare($sql);
-                $q->execute(array($user_id));
+                $q->execute(array($user_id, $list_id));
 
                 $sql = "UPDATE product SET product_status = 'En attente' WHERE by_user_name = ?";
                 $q = $pdo->prepare($sql);
