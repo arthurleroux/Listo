@@ -9835,3 +9835,8 @@ a.button {
 
 .list-inset .item.item-input input {
   padding-right: 0; }
+
+.logo {
+  margin-top: 20px; }
+  .logo img {
+    width: 25%; }

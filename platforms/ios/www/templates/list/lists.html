@@ -22,11 +22,15 @@
                         <button class="button button-icon button-clear ion-android-delete"></button>
                     </ion-option-button>
                 </ion-item>
-                <div ng-show="listsEmpty == true" class="text-center margin-top-10">
-                    <h3>Créez une liste !</h3>
-                </div>
             </div>
         </ion-list>
+        <div ng-show="listsEmpty == true" class="text-center margin-top-10">
+            <div class="list list-inset">
+                <button class="button button-block button-positive" ng-click="showNewList(currentUser.user_id)">
+                    Ajoutez une liste !
+                </button>
+            </div>
+        </div>
         <script type="text/ng-template">
             <input type="text" ng-model="listData.list_name">
         </script>
