@@ -53,7 +53,6 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.showRegister = function() {
             $state.go("app.register");
             $scope.error = "";
-            $scope.userData = {};
         };
 
         $scope.login = function() {
@@ -241,7 +240,6 @@ angular.module('starter.controllers', ['ngStorage'])
                                                 type: 'button-positive',
                                                 onTap: function () {
                                                     $state.go('app.login');
-                                                    $scope.userData = {};
                                                 }
                                             }
                                         ]
