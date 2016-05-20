@@ -17,6 +17,10 @@ $dark:                            #444 !default;
 
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
+$positive: rgb(0, 155, 177);
+$balanced: rgb(101, 202, 76);
+$assertive: rgb(233, 78, 18);
+$royal: rgb(0, 122, 138);
 
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
@@ -77,6 +81,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
   }
+}
+
+.item {
+  border-color: rgba(0, 122, 138, 0.5);
+}
+
+.item-divider {
+  color: #ffffff;
+  background-color: $royal;
 }
 
 .item-complex .item-content {
