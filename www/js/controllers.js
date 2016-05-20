@@ -79,7 +79,6 @@ angular.module('starter.controllers', ['ngStorage'])
                                 $localStorage.currentUser = response.user;
                                 $timeout(function(){
                                     $state.go('app.lists');
-                                    $window.location.reload(true);
                                     console.log($localStorage.currentUser);
                                 }, 200);
 
@@ -334,9 +333,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                         }
                                     })
                                     .then(function (res) {
-                                            $state.go('app.lists');
-                                            $window.location.reload(true);
-
+                                            $state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
                                             console.warn('ERROR NEW LIST');
@@ -396,10 +393,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                     })
 
                                     .then(function (res){
-                                            var response = res.data;
-                                            $state.go("app.lists");
-                                            $window.location.reload(true);
-                                            console.log(response);
+                                            $state.go($state.current, {}, {reload: true});
 
                                         }, function(error){
                                             console.warn('ERROR UPDATE LIST');
@@ -438,9 +432,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go('app.lists');
-                                        $window.location.reload(true);
-
+                                        $state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DELETE LIST');
@@ -456,7 +448,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory, $timeout) {
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -663,11 +655,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 })
 
                                 .then(function (res){
-                                        var response = res.data;
-                                        $state.go('app.lists');
-                                        $window.location.reload(true);
-                                        console.log(response);
-
+                                    $state.go('app.lists');
 
                                     }, function(error){
                                         console.warn('ERROR DELETE USER');
