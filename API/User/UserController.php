@@ -57,6 +57,7 @@ class UserController
 
             $user_name = $this->params->user->user_name;
             $user_password = $this->params->user->user_password;
+            $data['success'] = "";
 
             if ( (!empty($user_name) && !empty($user_password)) ) {
 
