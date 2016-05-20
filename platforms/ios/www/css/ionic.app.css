@@ -9835,3 +9835,6 @@ a.button {
 
 .list-inset .item.item-input input {
   padding-right: 0; }
+
+ion-header-bar .menu-title {
+  margin-top: 20px; }

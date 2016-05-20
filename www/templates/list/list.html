@@ -20,9 +20,16 @@
                    {{ list.list_description }}
                 </div>
             </div>
-            <div class="list list-inset">
-                <div ng-show="listEmpty == false" class="item item-divider">
+            <div class="card">
+                <div class="item item-divider">
                     Liste des produits
+                </div>
+                <div ng-show="listEmpty == true" class="text-center margin-top-10 margin-bottom-20">
+                    <div class="item">
+                        <button class="button button-block button-positive" ng-click="showNewProduct(list.list_id)">
+                            Ajoutez un produit !
+                        </button>
+                    </div>
                 </div>
                 <ion-item ng-repeat="product in products" ng-click="showInfos(product.product_id)">
                     <div class="row">
@@ -52,9 +59,6 @@
                         </button>
                     </ion-option-button>
                 </ion-item>
-                <div ng-show="listEmpty == true" class="text-center margin-top-10 margin-bottom-20">
-                    <h3>Ajoutez un produit !</h3>
-                </div>
             </div>
             <div class="card">
                 <div class="item item-divider">
@@ -62,7 +66,7 @@
                 </div>
                 <div class="item item-text-wrap">
                     <div ng-show="usersEmpty == true" class="text-center margin-top-10 margin-bottom-20">
-                        <h3>Ajoutez un utilisateur pour partager cette liste !</h3>
+                        <h3>Vous êtes le seul utilisateur de cette liste</h3>
                     </div>
                     <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
                         {{ user.user_name }}

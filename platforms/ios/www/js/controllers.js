@@ -504,50 +504,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
         console.log($scope.list);
 
-        /*// Récupère tous les produits de la liste
-         $http.post($scope.apiLink+"Product/ProductController.php", {
-         type : 'product',
-         action : 'findAll',
-         list: {
-         list_id : $stateParams['listId']
-         }
-         })
-         .then(function (res){
-         var response = res.data;
-         $scope.products = response;
-         if (Object.keys($scope.products).length == 0) {
-         $scope.listEmpty = true;
-         }
-         else {
-         $scope.listEmpty = false;
-         }
-         }, function(error){
-         console.warn('ERROR FIND ALL PRODUCTS');
-         console.log(error);
-         }
-         );
-         $http.post($scope.apiLink+"User/UserController.php", {
-         type : 'user',
-         action : 'findUsers',
-         list: {
-         list_id : $stateParams['listId']
-         }
-         })
-         .then(function (res){
-         var response = res.data;
-         $scope.users= response;
-         console.log($scope.users);
-         if (Object.keys($scope.users).length == 1) {
-         $scope.usersEmpty = true;
-         }
-         else {
-         $scope.usersEmpty = false;
-         }
-         }, function(error){
-         console.warn('ERROR FIND USERS');
-         console.log(error);
-         }
-         );*/
+
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -636,7 +593,7 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
 
-        $scope.deleteUserFromList = function(userId, userName) {
+        $scope.deleteUserFromList = function(userId, userName, listId) {
             $ionicPopup.confirm({
                 title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
                 buttons: [
@@ -656,7 +613,11 @@ angular.module('starter.controllers', ['ngStorage'])
                                     user : {
                                         user_id : userId,
                                         user_name : userName
+                                    },
+                                    list : {
+                                        list_id : listId
                                     }
+
                                 })
 
                                 .then(function (res){
@@ -677,7 +638,7 @@ angular.module('starter.controllers', ['ngStorage'])
             });
         };
 
-        $scope.quitList = function() {
+        $scope.quitList = function(listId) {
             $ionicPopup.confirm({
                 title: 'Êtes vous sur de quitter cette liste ?',
                 buttons: [
@@ -697,6 +658,9 @@ angular.module('starter.controllers', ['ngStorage'])
                                     user : {
                                         user_id : $localStorage.currentUser.user_id,
                                         user_name : $localStorage.currentUser.user_name
+                                    },
+                                    list : {
+                                        list_id : listId
                                     }
                                 })
 
