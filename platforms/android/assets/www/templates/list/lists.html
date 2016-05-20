@@ -1,0 +1,37 @@
+<ion-view cache-view="false">
+    <ion-nav-title>
+        Mes listes
+    </ion-nav-title>
+    <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
+        </button>
+    </ion-nav-buttons>
+    <ion-content>
+        <ion-refresher
+            pulling-text="Rafraichir la page ..."
+            on-refresh="doRefresh()">
+        </ion-refresher>
+        <ion-list>
+            <div class="list list-inset">
+                <ion-item ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
+                    {{list.list_name}}
+                    <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
+                        <button class="button-icon button-clear ion-android-create"></button>
+                    </ion-option-button>
+                    <ion-option-button class="button-assertive" ng-click="deleteList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
+                        <button class="button button-icon button-clear ion-android-delete"></button>
+                    </ion-option-button>
+                </ion-item>
+                <div ng-show="listsEmpty == true" class="text-center margin-top-10">
+                    <h3>Créez une liste !</h3>
+                </div>
+            </div>
+        </ion-list>
+        <script type="text/ng-template">
+            <input type="text" ng-model="listData.list_name">
+        </script>
+        <script type="text/ng-template">
+            <input type="text" ng-model="list.list_name">
+        </script>
+    </ion-content>
+</ion-view>

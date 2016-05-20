@@ -1,0 +1,21 @@
+<ion-view view-title="Bienvenue !">
+    <ion-content ng-show="logged == false">
+        <form ng-submit="login()">
+            <div class="error text-center" ng-show="error != ''">
+                {{ error }}
+            </div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input type="text" placeholder="Pseudo" ng-model="userData.user_name">
+                </label>
+                <label class="item item-input">
+                    <input type="password"  placeholder="Mot de passe" ng-model="userData.user_password">
+                </label>
+                <button class="button button-block button-positive" type="submit">Connexion</button>
+                <button class="button button-block button-balanced" type="button" ng-click="showRegister()">Créer un compte</button>
+            </div>
+        </form>
+    </ion-content>
+</ion-view>
+
+
