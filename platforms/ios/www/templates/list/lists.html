@@ -13,7 +13,7 @@
         </ion-refresher>
         <ion-list>
             <div class="list list-inset">
-                <ion-item ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
+                <ion-item class="margin-top-10" ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
                     {{list.list_name}}
                     <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
                         <button class="button-icon button-clear ion-android-create"></button>

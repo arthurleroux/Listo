@@ -9847,3 +9847,6 @@ a.button {
   margin-top: 20px; }
   .logo img {
     width: 25%; }
+
+.platform-ios #menu-title {
+  margin-top: 20px; }
