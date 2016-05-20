@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngStorage'])
+angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
@@ -53,7 +53,6 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.showRegister = function() {
             $state.go("app.register");
             $scope.error = "";
-            $scope.userData = {};
         };
 
         $scope.login = function() {
@@ -80,7 +79,6 @@ angular.module('starter.controllers', ['ngStorage'])
                                 $localStorage.currentUser = response.user;
                                 $timeout(function(){
                                     $state.go('app.lists');
-                                    $window.location.reload(true);
                                     console.log($localStorage.currentUser);
                                 }, 200);
 
@@ -241,7 +239,6 @@ angular.module('starter.controllers', ['ngStorage'])
                                                 type: 'button-positive',
                                                 onTap: function () {
                                                     $state.go('app.login');
-                                                    $scope.userData = {};
                                                 }
                                             }
                                         ]
@@ -272,8 +269,8 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory) {
-
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $cordovaKeyboard) {
+        $cordovaKeyboard.hideAccessoryBar(true)
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -336,9 +333,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                         }
                                     })
                                     .then(function (res) {
-                                            $state.go('app.lists');
-                                            $window.location.reload(true);
-
+                                            $state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
                                             console.warn('ERROR NEW LIST');
@@ -398,10 +393,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                     })
 
                                     .then(function (res){
-                                            var response = res.data;
-                                            $state.go("app.lists");
-                                            $window.location.reload(true);
-                                            console.log(response);
+                                            $state.go($state.current, {}, {reload: true});
 
                                         }, function(error){
                                             console.warn('ERROR UPDATE LIST');
@@ -440,9 +432,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go('app.lists');
-                                        $window.location.reload(true);
-
+                                        $state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DELETE LIST');
@@ -458,7 +448,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN ListsCtrl ****************************************/
 
     /**************************************** DEBUT ListCtrl ****************************************/
-    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory) {
+    .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory, $timeout) {
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -665,11 +655,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 })
 
                                 .then(function (res){
-                                        var response = res.data;
-                                        $state.go('app.lists');
-                                        $window.location.reload(true);
-                                        console.log(response);
-
+                                    $state.go('app.lists');
 
                                     }, function(error){
                                         console.warn('ERROR DELETE USER');
