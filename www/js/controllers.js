@@ -79,6 +79,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 $localStorage.currentUser = response.user;
                                 $timeout(function(){
                                     $state.go('app.lists');
+                                    $window.location.reload(true);
                                     console.log($localStorage.currentUser);
                                 }, 200);
 
