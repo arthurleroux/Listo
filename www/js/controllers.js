@@ -88,10 +88,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                     buttons: [
                                         {
                                             text: 'Ok',
-                                            type: 'button-assertive',
-                                            onTap: function () {
-                                                $state.go($state.current, {}, {reload: true});
-                                            }
+                                            type: 'button-assertive'
                                         }
                                     ]
                                 });
@@ -111,10 +108,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     buttons: [
                         {
                             text: 'Ok',
-                            type: 'button-assertive',
-                            onTap: function () {
-                                $state.go($state.current, {}, {reload: true});
-                            }
+                            type: 'button-assertive'
                         }
                     ]
                 });
@@ -180,10 +174,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         buttons: [
                             {
                                 text: 'Ok',
-                                type: 'button-assertive',
-                                onTap: function () {
-                                    $state.go($state.current, {}, {reload: true});
-                                }
+                                type: 'button-assertive'
                             }
                         ]
                     });
@@ -197,10 +188,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     buttons: [
                         {
                             text: 'Ok',
-                            type: 'button-assertive',
-                            onTap: function () {
-                                $state.go($state.current, {}, {reload: true});
-                            }
+                            type: 'button-assertive'
                         }
                     ]
                 });
@@ -298,10 +286,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                         buttons: [
                                             {
                                                 text: 'Ok',
-                                                type: 'button-assertive',
-                                                onTap: function () {
-                                                    $state.go($state.current, {}, {reload: true});
-                                                }
+                                                type: 'button-assertive'
                                             }
                                         ]
                                     });
@@ -321,10 +306,7 @@ angular.module('starter.controllers', ['ngStorage'])
                         buttons: [
                             {
                                 text: 'Ok',
-                                type: 'button-assertive',
-                                onTap: function () {
-                                    $state.go($state.current, {}, {reload: true});
-                                }
+                                type: 'button-assertive'
                             }
                         ]
                     });
@@ -338,10 +320,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     buttons: [
                         {
                             text: 'Ok',
-                            type: 'button-assertive',
-                            onTap: function () {
-                                $state.go($state.current, {}, {reload: true});
-                            }
+                            type: 'button-assertive'
                         }
                     ]
                 });
