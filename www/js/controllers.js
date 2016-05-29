@@ -72,7 +72,6 @@ angular.module('starter.controllers', ['ngStorage'])
 
                     .then(function (res){
                             var response = res.data;
-                            //alert("test");
 
                             if(response.success == true) {
                                 $scope.userData = {};
@@ -270,7 +269,13 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
 
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
@@ -452,6 +457,12 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory, $timeout) {
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({

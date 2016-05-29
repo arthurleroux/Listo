@@ -6,7 +6,10 @@
         <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
         </button>
     </ion-nav-buttons>
-    <ion-content>
+    <ion-content ng-show="visible == false">
+        <ion-spinner icon="lines" class="spinner-royal"></ion-spinner>
+    </ion-content>
+    <ion-content ng-show="visible == true">
         <ion-refresher
             pulling-text="Rafraichir la page ..."
             on-refresh="doRefresh()">

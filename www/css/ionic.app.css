@@ -9858,3 +9858,16 @@ a.button {
     font-size: 18px;
     position: relative;
     padding: 0; }
+
+.spinner-royal {
+  position: absolute;
+  top: 45vh;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); }
+  .spinner-royal svg {
+    width: 50px;
+    height: 50px; }
