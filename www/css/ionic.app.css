@@ -9850,3 +9850,11 @@ a.button {
 
 .platform-ios #menu-title {
   margin-top: 20px; }
+
+.item-select {
+  height: 40px;
+  border-radius: 5px; }
+  .item-select select {
+    font-size: 18px;
+    position: relative;
+    padding: 0; }

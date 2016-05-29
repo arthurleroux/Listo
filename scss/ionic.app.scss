@@ -112,3 +112,13 @@ $royal: rgb(0, 122, 138);
     margin-top: 20px;
   }
 }
+
+.item-select {
+  height: 40px;
+  border-radius: 5px;
+  select {
+    font-size: 18px;
+    position: relative;
+    padding: 0;
+  }
+}

@@ -334,6 +334,8 @@ angular.module('starter.controllers', ['ngStorage'])
                                         }
                                     })
                                     .then(function (res) {
+                                            $scope.listData.list_description = "";
+                                            $scope.listData.list_name = "";
                                             $state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
@@ -520,8 +522,30 @@ angular.module('starter.controllers', ['ngStorage'])
 
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
+
+            $http.post($scope.apiLink+"User/UserController.php",
+                {
+                    type : 'user',
+                    action : 'findAll'
+                })
+                .then(function (res){
+                        var response = res.data;
+                        $scope.allUsers = response;
+                        console.log($scope.allUsers);
+
+                    }, function(error){
+                        console.warn('ERROR FIND ALL USERS');
+                        console.log(error);
+                    }
+                );
+
             $ionicPopup.show({
-                template: '<input type="text" placeholder="Pseudo de la personne" ng-model="userData.user_name">',
+                template:
+                    '<label class = "item item-input item-select">' +
+                        '<select ng-model="userData.user_name">' +
+                            '<option ng-repeat="user in allUsers" value="{{user.user_name}}">{{ user.user_name }}</option>' +
+                        '</select>' +
+                    '</label>',
                 title: 'Ajouter une personne',
                 scope: $scope,
                 buttons: [
