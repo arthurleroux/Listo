@@ -40,7 +40,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPlatform) {
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -522,7 +522,6 @@ angular.module('starter.controllers', ['ngStorage'])
 
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
-
             $http.post($scope.apiLink+"User/UserController.php",
                 {
                     type : 'user',
@@ -558,49 +557,52 @@ angular.module('starter.controllers', ['ngStorage'])
                                 //don't allow the user to close unless he enters wifi password
                                 e.preventDefault();
                             } else {
-                                $http.post($scope.apiLink+"User/UserController.php",
-                                    {
-                                        type : 'user',
-                                        action : 'addUserToList',
-                                        list: {
-                                            list_id : $stateParams['listId']
-                                        },
-                                        user: {
-                                            user_name : $scope.userData.user_name
-                                        }
-                                    })
-                                    .then(function (res){
-                                            var response = res.data;
-                                            if (response.deja == true) {
-                                                $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
+                                $timeout(function(){
+                                    $http.post($scope.apiLink+"User/UserController.php",
+                                        {
+                                            type : 'user',
+                                            action : 'addUserToList',
+                                            list: {
+                                                list_id : $stateParams['listId']
+                                            },
+                                            user: {
+                                                user_name : $scope.userData.user_name
                                             }
-                                            else if (response.inconnu == true) {
-                                                $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
-                                            }
-                                            else {
-                                                $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
-                                            }
-                                            $scope.userData.user_name = "";
-                                            console.log(response);
-                                            $ionicPopup.alert({
-                                                title: $scope.message,
-                                                buttons: [
-                                                    {
-                                                        text: '<b>Ok</b>',
-                                                        type: 'button-positive',
-                                                        onTap: function() {
-                                                            $state.go($state.current, {}, {reload: true});
+                                        })
+                                        .then(function (res){
+                                                var response = res.data;
+                                                if (response.deja == true) {
+                                                    $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
+                                                }
+                                                else if (response.inconnu == true) {
+                                                    $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
+                                                }
+                                                else {
+                                                    $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
+                                                }
+                                                $scope.userData.user_name = "";
+                                                console.log(response);
+                                                $ionicPopup.alert({
+                                                    title: $scope.message,
+                                                    buttons: [
+                                                        {
+                                                            text: '<b>Ok</b>',
+                                                            type: 'button-positive',
+                                                            onTap: function() {
+                                                                $state.go($state.current, {}, {reload: true});
+                                                            }
                                                         }
-                                                    }
-                                                ]
+                                                    ]
 
 
-                                            });
-                                        }, function(error){
-                                            console.warn('ERROR ADD USER TO LIST');
-                                            console.log(error);
-                                        }
-                                    );
+                                                });
+                                            }, function(error){
+                                                console.warn('ERROR ADD USER TO LIST');
+                                                console.log(error);
+                                            }
+                                        );
+                                }, 200);
+
                             }
                         }
                     }
