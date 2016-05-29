@@ -554,6 +554,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     '<label class = "item item-input item-select">' +
                         '<select ng-model="userData.user_name">' +
                             '<option ng-repeat="user in allUsers" value="{{user.user_name}}">{{ user.user_name }}</option>' +
+                            '<option value="" disabled selected>Pseudo</option>' +
                         '</select>' +
                     '</label>',
                 title: 'Ajouter une personne',
