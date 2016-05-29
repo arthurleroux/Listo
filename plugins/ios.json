@@ -8,22 +8,22 @@
     },
     "installed_plugins": {
         "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "cordova-plugin-device": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "cordova-plugin-splashscreen": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "cordova-plugin-statusbar": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         }
     },
     "dependent_plugins": {}

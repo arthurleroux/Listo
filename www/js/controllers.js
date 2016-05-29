@@ -13,7 +13,6 @@ angular.module('starter.controllers', ['ngStorage'])
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
         $scope.lists = {};
-        $scope.error = "";
 
         if (angular.isDefined($localStorage.currentUser)) {
             $scope.logged = true;
@@ -40,7 +39,7 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPlatform) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup) {
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -52,7 +51,6 @@ angular.module('starter.controllers', ['ngStorage'])
 
         $scope.showRegister = function() {
             $state.go("app.register");
-            $scope.error = "";
         };
 
         $scope.login = function() {
@@ -84,18 +82,42 @@ angular.module('starter.controllers', ['ngStorage'])
 
                             }
                             else {
-                                $scope.error = "Identifiants incorrects";
+                                $ionicPopup.alert({
+                                    title: "Oupss",
+                                    template: "Identifiants incorrects",
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-assertive',
+                                            onTap: function () {
+                                                $state.go($state.current, {}, {reload: true});
+                                            }
+                                        }
+                                    ]
+                                });
                                 $scope.userData.user_password = "";
                             }
                         },
                         function(error){
-                            console.warn('ERROR REGISTER');
+                            console.warn('ERROR LOGIN');
                             $scope.userData = {};
                         }
                     );
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas été remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive',
+                            onTap: function () {
+                                $state.go($state.current, {}, {reload: true});
+                            }
+                        }
+                    ]
+                });
             }
         }
     })
@@ -152,14 +174,38 @@ angular.module('starter.controllers', ['ngStorage'])
                         );
                 }
                 else {
-                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $ionicPopup.alert({
+                        title: "Oupss",
+                        template: "Les deux mots de passe ne correspondent pas",
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive',
+                                onTap: function () {
+                                    $state.go($state.current, {}, {reload: true});
+                                }
+                            }
+                        ]
+                    });
                     $scope.userData.user_password_confirmation = "";
                 }
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas étés remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive',
+                            onTap: function () {
+                                $state.go($state.current, {}, {reload: true});
+                            }
+                        }
+                    ]
+                });
             }
-        }
+        };
 
         $scope.deleteUser = function () {
             $ionicPopup.confirm({
@@ -246,7 +292,19 @@ angular.module('starter.controllers', ['ngStorage'])
 
                                 }
                                 else {
-                                    $scope.error = "Ce pseudo est déjà utilisé";
+                                    $ionicPopup.alert({
+                                        title: "Oupss",
+                                        template: "Ce pseudo est déjà utilisé",
+                                        buttons: [
+                                            {
+                                                text: 'Ok',
+                                                type: 'button-assertive',
+                                                onTap: function () {
+                                                    $state.go($state.current, {}, {reload: true});
+                                                }
+                                            }
+                                        ]
+                                    });
                                 }
 
                             },
@@ -257,12 +315,37 @@ angular.module('starter.controllers', ['ngStorage'])
                         );
                 }
                 else {
-                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $ionicPopup.alert({
+                        title: "Oupss",
+                        template: "Les deux mots de passe ne correspondent pas",
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive',
+                                onTap: function () {
+                                    $state.go($state.current, {}, {reload: true});
+                                }
+                            }
+                        ]
+                    });
                     $scope.userData.user_password_confirmation = "";
                 }
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas étés remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive',
+                            onTap: function () {
+                                $state.go($state.current, {}, {reload: true});
+                            }
+                        }
+                    ]
+                });
+                $scope.userData.user_password_confirmation = "";
             }
         };
     })
