@@ -18,7 +18,6 @@ $dark:                            #444 !default;
 // The path for our ionicons font files, relative to the built CSS in www/css
 $ionicons-font-path: "../lib/ionic/fonts" !default;
 $positive: rgb(0, 155, 177);
-$balanced: rgb(101, 202, 76);
 $assertive: rgb(233, 78, 18);
 $royal: rgb(0, 122, 138);
 
@@ -34,16 +33,25 @@ $royal: rgb(0, 122, 138);
 }
 
 .button {
-  .ion-android-cart, .ion-android-create, .ion-bag, .ion-android-delete {
+  .ion-icon {
     color: #fff !important;
-    font-size: 20px;
   }
 }
 
-.ion-person-add {
-  font-size: 30px;
+.ion-icon {
+  font-size: 20px;
 }
 
+.btn-plus {
+  color: $positive;
+  font-size: 35px;
+  background-color: transparent;
+}
+
+.btn-quit {
+  color: $assertive;
+  background-color: transparent;
+}
 
 .error {
   border-radius: 2px;

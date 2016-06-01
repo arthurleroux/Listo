@@ -19,10 +19,10 @@
                 <ion-item class="margin-top-10" ng-repeat="list in lists" href="#/app/lists/{{list.list_id}}">
                     {{list.list_name}}
                     <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
-                        <button class="button-icon button-clear ion-android-create"></button>
+                        <button class="button-icon button-clear ion-icon ion-android-create"></button>
                     </ion-option-button>
                     <ion-option-button class="button-assertive" ng-click="deleteList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
-                        <button class="button button-icon button-clear ion-android-delete"></button>
+                        <button class="button button-icon button-clear ion-icon ion-android-delete"></button>
                     </ion-option-button>
                 </ion-item>
             </div>
