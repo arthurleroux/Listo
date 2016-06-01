@@ -9871,3 +9871,6 @@ a.button {
   .spinner-royal svg {
     width: 50px;
     height: 50px; }
+
+.float-right {
+  float: right; }

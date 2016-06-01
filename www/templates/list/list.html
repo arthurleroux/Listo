@@ -35,25 +35,16 @@
                     </div>
                 </div>
                 <ion-item ng-repeat="product in products" ng-click="showInfos(product.product_id)">
-                    <div class="row">
-                        <div class="col col-80">
-                            {{ product.product_name }}
-                        </div>
-                        <div ng-show="product.product_status == 'En attente'" class="col text-right">
-                            <span class="ion-more"></span>
-                        </div>
-                        <div ng-show="product.product_status == 'Pris en charge'" class="col text-right">
-                            <span class="ion-android-cart"></span>
-                        </div>
-                        <div ng-show="product.product_status == 'Achete'" class="col text-right">
-                            <span class="ion-bag"></span>
-                        </div>
-                    </div>
+                    {{ product.product_name }}
+                    <span ng-show="product.product_status == 'En attente'" class="ion-more float-right"></span>
+                    <span ng-show="product.product_status == 'Pris en charge'" class="ion-android-cart float-right"></span>
+                    <span ng-show="product.product_status == 'Achete'" class="ion-bag float-right"></span>
+
                     <ion-option-button class="button-energized" ng-click="updateProduct(product.product_id, 'Pris en charge')" ng-show="product.product_status == 'En attente' ">
                         <button class="button button-icon button-clear ion-android-cart">
                         </button>
                     </ion-option-button>
-                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')" ng-show="product.product_status !== 'Achete' && product.by_user_name == currentUser.user_name">
+                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')" ng-show="product.product_status !== 'achete' ">
                         <button class="button button-icon button-clear ion-bag">
                         </button>
                     </ion-option-button>
