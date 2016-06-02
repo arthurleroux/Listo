@@ -615,10 +615,7 @@ angular.module('starter.controllers', ['ngStorage'])
                 })
 
                 .then(function (res){
-                        $timeout(function(){
-                            $state.go('app.lists');
-                            $window.location.reload(true);
-                        }, 200);
+                        $state.go('app.lists');
 
                     }, function(error){
                         console.warn('ERROR ACCEPT LIST');
