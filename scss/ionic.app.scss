@@ -46,11 +46,34 @@ $royal: rgb(0, 122, 138);
   color: $positive;
   font-size: 35px;
   background-color: transparent;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  &:hover {
+    color: #ffffff;
+    background-color: $positive;
+  }
 }
 
-.btn-quit {
+.btn-assertive {
   color: $assertive;
   background-color: transparent;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+  &:hover {
+    color: #ffffff;
+    background-color: $assertive;
+  }
+}
+
+.padding-left-right {
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .error {

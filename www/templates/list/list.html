@@ -49,8 +49,10 @@
                         </button>
                     </ion-option-button>
                 </ion-item>
-                <button ng-show="listEmpty == false" class="button button-block btn-plus ion-ios-plus" ng-click="showNewProduct(list.list_id)">
-                </button>
+                <div class="padding-left-right">
+                    <button ng-show="listEmpty == false" class="button button-block btn-plus ion-ios-plus" ng-click="showNewProduct(list.list_id)">
+                    </button>
+                </div>
             </div>
             <div class="card">
                 <div class="item item-divider">
@@ -66,11 +68,13 @@
                         </button>
                     </ion-option-button>
                 </ion-item>
-                <button class="button button-block btn-plus ion-person-add" ng-click="showAddUserToList(list.list_id)">
-                </button>
-                <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block btn-quit" ng-click="quitList(list.list_id)">
-                    Quitter cette liste
-                </button>
+                <div class="padding-left-right">
+                    <button class="button button-block btn-plus ion-person-add" ng-click="showAddUserToList(list.list_id)">
+                    </button>
+                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block btn-assertive" ng-click="quitList(list.list_id)">
+                        Quitter cette liste
+                    </button>
+                </div>
             </div>
         </ion-list>
     </ion-content>
