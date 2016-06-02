@@ -615,8 +615,10 @@ angular.module('starter.controllers', ['ngStorage'])
                 })
 
                 .then(function (res){
-                    $state.go('app.lists');
-                    $window.location.reload(true);
+                        $timeout(function(){
+                            $state.go('app.lists');
+                            $window.location.reload(true);
+                        }, 200);
 
                     }, function(error){
                         console.warn('ERROR ACCEPT LIST');
@@ -764,7 +766,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                                     $scope.message = "<b>" + $scope.userData.user_name + "</b> ne correspond à aucun utilisateur";
                                                 }
                                                 else {
-                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> a été ajouté à cette liste avec succès !"
+                                                    $scope.message = "Une invitation a été envoyée à <b>" + $scope.userData.user_name + "</b>";
                                                 }
                                                 $scope.userData.user_name = "";
                                                 console.log(response);
