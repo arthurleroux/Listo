@@ -526,9 +526,6 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.visible = true
         }, 800);
 
-        $ionicHistory.nextViewOptions({
-            disableBack: true
-        });
 
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
@@ -573,7 +570,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $state.go($state.current);
                         }
                     },
                     {
@@ -761,7 +758,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                         .then(function (res){
                                                 var response = res.data;
                                                 if (response.deja == true) {
-                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> fait déjà parti de cette liste";
+                                                    $scope.message = "Une invitation a déjà été envoyée à <b>" + $scope.userData.user_name + "</b> ou alors cet utilisateur fait déjà parti de cette liste";
                                                 }
                                                 else if (response.inconnu == true) {
                                                     $scope.message = "<b>" + $scope.userData.user_name + "</b> ne correspond à aucun utilisateur";
@@ -851,7 +848,7 @@ angular.module('starter.controllers', ['ngStorage'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $state.go($state.current);
                         }
                     },
                     {
