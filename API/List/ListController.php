@@ -39,6 +39,9 @@ class ListController
             if ($this->params->action == "refuse") {
                 $this->refuseList();
             }
+            if ($this->params->action == "accept") {
+                $this->acceptList();
+            }
         }
     }
     /********************************* CRUD **********************************/
@@ -198,6 +201,26 @@ class ListController
                 $pdo = Database::connect();
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $sql = "DELETE FROM user_list WHERE user_id = ? AND list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id, $list_id));
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+            }
+        }
+    }
+    private function acceptList()
+    {
+        if (!empty($this->params->user) && !empty($this->params->list)) {
+            $list_id = $this->params->list->list_id;
+            $user_id = $this->params->user->user_id;
+
+            if (!empty($user_id) && !empty($user_id)) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "UPDATE user_list SET accepted = 'true' WHERE user_id = ? AND list_id = ?";
                 $q = $pdo->prepare($sql);
                 $q->execute(array($user_id, $list_id));
                 Database::disconnect();

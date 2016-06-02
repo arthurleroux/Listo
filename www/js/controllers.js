@@ -599,6 +599,30 @@ angular.module('starter.controllers', ['ngStorage'])
                     }
                 ]
             });
+        };
+
+        $scope.accept = function(listId) {
+            $http.post($scope.apiLink+"List/ListController.php",
+                {
+                    type : 'list',
+                    action : 'accept',
+                    list: {
+                        list_id : listId
+                    },
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
+
+                .then(function (res){
+                    $state.go('app.lists');
+                    $window.location.reload(true);
+
+                    }, function(error){
+                        console.warn('ERROR ACCEPT LIST');
+                        console.log(error);
+                    }
+                );
         }
 
 
