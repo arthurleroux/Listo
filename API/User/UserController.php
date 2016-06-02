@@ -45,6 +45,9 @@ class UserController
             if ($this->params->action == "delete"){
                 $this->deleteUser();
             }
+            if ($this->params->action == "findAll"){
+                $this->findAllUsers();
+            }
         }
     }
 
@@ -252,5 +255,23 @@ class UserController
                 header('Content-type: application/json');
             }
         }
+    }
+
+    private function findAllUsers() {
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $sql = "SELECT user_name FROM users";
+        $q = $pdo->prepare($sql);
+        $q->execute();
+        $response = $q->fetchAll(PDO::FETCH_ASSOC);
+
+        Database::disconnect();
+
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
+
+        echo json_encode($response);
     }
 }
