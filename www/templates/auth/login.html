@@ -1,5 +1,8 @@
-<ion-view view-title="Bienvenue !">
-    <ion-content ng-show="logged == false">
+<ion-view>
+    <ion-content ng-show="loaderAuth == true">
+        <ion-spinner icon="lines" class="spinner-royal"></ion-spinner>
+    </ion-content>
+    <ion-content ng-show="logged == false && loaderAuth == false">
         <div class="logo text-center">
             <img src="img/logo.png" alt="">
         </div>

@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout) {
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
@@ -13,6 +13,7 @@ angular.module('starter.controllers', ['ngStorage'])
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
         $scope.lists = {};
+        $scope.loaderAuth = false;
 
         if (angular.isDefined($localStorage.currentUser)) {
             $scope.logged = true;
@@ -33,7 +34,11 @@ angular.module('starter.controllers', ['ngStorage'])
         $scope.logout = function () {
             $localStorage.$reset();
             $state.go('app.login');
-            $window.location.reload(true);
+            $scope.loaderAuth = true;
+            $timeout(function(){
+                $window.location.reload(true);
+                $scope.loaderAuth = false;
+            }, 2000);
         };
     })
     /**************************************** FIN AppCtrl ****************************************/
@@ -74,12 +79,10 @@ angular.module('starter.controllers', ['ngStorage'])
                             if(response.success == true) {
                                 $scope.userData = {};
                                 $localStorage.currentUser = response.user;
+                                $state.go('app.lists');
                                 $timeout(function(){
-                                    $state.go('app.lists');
                                     $window.location.reload(true);
-                                    console.log($localStorage.currentUser);
-                                }, 200);
-
+                                }, 800);
                             }
                             else {
                                 $ionicPopup.alert({

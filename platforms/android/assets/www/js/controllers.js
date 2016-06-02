@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
+angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
@@ -13,7 +13,6 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
         $scope.lists = {};
-        $scope.error = "";
 
         if (angular.isDefined($localStorage.currentUser)) {
             $scope.logged = true;
@@ -40,7 +39,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup) {
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -52,7 +51,6 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.showRegister = function() {
             $state.go("app.register");
-            $scope.error = "";
         };
 
         $scope.login = function() {
@@ -72,30 +70,48 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                     .then(function (res){
                             var response = res.data;
-                            //alert("test");
 
                             if(response.success == true) {
                                 $scope.userData = {};
                                 $localStorage.currentUser = response.user;
                                 $timeout(function(){
                                     $state.go('app.lists');
+                                    $window.location.reload(true);
                                     console.log($localStorage.currentUser);
                                 }, 200);
 
                             }
                             else {
-                                $scope.error = "Identifiants incorrects";
+                                $ionicPopup.alert({
+                                    title: "Oupss",
+                                    template: "Identifiants incorrects",
+                                    buttons: [
+                                        {
+                                            text: 'Ok',
+                                            type: 'button-assertive'
+                                        }
+                                    ]
+                                });
                                 $scope.userData.user_password = "";
                             }
                         },
                         function(error){
-                            console.warn('ERROR REGISTER');
+                            console.warn('ERROR LOGIN');
                             $scope.userData = {};
                         }
                     );
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas été remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
             }
         }
     })
@@ -152,14 +168,32 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                         );
                 }
                 else {
-                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $ionicPopup.alert({
+                        title: "Oupss",
+                        template: "Les deux mots de passe ne correspondent pas",
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
                     $scope.userData.user_password_confirmation = "";
                 }
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas étés remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
             }
-        }
+        };
 
         $scope.deleteUser = function () {
             $ionicPopup.confirm({
@@ -246,7 +280,16 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 }
                                 else {
-                                    $scope.error = "Ce pseudo est déjà utilisé";
+                                    $ionicPopup.alert({
+                                        title: "Oupss",
+                                        template: "Ce pseudo est déjà utilisé",
+                                        buttons: [
+                                            {
+                                                text: 'Ok',
+                                                type: 'button-assertive'
+                                            }
+                                        ]
+                                    });
                                 }
 
                             },
@@ -257,20 +300,45 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                         );
                 }
                 else {
-                    $scope.error = "Erreur : les deux mots de passe ne correspondent pas";
+                    $ionicPopup.alert({
+                        title: "Oupss",
+                        template: "Les deux mots de passe ne correspondent pas",
+                        buttons: [
+                            {
+                                text: 'Ok',
+                                type: 'button-assertive'
+                            }
+                        ]
+                    });
                     $scope.userData.user_password_confirmation = "";
                 }
             }
             else {
-                $scope.error = "Erreur : tous les champs n'ont pas étés remplis";
+                $ionicPopup.alert({
+                    title: "Oupss",
+                    template: "Tous les champs n'ont pas étés remplis",
+                    buttons: [
+                        {
+                            text: 'Ok',
+                            type: 'button-assertive'
+                        }
+                    ]
+                });
+                $scope.userData.user_password_confirmation = "";
             }
         };
     })
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $cordovaKeyboard) {
-        $cordovaKeyboard.hideAccessoryBar(true)
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -333,6 +401,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                         }
                                     })
                                     .then(function (res) {
+                                            $scope.listData.list_description = "";
+                                            $scope.listData.list_name = "";
                                             $state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
@@ -447,8 +517,126 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     })
     /**************************************** FIN ListsCtrl ****************************************/
 
+    /**************************************** DEBUT RequestListsCtrl ****************************************/
+    .controller('RequestListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
+
+
+        if (!angular.isDefined($localStorage.currentUser)) {
+            $state.go('app.login');
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+        }
+
+        if ($scope.logged == true) {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'findAllRequest',
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        $scope.lists = response;
+                        if (Object.keys($scope.lists).length == 0) {
+                            $scope.listsEmpty = true;
+                        }
+                        else {
+                            $scope.listsEmpty = false;
+                        }
+
+                    },
+                    function(error){
+                        console.warn('ERROR FIND ALL LIST');
+                        console.log(error);
+                    }
+                );
+        }
+
+        $scope.decline = function(listId, listUser) {
+            $ionicPopup.confirm({
+                title: "Êtes vous sur de vouloir refuser l'invitation de <b>" + listUser + "</b> ?",
+                template: "Après cette action l'invitation sera supprimée et vous ne pourrez plus l'accepter",
+
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current);
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"List/ListController.php", {
+                                    type : 'list',
+                                    action : 'refuse',
+                                    list: {
+                                        list_id : listId
+                                    },
+                                    user: {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res) {
+                                        $state.go($state.current, {}, {reload: true});
+                                    },
+                                    function(error){
+                                        console.warn('ERROR DECLINE LIST');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        };
+
+        $scope.accept = function(listId) {
+            $http.post($scope.apiLink+"List/ListController.php",
+                {
+                    type : 'list',
+                    action : 'accept',
+                    list: {
+                        list_id : listId
+                    },
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
+
+                .then(function (res){
+                        $state.go('app.lists');
+
+                    }, function(error){
+                        console.warn('ERROR ACCEPT LIST');
+                        console.log(error);
+                    }
+                );
+        }
+
+
+    })
+    /**************************************** FIN RequestListsCtrl ****************************************/
+
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory, $timeout) {
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -519,8 +707,30 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         // Ajouter nouveau collaborateur à la liste
         $scope.showAddUserToList = function(listId) {
+            $http.post($scope.apiLink+"User/UserController.php",
+                {
+                    type : 'user',
+                    action : 'findAll'
+                })
+                .then(function (res){
+                        var response = res.data;
+                        $scope.allUsers = response;
+                        console.log($scope.allUsers);
+
+                    }, function(error){
+                        console.warn('ERROR FIND ALL USERS');
+                        console.log(error);
+                    }
+                );
+
             $ionicPopup.show({
-                template: '<input type="text" placeholder="Pseudo de la personne" ng-model="userData.user_name">',
+                template:
+                    '<label class = "item item-input item-select">' +
+                        '<select ng-model="userData.user_name">' +
+                            '<option ng-repeat="user in allUsers" value="{{user.user_name}}">{{ user.user_name }}</option>' +
+                            '<option value="" disabled selected>Pseudo</option>' +
+                        '</select>' +
+                    '</label>',
                 title: 'Ajouter une personne',
                 scope: $scope,
                 buttons: [
@@ -533,49 +743,52 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 //don't allow the user to close unless he enters wifi password
                                 e.preventDefault();
                             } else {
-                                $http.post($scope.apiLink+"User/UserController.php",
-                                    {
-                                        type : 'user',
-                                        action : 'addUserToList',
-                                        list: {
-                                            list_id : $stateParams['listId']
-                                        },
-                                        user: {
-                                            user_name : $scope.userData.user_name
-                                        }
-                                    })
-                                    .then(function (res){
-                                            var response = res.data;
-                                            if (response.deja == true) {
-                                                $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
+                                $timeout(function(){
+                                    $http.post($scope.apiLink+"User/UserController.php",
+                                        {
+                                            type : 'user',
+                                            action : 'addUserToList',
+                                            list: {
+                                                list_id : $stateParams['listId']
+                                            },
+                                            user: {
+                                                user_name : $scope.userData.user_name
                                             }
-                                            else if (response.inconnu == true) {
-                                                $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
-                                            }
-                                            else {
-                                                $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
-                                            }
-                                            $scope.userData.user_name = "";
-                                            console.log(response);
-                                            $ionicPopup.alert({
-                                                title: $scope.message,
-                                                buttons: [
-                                                    {
-                                                        text: '<b>Ok</b>',
-                                                        type: 'button-positive',
-                                                        onTap: function() {
-                                                            $state.go($state.current, {}, {reload: true});
+                                        })
+                                        .then(function (res){
+                                                var response = res.data;
+                                                if (response.deja == true) {
+                                                    $scope.message = "Une invitation a déjà été envoyée à <b>" + $scope.userData.user_name + "</b> ou alors cet utilisateur fait déjà parti de cette liste";
+                                                }
+                                                else if (response.inconnu == true) {
+                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> ne correspond à aucun utilisateur";
+                                                }
+                                                else {
+                                                    $scope.message = "Une invitation a été envoyée à <b>" + $scope.userData.user_name + "</b>";
+                                                }
+                                                $scope.userData.user_name = "";
+                                                console.log(response);
+                                                $ionicPopup.alert({
+                                                    title: $scope.message,
+                                                    buttons: [
+                                                        {
+                                                            text: '<b>Ok</b>',
+                                                            type: 'button-positive',
+                                                            onTap: function() {
+                                                                $state.go($state.current, {}, {reload: true});
+                                                            }
                                                         }
-                                                    }
-                                                ]
+                                                    ]
 
 
-                                            });
-                                        }, function(error){
-                                            console.warn('ERROR ADD USER TO LIST');
-                                            console.log(error);
-                                        }
-                                    );
+                                                });
+                                            }, function(error){
+                                                console.warn('ERROR ADD USER TO LIST');
+                                                console.log(error);
+                                            }
+                                        );
+                                }, 200);
+
                             }
                         }
                     }
@@ -585,7 +798,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteUserFromList = function(userId, userName, listId) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
+                title: 'Êtes vous sur de supprimer <b>' + userName + '</b> de cette liste ?',
                 buttons: [
                     {
                         text: 'Non',
@@ -635,7 +848,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $state.go($state.current);
                         }
                     },
                     {

@@ -1,12 +1,11 @@
-<ion-view cache-view="false">
+<ion-view cache-view="false" can-swipe-back="false">
     <ion-nav-title>
         {{ list.list_name }}
     </ion-nav-title>
-    <ion-nav-buttons side="right">
-        <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewProduct(list.list_id)">
-        </button>
-    </ion-nav-buttons>
-    <ion-content>
+    <ion-content ng-show="visible == false">
+        <ion-spinner icon="lines" class="spinner-royal"></ion-spinner>
+    </ion-content>
+    <ion-content ng-show="visible == true">
         <ion-refresher
             pulling-text="Rafraichir la page ..."
             on-refresh="doRefresh()">
@@ -32,64 +31,51 @@
                     </div>
                 </div>
                 <ion-item ng-repeat="product in products" ng-click="showInfos(product.product_id)">
-                    <div class="row">
-                        <div class="col col-80">
-                            {{ product.product_name }}
-                        </div>
-                        <div ng-show="product.product_status == 'En attente'" class="col text-right">
-                            <span class="ion-more"></span>
-                        </div>
-                        <div ng-show="product.product_status == 'Pris en charge'" class="col text-right">
-                            <span class="ion-android-cart"></span>
-                        </div>
-                        <div ng-show="product.product_status == 'Achete'" class="col text-right">
-                            <span class="ion-bag"></span>
-                        </div>
-                    </div>
+                    {{ product.product_name }}
+                    <span ng-show="product.product_status == 'En attente'" class="ion-more ion-icon float-right"></span>
+                    <span ng-show="product.product_status == 'Pris en charge'" class="ion-android-cart ion-icon float-right"></span>
+                    <span ng-show="product.product_status == 'Achete'" class="ion-bag ion-icon float-right"></span>
+
                     <ion-option-button class="button-energized" ng-click="updateProduct(product.product_id, 'Pris en charge')" ng-show="product.product_status == 'En attente' ">
-                        <button class="button button-icon button-clear ion-android-cart">
+                        <button class="button button-icon button-clear ion-icon ion-android-cart">
                         </button>
                     </ion-option-button>
-                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')" ng-show="product.product_status !== 'Achete' && product.by_user_name == currentUser.user_name">
-                        <button class="button button-icon button-clear ion-bag">
+                    <ion-option-button class="button-positive" ng-click="updateProduct(product.product_id, 'Achete')" ng-show="product.product_status !== 'achete' ">
+                        <button class="button button-icon button-clear ion-icon ion-bag">
                         </button>
                     </ion-option-button>
                     <ion-option-button class="button-assertive" ng-click="deleteProduct(product.product_id)" ng-show="list.user_name == currentUser.user_name || product.user_name == currentUser.user_name">
-                        <button class="button button-icon button-clear ion-android-delete">
+                        <button class="button button-icon button-clear ion-icon ion-android-delete">
                         </button>
                     </ion-option-button>
                 </ion-item>
+                <div class="padding-left-right">
+                    <button ng-show="listEmpty == false" class="button button-block btn-positive ion-ios-plus" ng-click="showNewProduct(list.list_id)">
+                    </button>
+                </div>
             </div>
             <div class="card">
                 <div class="item item-divider">
                     Utilisateurs partagés
                 </div>
-                <div class="item item-text-wrap">
-                    <div ng-show="usersEmpty == true" class="text-center margin-top-10 margin-bottom-20">
-                        <h3>Vous êtes le seul utilisateur de cette liste</h3>
-                    </div>
-                    <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
-                        {{ user.user_name }}
-                        <ion-option-button ng-show="currentUser.user_id !== user.user_id && list.user_name == currentUser.user_name" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name, list.list_id)">
-                            <button class="button button-icon button-clear ion-android-delete">
-                            </button>
-                        </ion-option-button>
-                    </ion-item>
-                    <button class="button button-block button-balanced ion-person-add" ng-click="showAddUserToList(list.list_id)">
+                <div ng-show="usersEmpty == true" class="text-center margin-top-10 margin-bottom-20">
+                    Vous êtes le seul utilisateur de cette liste
+                </div>
+                <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
+                    {{ user.user_name }}
+                    <ion-option-button ng-show="currentUser.user_id !== user.user_id && list.user_name == currentUser.user_name" class="button-assertive" ng-click="deleteUserFromList(user.user_id, user.user_name, list.list_id)">
+                        <button class="button button-icon button-clear ion-icon ion-android-delete">
+                        </button>
+                    </ion-option-button>
+                </ion-item>
+                <div class="padding-left-right">
+                    <button class="button button-block btn-positive ion-person-add" ng-click="showAddUserToList(list.list_id)">
                     </button>
-                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block button-assertive" ng-click="quitList(list.list_id)">
+                    <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block btn-assertive" ng-click="quitList(list.list_id)">
                         Quitter cette liste
                     </button>
                 </div>
             </div>
         </ion-list>
-        <div class="list list-inset">
-        </div>
-        <script type="text/ng-template">
-            <input type="text" ng-model="productData.product_name">
-        </script>
-        <script type="text/ng-template">
-            <input type="text" placeholder="Pseudo de la personne à ajouter" ng-model="userData.user_name">
-        </script>
     </ion-content>
 </ion-view>

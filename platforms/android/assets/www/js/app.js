@@ -12,7 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
             // for form inputs)
             if (window.cordova && window.cordova.plugins.Keyboard) {
                 cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-                cordova.plugins.Keyboard.disableScroll(true);
+                cordova.plugins.Keyboard.disableScroll(false);
 
             }
             if (window.StatusBar) {
@@ -72,6 +72,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                     'menuContent' : {
                         templateUrl: 'templates/list/lists.html',
                         controller: 'ListsCtrl'
+                    }
+                }
+            })
+
+            .state('app.request_lists', {
+                url: '/request_lists',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/list/request_lists.html',
+                        controller: 'RequestListsCtrl'
                     }
                 }
             })
