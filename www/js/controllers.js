@@ -526,6 +526,10 @@ angular.module('starter.controllers', ['ngStorage'])
             $scope.visible = true
         }, 800);
 
+        $ionicHistory.nextViewOptions({
+            disableBack: true
+        });
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
