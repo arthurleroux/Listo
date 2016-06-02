@@ -76,6 +76,16 @@ angular.module('starter', ['ionic', 'starter.controllers'])
                 }
             })
 
+            .state('app.request_lists', {
+                url: '/request_lists',
+                views: {
+                    'menuContent' : {
+                        templateUrl: 'templates/list/request_lists.html',
+                        controller: 'RequestListsCtrl'
+                    }
+                }
+            })
+
             .state('app.single', {
                 url: '/lists/:listId',
                 views: {

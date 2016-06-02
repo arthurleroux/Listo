@@ -517,6 +517,94 @@ angular.module('starter.controllers', ['ngStorage'])
     })
     /**************************************** FIN ListsCtrl ****************************************/
 
+    /**************************************** DEBUT RequestListsCtrl ****************************************/
+    .controller('RequestListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+
+        $scope.visible = false;
+
+        $timeout(function(){
+            $scope.visible = true
+        }, 800);
+
+        if (!angular.isDefined($localStorage.currentUser)) {
+            $state.go('app.login');
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
+        }
+
+        if ($scope.logged == true) {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'findAllRequest',
+                    user: {
+                        user_id : $localStorage.currentUser.user_id
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+                        $scope.lists = response;
+                        if (Object.keys($scope.lists).length == 0) {
+                            $scope.listsEmpty = true;
+                        }
+                        else {
+                            $scope.listsEmpty = false;
+                        }
+
+                    },
+                    function(error){
+                        console.warn('ERROR FIND ALL LIST');
+                        console.log(error);
+                    }
+                );
+        }
+
+        $scope.decline = function(listId, listUser) {
+            $ionicPopup.confirm({
+                title: "Êtes vous sur de vouloir refuser l'invitation de <b>" + listUser + "</b> ?",
+                template: "Après cette action l'invitation sera supprimée et vous ne pourrez plus l'accepter",
+
+                buttons: [
+                    {
+                        text: 'Non',
+                        onTap: function () {
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                    },
+                    {
+                        text: 'Oui',
+                        type: 'button-assertive',
+                        onTap: function() {
+                            $http.post($scope.apiLink+"List/ListController.php", {
+                                    type : 'list',
+                                    action : 'refuse',
+                                    list: {
+                                        list_id : listId
+                                    },
+                                    user: {
+                                        user_id : $localStorage.currentUser.user_id
+                                    }
+                                })
+
+                                .then(function (res) {
+                                        $state.go($state.current, {}, {reload: true});
+                                    },
+                                    function(error){
+                                        console.warn('ERROR DECLINE LIST');
+                                        console.log(error);
+                                    }
+                                );
+                        }
+                    }
+                ]
+            });
+        }
+
+
+    })
+    /**************************************** FIN RequestListsCtrl ****************************************/
+
     /**************************************** DEBUT ListCtrl ****************************************/
     .controller('ListCtrl', function ($scope, $stateParams, $http, $state, $ionicPopup, $localStorage, $window, $ionicHistory, $timeout) {
         $scope.visible = false;
@@ -646,13 +734,13 @@ angular.module('starter.controllers', ['ngStorage'])
                                         .then(function (res){
                                                 var response = res.data;
                                                 if (response.deja == true) {
-                                                    $scope.message = $scope.userData.user_name + " fait déjà parti de cette liste";
+                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> fait déjà parti de cette liste";
                                                 }
                                                 else if (response.inconnu == true) {
-                                                    $scope.message = $scope.userData.user_name + " ne correspond à aucun utilisateur";
+                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> ne correspond à aucun utilisateur";
                                                 }
                                                 else {
-                                                    $scope.message = $scope.userData.user_name + " a été ajouté à cette liste avec succès !"
+                                                    $scope.message = "<b>" + $scope.userData.user_name + "</b> a été ajouté à cette liste avec succès !"
                                                 }
                                                 $scope.userData.user_name = "";
                                                 console.log(response);
@@ -686,7 +774,7 @@ angular.module('starter.controllers', ['ngStorage'])
 
         $scope.deleteUserFromList = function(userId, userName, listId) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer ' + userName + ' de cette liste ?',
+                title: 'Êtes vous sur de supprimer <b>' + userName + '</b> de cette liste ?',
                 buttons: [
                     {
                         text: 'Non',

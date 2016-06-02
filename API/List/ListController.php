@@ -27,11 +27,17 @@ class ListController
             if ($this->params->action == "findAll") {
                 $this->findAllList($this->params->user->user_id);
             }
+            if ($this->params->action == "findAllRequest") {
+                $this->findAllRequestList($this->params->user->user_id);
+            }
             if ($this->params->action == "update") {
                 $this->updateList();
             }
             if ($this->params->action == "delete") {
                 $this->deleteList();
+            }
+            if ($this->params->action == "refuse") {
+                $this->refuseList();
             }
         }
     }
@@ -50,7 +56,7 @@ class ListController
                 $q = $pdo->prepare($sql);
                 $q->execute(array($list_name, $list_description, $user_name));
                 $newId = $pdo->lastInsertId();
-                $sql2 = "INSERT INTO user_list (list_id, user_id) VALUES(".$newId.",".$user_id.")";
+                $sql2 = "INSERT INTO user_list (list_id, user_id, accepted) VALUES(".$newId.",".$user_id.",'true')";
                 $q2 = $pdo->prepare($sql2);
                 $q2->execute();
                 Database::disconnect();
@@ -106,6 +112,25 @@ class ListController
         $sql = "SELECT *
                 FROM list l, user_list ul
                 WHERE l.list_id = ul.list_id
+                AND ul.accepted = 'true'
+                AND ul.user_id = ".$userId;
+        $q = $pdo->prepare($sql);
+        $q->execute();
+        $data = $q->fetchAll(PDO::FETCH_ASSOC);
+        Database::disconnect();
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Content-type: application/json');
+        echo json_encode($data);
+    }
+    private function findAllRequestList($userId)
+    {
+        $pdo = Database::connect();
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $sql = "SELECT *
+                FROM list l, user_list ul
+                WHERE l.list_id = ul.list_id
+                AND ul.accepted = 'false'
                 AND ul.user_id = ".$userId;
         $q = $pdo->prepare($sql);
         $q->execute();
@@ -160,6 +185,26 @@ class ListController
                 header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
                 header('Content-type: application/json');
                 echo json_encode($q);
+            }
+        }
+    }
+    private function refuseList()
+    {
+        if (!empty($this->params->user) && !empty($this->params->list)) {
+            $list_id = $this->params->list->list_id;
+            $user_id = $this->params->user->user_id;
+
+            if (!empty($user_id) && !empty($user_id)) {
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+                $sql = "DELETE FROM user_list WHERE user_id = ? AND list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($user_id, $list_id));
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
             }
         }
     }

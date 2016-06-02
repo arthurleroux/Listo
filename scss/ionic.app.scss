@@ -42,7 +42,7 @@ $royal: rgb(0, 122, 138);
   font-size: 20px;
 }
 
-.btn-plus {
+.btn-positive {
   color: $positive;
   font-size: 35px;
   background-color: transparent;
@@ -70,6 +70,33 @@ $royal: rgb(0, 122, 138);
     background-color: $assertive;
   }
 }
+
+.btn-accept {
+  font-size: 20px;
+  background-color: transparent;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.btn-accept-false {
+  color: $assertive;
+  &:hover {
+    color: #ffffff;
+    background-color: $assertive;
+  }
+}
+
+.btn-accept-true {
+  color: $positive;
+  &:hover {
+    color: #ffffff;
+    background-color: $positive;
+  }
+}
+
 
 .padding-left-right {
   padding-left: 16px;

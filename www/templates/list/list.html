@@ -50,7 +50,7 @@
                     </ion-option-button>
                 </ion-item>
                 <div class="padding-left-right">
-                    <button ng-show="listEmpty == false" class="button button-block btn-plus ion-ios-plus" ng-click="showNewProduct(list.list_id)">
+                    <button ng-show="listEmpty == false" class="button button-block btn-positive ion-ios-plus" ng-click="showNewProduct(list.list_id)">
                     </button>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     Utilisateurs partagés
                 </div>
                 <div ng-show="usersEmpty == true" class="text-center margin-top-10 margin-bottom-20">
-                    <h3>Vous êtes le seul utilisateur de cette liste</h3>
+                    Vous êtes le seul utilisateur de cette liste
                 </div>
                 <ion-item ng-show="usersEmpty == false && currentUser.user_id !== user.user_id" ng-repeat="user in users">
                     {{ user.user_name }}
@@ -69,7 +69,7 @@
                     </ion-option-button>
                 </ion-item>
                 <div class="padding-left-right">
-                    <button class="button button-block btn-plus ion-person-add" ng-click="showAddUserToList(list.list_id)">
+                    <button class="button button-block btn-positive ion-person-add" ng-click="showAddUserToList(list.list_id)">
                     </button>
                     <button ng-show="usersEmpty !== true && list.user_name !== currentUser.user_name" class="button button-block btn-assertive" ng-click="quitList(list.list_id)">
                         Quitter cette liste

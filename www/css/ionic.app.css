@@ -9801,7 +9801,7 @@ a.button {
 .ion-icon {
   font-size: 20px; }
 
-.btn-plus {
+.btn-positive {
   color: #009bb1;
   font-size: 35px;
   background-color: transparent;
@@ -9810,7 +9810,7 @@ a.button {
   -ms-transition: 0.3s;
   -o-transition: 0.3s;
   transition: 0.3s; }
-  .btn-plus:hover {
+  .btn-positive:hover {
     color: #ffffff;
     background-color: #009bb1; }
 
@@ -9825,6 +9825,27 @@ a.button {
   .btn-assertive:hover {
     color: #ffffff;
     background-color: #e94e12; }
+
+.btn-accept {
+  font-size: 20px;
+  background-color: transparent;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -ms-transition: 0.3s;
+  -o-transition: 0.3s;
+  transition: 0.3s; }
+
+.btn-accept-false {
+  color: #e94e12; }
+  .btn-accept-false:hover {
+    color: #ffffff;
+    background-color: #e94e12; }
+
+.btn-accept-true {
+  color: #009bb1; }
+  .btn-accept-true:hover {
+    color: #ffffff;
+    background-color: #009bb1; }
 
 .padding-left-right {
   padding-left: 16px;
