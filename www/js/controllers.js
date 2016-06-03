@@ -1,7 +1,7 @@
 angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout, $ionicHistory) {
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
@@ -32,6 +32,9 @@ angular.module('starter.controllers', ['ngStorage'])
         }
 
         $scope.logout = function () {
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
             $localStorage.$reset();
             $state.go('app.login');
             $scope.loaderAuth = true;
