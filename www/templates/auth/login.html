@@ -1,4 +1,7 @@
 <ion-view>
+    <ion-nav-title ng-show="loaderAuth == false">
+        Bienvenue !
+    </ion-nav-title>
     <ion-content ng-show="loaderAuth == true">
         <ion-spinner icon="lines" class="spinner-royal"></ion-spinner>
     </ion-content>

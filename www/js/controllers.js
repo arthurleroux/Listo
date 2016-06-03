@@ -38,7 +38,7 @@ angular.module('starter.controllers', ['ngStorage'])
             $timeout(function(){
                 $window.location.reload(true);
                 $scope.loaderAuth = false;
-            }, 2000);
+            }, 1500);
         };
     })
     /**************************************** FIN AppCtrl ****************************************/
@@ -82,7 +82,7 @@ angular.module('starter.controllers', ['ngStorage'])
                                 $state.go('app.lists');
                                 $timeout(function(){
                                     $window.location.reload(true);
-                                }, 800);
+                                }, 600);
                             }
                             else {
                                 $ionicPopup.alert({
