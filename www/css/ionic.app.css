@@ -9789,6 +9789,11 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
+/*
+ion-content {
+  background: url("../img/bg.png") center / cover;
+}
+*/
 .margin-top-10 {
   margin-top: 10px; }
 
@@ -9800,6 +9805,9 @@ a.button {
 
 .ion-icon {
   font-size: 20px; }
+
+.item-icon-left .icon {
+  color: #007a8a; }
 
 .btn-positive {
   color: #009bb1;

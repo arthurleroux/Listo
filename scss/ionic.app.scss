@@ -24,6 +24,12 @@ $royal: rgb(0, 122, 138);
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+/*
+ion-content {
+  background: url("../img/bg.png") center / cover;
+}
+*/
+
 .margin-top-10 {
   margin-top: 10px;
 }
@@ -40,6 +46,12 @@ $royal: rgb(0, 122, 138);
 
 .ion-icon {
   font-size: 20px;
+}
+
+.item-icon-left {
+  .icon {
+    color: $royal;
+  }
 }
 
 .btn-positive {
