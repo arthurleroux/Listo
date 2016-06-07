@@ -47,7 +47,15 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup, $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
+
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -125,7 +133,15 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AccountCtrl ****************************************/
 
-    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage, $ionicHistory) {
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage, $ionicHistory, $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -245,7 +261,14 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AccountCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
-    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup) {
+    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup,  $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
 
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -337,7 +360,14 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(false);
+            }
+        });
 
         $scope.visible = false;
 
