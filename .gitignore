@@ -2,3 +2,4 @@
 .idea/
 API/config.php
 platforms/
+.DS_Store
