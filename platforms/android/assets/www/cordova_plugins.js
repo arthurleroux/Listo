@@ -28,6 +28,13 @@ module.exports = [
             "cordova.plugins.Keyboard"
         ],
         "runs": true
+    },
+    {
+        "file": "plugins/com.cordova.plugins.sms/www/sms.js",
+        "id": "com.cordova.plugins.sms.Sms",
+        "clobbers": [
+            "window.sms"
+        ]
     }
 ];
 module.exports.metadata = 
@@ -37,8 +44,9 @@ module.exports.metadata =
     "cordova-plugin-device": "1.1.2",
     "cordova-plugin-splashscreen": "3.2.2",
     "cordova-plugin-statusbar": "2.1.3",
-    "cordova-plugin-whitelist": "1.2.2",
-    "ionic-plugin-keyboard": "2.2.0"
+    "cordova-plugin-whitelist": "1.2.3-dev",
+    "ionic-plugin-keyboard": "2.2.0",
+    "com.cordova.plugins.sms": "0.1.10"
 };
 // BOTTOM OF METADATA
 });

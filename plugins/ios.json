@@ -7,6 +7,9 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.cordova.plugins.sms": {
+            "PACKAGE_NAME": "com.ionicframework.listo"
+        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ionicframework.listo"
         },

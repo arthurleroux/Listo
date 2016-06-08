@@ -16,29 +16,35 @@
     <ion-side-menu side="left">
         <ion-header-bar class="bar-royal">
             <div ng-switch="logged">
-                <h1 id="menu-title" ng-switch-when="true" class="title">Bienvenue {{ currentUser.user_name }} !</h1>
+                <h1 id="menu-title" ng-switch-when="true" class="title">Salut {{ currentUser.user_name }} !</h1>
                 <h1 id="menu-title" ng-switch-when="false" class="title">Listo</h1>
             </div>
         </ion-header-bar>
         <ion-content>
             <ion-list>
-                <ion-item ng-show="logged == false" menu-close href="#/app/login">
-                    <h2><i class="ion-log-in"></i> Connexion</h2>
+                <ion-item class="item-icon-left" ng-show="logged == false" menu-close href="#/app/login">
+                    <i class="icon ion-log-in"></i>
+                    Connexion
                 </ion-item>
-                <ion-item menu-close ng-show="logged == true" href="#/app/lists">
-                    <h2><i class="ion-ios-list-outline"></i> Mes listes</h2>
+                <ion-item class="item-icon-left" menu-close ng-show="logged == true" href="#/app/lists">
+                    <i class="icon ion-ios-list-outline"></i>
+                    Listes
                 </ion-item>
-                <ion-item menu-close ng-show="logged == true" href="#/app/request_lists">
-                    <h2><i class="ion-person-stalker"></i> Demandes de listes</h2>
+                <ion-item class="item-icon-left" menu-close ng-show="logged == true" href="#/app/request_lists">
+                    <i class="icon ion-person-stalker"></i>
+                    Invitations
                 </ion-item>
-                <ion-item menu-close ng-show="logged == true" href="#/app/account">
-                    <h2><i class="ion-person"></i> Mon compte</h2>
+                <ion-item class="item-icon-left"  menu-close ng-show="logged == true" href="#/app/account">
+                    <i class="icon ion-person"></i>
+                    Mon compte
                 </ion-item>
-                <ion-item menu-close href="#/app/about">
-                    <h2><i class="ion-ios-information"></i> À propos</h2>
+                <ion-item class="item-icon-left" menu-close href="#/app/about">
+                    <i class="icon ion-ios-information"></i>
+                    À propos
                 </ion-item>
-                <ion-item ng-show="logged == true" menu-close ng-click="logout()">
-                    <h2><i class="ion-log-out"></i> Déconnexion</h2>
+                <ion-item class="item-icon-left" ng-show="logged == true" menu-close ng-click="logout()">
+                    <i class="icon ion-log-out"></i>
+                    Déconnexion
                 </ion-item>
             </ion-list>
         </ion-content>

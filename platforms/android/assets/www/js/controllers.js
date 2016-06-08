@@ -1,7 +1,7 @@
-angular.module('starter.controllers', ['ngStorage'])
+angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
-    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window) {
+    .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout, $ionicHistory) {
 
         $scope.apiLink = 'http://arthurleroux.fr/API/';
 
@@ -13,6 +13,7 @@ angular.module('starter.controllers', ['ngStorage'])
         // Le nom de la variable doit correspondre avec le nom de la ligne list_name en bdd
         $scope.list = {};
         $scope.lists = {};
+        $scope.loaderAuth = false;
 
         if (angular.isDefined($localStorage.currentUser)) {
             $scope.logged = true;
@@ -31,15 +32,30 @@ angular.module('starter.controllers', ['ngStorage'])
         }
 
         $scope.logout = function () {
+            $ionicHistory.nextViewOptions({
+                disableBack: true
+            });
             $localStorage.$reset();
             $state.go('app.login');
-            $window.location.reload(true);
+            $scope.loaderAuth = true;
+            $timeout(function(){
+                $window.location.reload(true);
+                $scope.loaderAuth = false;
+            }, 1500);
         };
     })
     /**************************************** FIN AppCtrl ****************************************/
 
     /**************************************** DEBUT LoginCtrl ****************************************/
-    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup) {
+    .controller('LoginCtrl', function ($scope, $state, $http, $ionicHistory, $localStorage, $window, $timeout, $ionicPopup, $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
+
         if (angular.isDefined($localStorage.currentUser)) {
             $state.go('app.lists');
             //$window.location.reload(true);
@@ -74,12 +90,10 @@ angular.module('starter.controllers', ['ngStorage'])
                             if(response.success == true) {
                                 $scope.userData = {};
                                 $localStorage.currentUser = response.user;
+                                $state.go('app.lists');
                                 $timeout(function(){
-                                    $state.go('app.lists');
                                     $window.location.reload(true);
-                                    console.log($localStorage.currentUser);
-                                }, 200);
-
+                                }, 600);
                             }
                             else {
                                 $ionicPopup.alert({
@@ -119,7 +133,15 @@ angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AccountCtrl ****************************************/
 
-    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage, $ionicHistory) {
+    .controller('AccountCtrl', function($scope, $http, $state, $ionicPopup, $localStorage, $ionicHistory, $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
+
         if (!angular.isDefined($localStorage.currentUser)) {
             $state.go('app.login');
             $ionicHistory.nextViewOptions({
@@ -239,7 +261,14 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN AccountCtrl ****************************************/
 
     /**************************************** DEBUT RegisterCtrl ****************************************/
-    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup) {
+    .controller('RegisterCtrl', function ($scope, $http, $state, $ionicHistory, $ionicPopup,  $ionicPlatform) {
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(true);
+            }
+        });
 
         $ionicHistory.nextViewOptions({
             disableBack: true
@@ -331,7 +360,24 @@ angular.module('starter.controllers', ['ngStorage'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout) {
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform, $cordovaSms) {
+        $scope.sms = function() {
+             $cordovaSms
+                 .send('0699496128', 'SMS content', options)
+                     .then(function() {
+                     alert("SMS envoyé");
+                     }, function(error) {
+                     alert('echec');
+             });
+        };
+
+        $ionicPlatform.ready(function () {
+            // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+            // for form inputs)
+            if (window.cordova && window.cordova.plugins.Keyboard) {
+                cordova.plugins.Keyboard.disableScroll(false);
+            }
+        });
 
         $scope.visible = false;
 

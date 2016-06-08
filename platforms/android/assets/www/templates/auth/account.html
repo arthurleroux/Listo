@@ -1,4 +1,7 @@
 <ion-view view-title="Mon compte">
+    <ion-nav-title>
+        {{ currentUser.user_name }}
+    </ion-nav-title>
     <ion-content>
         <div class="logo text-center">
             <img src="img/logo.png" alt="">
@@ -7,9 +10,6 @@
             <div class="list list-inset">
                 <div class="item item-divider">
                     Modifier mon mot de passe
-                </div>
-                <div class="item tex-center">
-                    {{ currentUser.user_name }}
                 </div>
                 <label class="item item-input">
                     <input type="password" placeholder="Nouveau mot de passe" ng-model="userData.user_password">

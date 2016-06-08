@@ -20,10 +20,13 @@
             "PACKAGE_NAME": "com.ionicframework.listo560340"
         },
         "cordova-plugin-whitelist": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.listo560340"
+            "PACKAGE_NAME": "com.ionicframework.listo"
+        },
+        "com.cordova.plugins.sms": {
+            "PACKAGE_NAME": "com.ionicframework.listo"
         }
     },
     "dependent_plugins": {}

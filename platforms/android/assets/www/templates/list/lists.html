@@ -1,6 +1,6 @@
 <ion-view cache-view="false">
     <ion-nav-title>
-        Mes listes
+        Listes
     </ion-nav-title>
     <ion-nav-buttons side="right">
         <button class="button button-icon button-clear ion-compose" menu-toggle="right" ng-click="showNewList(currentUser.user_id)">
@@ -27,6 +27,9 @@
                 </ion-item>
             </div>
         </ion-list>
+        <button class="button button-block button-royal" ng-click="sms()">
+            SMS
+        </button>
         <div ng-show="listsEmpty == true" class="text-center margin-top-10">
             <div class="list list-inset">
                 <button class="button button-block button-positive" ng-click="showNewList(currentUser.user_id)">
