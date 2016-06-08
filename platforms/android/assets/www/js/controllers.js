@@ -362,13 +362,18 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform, $cordovaSms) {
         $scope.sms = function() {
-             $cordovaSms
-                 .send('0699496128', 'SMS content', options)
-                     .then(function() {
-                     alert("SMS envoyé");
-                     }, function(error) {
-                     alert('echec');
-             });
+            console.log('click');
+            document.addEventListener("deviceready", function () {
+                console.log('pret');
+                $cordovaSms
+                    .send('0699496128', 'SMS content', options)
+                    .then(function() {
+                        console.log("envoyé");
+                    }, function(error) {
+                        console.log('echec');
+                    });
+
+            });
         };
 
         $ionicPlatform.ready(function () {

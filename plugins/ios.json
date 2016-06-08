@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "com.cordova.plugins.sms": {
-            "PACKAGE_NAME": "com.ionicframework.listo"
-        },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "com.ionicframework.listo"
         },
@@ -26,6 +23,9 @@
             "PACKAGE_NAME": "com.ionicframework.listo"
         },
         "ionic-plugin-keyboard": {
+            "PACKAGE_NAME": "com.ionicframework.listo"
+        },
+        "com.cordova.plugins.sms": {
             "PACKAGE_NAME": "com.ionicframework.listo"
         }
     },

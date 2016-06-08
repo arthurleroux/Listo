@@ -362,6 +362,10 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     /**************************************** DEBUT ListsCtrl ****************************************/
     .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform, $cordovaSms) {
         $scope.sms = function() {
+            var options = {
+                replaceLineBreaks: false // true to replace \n by a new line, false by default
+            };
+
             console.log('click');
             document.addEventListener("deviceready", function () {
                 console.log('pret');
