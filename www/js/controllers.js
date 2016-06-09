@@ -428,8 +428,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                         }
                     );
             }
-        }
-
+        };
         $scope.findLists();
 
         $scope.showNewList = function() {
@@ -538,10 +537,10 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.deleteList = function(listId) {
+        $scope.deleteList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer cette liste ?',
-                template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés",
+                title: 'Êtes vous sur de supprimer la liste "<b>' + listName + '</b>" ?',
+                template: "Ses utilisateurs n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
                 buttons: [
                     {
@@ -1085,9 +1084,9 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 );
         };
 
-        $scope.deleteProduct = function(productId) {
+        $scope.deleteProduct = function(productId, productName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer cet article ?',
+                title: 'Êtes vous sur de supprimer le produit "<b>' + productName + '</b>" ?',
                 buttons: [
                     {
                         text: 'Non',
