@@ -401,32 +401,36 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        if ($scope.logged == true) {
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'findAll',
-                    user: {
-                        user_id : $localStorage.currentUser.user_id
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $scope.lists = response;
-                        if (Object.keys($scope.lists).length == 0) {
-                            $scope.listsEmpty = true;
+        $scope.findLists = function() {
+            if ($scope.logged == true) {
+                $http.post($scope.apiLink+"List/ListController.php", {
+                        type : 'list',
+                        action : 'findAll',
+                        user: {
+                            user_id : $localStorage.currentUser.user_id
                         }
-                        else {
-                            $scope.listsEmpty = false;
-                        }
+                    })
 
-                    },
-                    function(error){
-                        console.warn('ERROR FIND ALL LIST');
-                        console.log(error);
-                    }
-                );
+                    .then(function (res){
+                            var response = res.data;
+                            $scope.lists = response;
+                            if (Object.keys($scope.lists).length == 0) {
+                                $scope.listsEmpty = true;
+                            }
+                            else {
+                                $scope.listsEmpty = false;
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR FIND ALL LIST');
+                            console.log(error);
+                        }
+                    );
+            }
         }
+
+        $scope.findLists();
 
         $scope.showNewList = function() {
             $ionicPopup.show({
@@ -458,7 +462,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                     .then(function (res) {
                                             $scope.listData.list_description = "";
                                             $scope.listData.list_name = "";
-                                            $state.go($state.current, {}, {reload: true});
+                                            $scope.findLists();
+                                            //$state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
                                             console.warn('ERROR NEW LIST');
@@ -495,7 +500,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 buttons: [
                     { text: 'Annuler',
                         onTap:  function() {
-                            $state.go($state.current, {}, {reload: true})
+                            $scope.findLists();
                         }
                     },
                     {
@@ -518,7 +523,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                     })
 
                                     .then(function (res){
-                                            $state.go($state.current, {}, {reload: true});
+                                            $scope.findLists();
+                                            //$state.go($state.current, {}, {reload: true});
 
                                         }, function(error){
                                             console.warn('ERROR UPDATE LIST');
@@ -541,7 +547,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $scope.findLists();
                         }
                     },
                     {
@@ -557,7 +563,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findLists();
+                                        //$state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DELETE LIST');
@@ -589,32 +596,36 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        if ($scope.logged == true) {
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'findAllRequest',
-                    user: {
-                        user_id : $localStorage.currentUser.user_id
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $scope.lists = response;
-                        if (Object.keys($scope.lists).length == 0) {
-                            $scope.listsEmpty = true;
+        $scope.findRequests = function() {
+            if ($scope.logged == true) {
+                $http.post($scope.apiLink+"List/ListController.php", {
+                        type : 'list',
+                        action : 'findAllRequest',
+                        user: {
+                            user_id : $localStorage.currentUser.user_id
                         }
-                        else {
-                            $scope.listsEmpty = false;
-                        }
+                    })
 
-                    },
-                    function(error){
-                        console.warn('ERROR FIND ALL LIST');
-                        console.log(error);
-                    }
-                );
-        }
+                    .then(function (res){
+                            var response = res.data;
+                            $scope.lists = response;
+                            if (Object.keys($scope.lists).length == 0) {
+                                $scope.listsEmpty = true;
+                            }
+                            else {
+                                $scope.listsEmpty = false;
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR FIND ALL LIST');
+                            console.log(error);
+                        }
+                    );
+            }
+        };
+
+        $scope.findRequests();
 
         $scope.decline = function(listId, listUser) {
             $ionicPopup.confirm({
@@ -644,7 +655,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findRequests();
+                                        //$state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DECLINE LIST');
@@ -699,45 +711,47 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        $http.post($scope.apiLink+"List/ListController.php", {
-                type : 'list',
-                action : 'find',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-
-                    $scope.list = response['list'];
-
-                    $scope.products = response['products'];
-                    if (Object.keys($scope.products).length == 0) {
-                        $scope.listEmpty = true;
+        $scope.findList = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'find',
+                    list: {
+                        list_id : $stateParams['listId']
                     }
-                    else {
-                        $scope.listEmpty = false;
-                    }
+                })
 
-                    $scope.users = response['users'];
-                    console.log($scope.users);
-                    if (Object.keys($scope.users).length == 1) {
-                        $scope.usersEmpty = true;
+                .then(function (res){
+                        var response = res.data;
+
+                        $scope.list = response['list'];
+
+                        $scope.products = response['products'];
+                        if (Object.keys($scope.products).length == 0) {
+                            $scope.listEmpty = true;
+                        }
+                        else {
+                            $scope.listEmpty = false;
+                        }
+
+                        $scope.users = response['users'];
+                        console.log($scope.users);
+                        if (Object.keys($scope.users).length == 1) {
+                            $scope.usersEmpty = true;
+                        }
+                        else {
+                            $scope.usersEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR FIND LIST');
+                        console.log(error);
                     }
-                    else {
-                        $scope.usersEmpty = false;
-                    }
-                },
-                function(error){
-                    console.warn('ERROR FIND LIST');
-                    console.log(error);
-                }
-            );
+                );
+        };
+
+        $scope.findList();
 
         console.log($scope.list);
-
-
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -830,7 +844,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                                             text: '<b>Ok</b>',
                                                             type: 'button-positive',
                                                             onTap: function() {
-                                                                $state.go($state.current, {}, {reload: true});
+                                                                $scope.findList();
+                                                                //$state.go($state.current, {}, {reload: true});
                                                             }
                                                         }
                                                     ]
@@ -858,7 +873,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $scope.findList();
+                            //$state.go($state.current, {}, {reload: true});
                         }
                     },
                     {
@@ -880,7 +896,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findList();
+                                        //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
 
@@ -945,7 +962,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 buttons: [
                     { text: 'Annuler',
                         onTap:  function() {
-                            $state.go($state.current, {}, {reload: true})
+                            $state.go($state.current)
                         }
                     },
                     {
@@ -973,7 +990,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                     .then(function (res){
                                             var response = res.data;
-                                            $state.go($state.current, {}, {reload: true});
+                                            //$state.go($state.current, {}, {reload: true});
+                                            $scope.findList();
                                             console.log(response);
                                             $scope.productData.product_name = "";
 
@@ -1004,7 +1022,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go($state.current, {}, {reload: true});
+                        $scope.findList();
+                        //$state.go($state.current, {}, {reload: true});
                         console.log(response);
 
                     }, function(error){
@@ -1021,7 +1040,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            //$state.go($state.current, {}, {reload: true});
+                            $scope.findList();
                         }
                     },
                     {
@@ -1038,7 +1058,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findList();
+                                        //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
 
