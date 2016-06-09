@@ -24,6 +24,12 @@ class ListController
             if ($this->params->action == "find") {
                 $this->findList();
             }
+            if ($this->params->action == "refreshProducts") {
+                $this->refreshProducts();
+            }
+            if ($this->params->action == "refreshUsers") {
+                $this->refreshUsers();
+            }
             if ($this->params->action == "findAll") {
                 $this->findAllList($this->params->user->user_id);
             }
@@ -94,6 +100,59 @@ class ListController
                 $sql = "SELECT *
                         FROM users u, user_list ul
                         WHERE u.user_id = ul.user_id
+                        AND ul.accepted = 'true'
+                        AND ul.list_id = ".$list_id;
+                $q = $pdo->prepare($sql);
+                $q->execute();
+                $data['users'] = $q->fetchAll(PDO::FETCH_ASSOC);
+
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }
+        }
+    }
+    private function refreshProducts() {
+        if (!empty($this->params->list)) {
+
+            $list_id = $this->params->list->list_id;
+
+            if (!empty($list_id)) {
+
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $sql = "SELECT * FROM product WHERE list_id = ?";
+                $q = $pdo->prepare($sql);
+                $q->execute(array($list_id));
+                $data['products'] = $q->fetchAll(PDO::FETCH_ASSOC);
+
+                Database::disconnect();
+
+                header('Cache-Control: no-cache, must-revalidate');
+                header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+                header('Content-type: application/json');
+                echo json_encode($data);
+            }
+        }
+    }
+    private function refreshUsers() {
+        if (!empty($this->params->list)) {
+
+            $list_id = $this->params->list->list_id;
+
+            if (!empty($list_id)) {
+
+                $pdo = Database::connect();
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+                $sql = "SELECT *
+                        FROM users u, user_list ul
+                        WHERE u.user_id = ul.user_id
+                        AND ul.accepted = 'true'
                         AND ul.list_id = ".$list_id;
                 $q = $pdo->prepare($sql);
                 $q->execute();

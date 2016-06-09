@@ -749,9 +749,62 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 );
         };
 
-        $scope.findList();
+        $scope.refreshProducts = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'refreshProducts',
+                    list: {
+                        list_id : $stateParams['listId']
+                    }
+                })
 
-        console.log($scope.list);
+                .then(function (res){
+                        var response = res.data;
+
+                        $scope.products = response['products'];
+                        if (Object.keys($scope.products).length == 0) {
+                            $scope.listEmpty = true;
+                        }
+                        else {
+                            $scope.listEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR REFRESH PRODUCTS');
+                        console.log(error);
+                    }
+                );
+        };
+
+        $scope.refreshUsers = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'refreshUsers',
+                    list: {
+                        list_id : $stateParams['listId']
+                    }
+                })
+
+                .then(function (res){
+                        var response = res.data;
+
+                        $scope.users = response['users'];
+                        console.log($scope.users);
+                        if (Object.keys($scope.users).length == 1) {
+                            $scope.usersEmpty = true;
+                        }
+                        else {
+                            $scope.usersEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR REFRESH USERS');
+                        console.log(error);
+                    }
+                );
+        };
+
+        $scope.findList();
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -844,8 +897,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                                             text: '<b>Ok</b>',
                                                             type: 'button-positive',
                                                             onTap: function() {
-                                                                $scope.findList();
-                                                                //$state.go($state.current, {}, {reload: true});
+                                                                $state.go($state.current);
                                                             }
                                                         }
                                                     ]
@@ -896,7 +948,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $scope.findList();
+                                        $scope.refreshUsers();
                                         //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
@@ -991,7 +1043,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                     .then(function (res){
                                             var response = res.data;
                                             //$state.go($state.current, {}, {reload: true});
-                                            $scope.findList();
+                                            $scope.refreshProducts();
                                             console.log(response);
                                             $scope.productData.product_name = "";
 
@@ -1022,7 +1074,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                 .then(function (res){
                         var response = res.data;
-                        $scope.findList();
+                        $scope.refreshProducts();
                         //$state.go($state.current, {}, {reload: true});
                         console.log(response);
 
@@ -1058,7 +1110,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $scope.findList();
+                                        $scope.refreshProducts();
                                         //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
