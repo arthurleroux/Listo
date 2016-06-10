@@ -539,7 +539,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sûr de supprimer la liste "<b>' + listName + '</b>" ?',
+                title: 'Êtes vous sûr de supprimer la liste <b>' + listName + '</b> ?',
                 template: "Ses utilisateurs n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
                 buttons: [
