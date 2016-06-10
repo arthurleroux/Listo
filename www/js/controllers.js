@@ -219,7 +219,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteUser = function () {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer votre compte ?',
+                title: '<b>' + $localStorage.currentUser.user_name + ', </b> êtes vous sur de supprimer votre compte ?',
                 buttons: [
                     {
                         text: 'Non',
@@ -247,7 +247,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
 
                                     }, function(error){
-                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.warn('ERROR DELETE USER');
                                         console.log(error);
                                     }
                                 );
@@ -539,7 +539,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer la liste "<b>' + listName + '</b>" ?',
+                title: 'Êtes vous sûr de supprimer la liste "<b>' + listName + '</b>" ?',
                 template: "Ses utilisateurs n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
                 buttons: [
@@ -626,9 +626,9 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.findRequests();
 
-        $scope.decline = function(listId, listUser) {
+        $scope.decline = function(listId, listUser, listName) {
             $ionicPopup.confirm({
-                title: "Êtes vous sur de vouloir refuser l'invitation de <b>" + listUser + "</b> ?",
+                title: "Êtes vous sûr de refuser l'invitation à la liste <b>" + listName + "</b>, créée par <b>" + listUser +"</b>",
                 template: "Après cette action l'invitation sera supprimée et vous ne pourrez plus l'accepter",
 
                 buttons: [
@@ -812,17 +812,20 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     $scope.product = product;
             });
             if ($scope.product.product_status == "Achete") {
-                $scope.info = ", et <b>acheté</b> par <b>" + $scope.product.by_user_name + "</b>";
+                $scope.info = "<li><b>Acheté</b> par <b>" + $scope.product.by_user_name + "</b></li>";
             }
             else if ($scope.product.product_status == 'Pris en charge') {
-                $scope.info = ", et <b>pris en charge</b> par <b>" + $scope.product.by_user_name + "</b>";
+                $scope.info = "<li><b>Pris en charge</b> par <b>" + $scope.product.by_user_name + "</b></li>";
             }
             else if ($scope.product.product_status == "En attente") {
-                $scope.info = ", et en attente";
+                $scope.info = "<li><b>En attente</b></li>";
             }
             $ionicPopup.alert({
-                title: "Informations sur " + '"' + $scope.product.product_name + '"',
-                template: "Produit ajouté par " + $scope.product.user_name + $scope.info
+                title: "Informations sur le produit <b>" + $scope.product.product_name + "</b>",
+                template:
+                            "<ul>" +
+                                "<li>Ajouté par " + $scope.product.user_name + "</li>"+ $scope.info +
+                            "</ul>"
             })
         };
 
@@ -917,9 +920,9 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.deleteUserFromList = function(userId, userName, listId) {
+        $scope.deleteUserFromList = function(userId, userName, listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer <b>' + userName + '</b> de cette liste ?',
+                title: 'Êtes vous sûr de supprimer <b>' + userName + '</b> de la liste <b>' + listName + "</b> ?",
                 buttons: [
                     {
                         text: 'Non',
@@ -964,9 +967,9 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.quitList = function(listId) {
+        $scope.quitList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de quitter cette liste ?',
+                title: 'Êtes vous sûr de quitter la liste <b>' + listName + '</b> ?',
                 buttons: [
                     {
                         text: 'Non',
@@ -1086,7 +1089,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteProduct = function(productId, productName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer le produit "<b>' + productName + '</b>" ?',
+                title: 'Êtes vous sûr de supprimer le produit <b>' + productName + '</b> ?',
                 buttons: [
                     {
                         text: 'Non',
