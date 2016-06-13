@@ -851,7 +851,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 template:
                     '<label class = "item item-input item-select">' +
                         '<select ng-model="userData.user_name">' +
-                            '<option ng-repeat="user in allUsers" value="{{user.user_name}}">{{ user.user_name }}</option>' +
+                            '<option ng-repeat="user in allUsers" value="{{user.user_name}}" ng-show="user.user_name !== currentUser.user_name" >{{ user.user_name }}</option>' +
                             '<option value="" disabled selected>Pseudo</option>' +
                         '</select>' +
                     '</label>',
