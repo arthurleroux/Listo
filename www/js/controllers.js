@@ -295,7 +295,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 var response = res.data;
                                 if(response.success == true) {
                                     $ionicPopup.alert({
-                                        title: "Votre compte a bien été créé",
+                                        title: "<b>" + $scope.userData.user_name + "</b>, votre compte a bien été créé !",
                                         buttons: [
                                             {
                                                 text: 'Ok',
