@@ -9789,11 +9789,13 @@ a.button {
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
 
-/*
-ion-content {
+/*ion-content {
   background: url("../img/bg.png") center / cover;
 }
-*/
+
+.list-inset {
+  background-color: transparent;
+}*/
 .margin-top-10 {
   margin-top: 10px; }
 
