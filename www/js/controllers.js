@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
+angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout, $ionicHistory) {
@@ -360,26 +360,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform, $cordovaSms) {
-        $scope.sms = function() {
-            var options = {
-                replaceLineBreaks: false // true to replace \n by a new line, false by default
-            };
-
-            console.log('click');
-            document.addEventListener("deviceready", function () {
-                console.log('pret');
-                $cordovaSms
-                    .send('0699496128', 'SMS content', options)
-                    .then(function() {
-                        console.log("envoyé");
-                    }, function(error) {
-                        console.log('echec');
-                    });
-
-            });
-        };
-
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
