@@ -21,17 +21,17 @@
                     <ion-option-button class="button-positive" ng-click="showEditList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
                         <button class="button-icon button-clear ion-icon ion-android-create"></button>
                     </ion-option-button>
-                    <ion-option-button class="button-assertive" ng-click="deleteList(list.list_id)" ng-show="list.user_name == currentUser.user_name">
+                    <ion-option-button class="button-assertive" ng-click="deleteList(list.list_id, list.list_name)" ng-show="list.user_name == currentUser.user_name">
                         <button class="button button-icon button-clear ion-icon ion-android-delete"></button>
                     </ion-option-button>
                 </ion-item>
             </div>
         </ion-list>
-        <div class="list list-inset">
+        <!--<div class="list list-inset">
             <button class="button button-block button-royal" ng-click="sms()">
                 SMS
             </button>
-        </div>
+        </div>-->
         <div ng-show="listsEmpty == true" class="text-center margin-top-10">
             <div class="list list-inset">
                 <button class="button button-block button-positive" ng-click="showNewList(currentUser.user_id)">

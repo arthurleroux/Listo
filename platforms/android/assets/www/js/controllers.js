@@ -1,4 +1,4 @@
-angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
+angular.module('starter.controllers', ['ngStorage'])
 
     /**************************************** DEBUT AppCtrl ****************************************/
     .controller('AppCtrl', function ($scope, $state, $http, $localStorage, $window, $timeout, $ionicHistory) {
@@ -88,10 +88,11 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                             var response = res.data;
 
                             if(response.success == true) {
+                                $scope.loaderAuth = true;
                                 $scope.userData = {};
                                 $localStorage.currentUser = response.user;
-                                $state.go('app.lists');
                                 $timeout(function(){
+                                    $state.go('app.lists');
                                     $window.location.reload(true);
                                 }, 600);
                             }
@@ -219,7 +220,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
         $scope.deleteUser = function () {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer votre compte ?',
+                title: '<b>' + $localStorage.currentUser.user_name + ', </b> êtes vous sur de supprimer votre compte ?',
                 buttons: [
                     {
                         text: 'Non',
@@ -247,7 +248,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
 
                                     }, function(error){
-                                        console.warn('ERROR DELETE PRODUCT');
+                                        console.warn('ERROR DELETE USER');
                                         console.log(error);
                                     }
                                 );
@@ -295,7 +296,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 var response = res.data;
                                 if(response.success == true) {
                                     $ionicPopup.alert({
-                                        title: "Votre compte a bien été créé",
+                                        title: "<b>" + $scope.userData.user_name + "</b>, votre compte a bien été créé !",
                                         buttons: [
                                             {
                                                 text: 'Ok',
@@ -360,22 +361,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
     /**************************************** FIN RegisterCtrl ****************************************/
 
     /**************************************** DEBUT ListsCtrl ****************************************/
-    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform, $cordovaSms) {
-        $scope.sms = function() {
-            console.log('click');
-            document.addEventListener("deviceready", function () {
-                console.log('pret');
-                $cordovaSms
-                    .send('0699496128', 'SMS content', options)
-                    .then(function() {
-                        console.log("envoyé");
-                    }, function(error) {
-                        console.log('echec');
-                    });
-
-            });
-        };
-
+    .controller('ListsCtrl', function ($scope, $http, $state, $window, $ionicPopup, $localStorage, $ionicHistory, $timeout, $ionicPlatform) {
         $ionicPlatform.ready(function () {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
             // for form inputs)
@@ -397,32 +383,35 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        if ($scope.logged == true) {
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'findAll',
-                    user: {
-                        user_id : $localStorage.currentUser.user_id
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $scope.lists = response;
-                        if (Object.keys($scope.lists).length == 0) {
-                            $scope.listsEmpty = true;
+        $scope.findLists = function() {
+            if ($scope.logged == true) {
+                $http.post($scope.apiLink+"List/ListController.php", {
+                        type : 'list',
+                        action : 'findAll',
+                        user: {
+                            user_id : $localStorage.currentUser.user_id
                         }
-                        else {
-                            $scope.listsEmpty = false;
-                        }
+                    })
 
-                    },
-                    function(error){
-                        console.warn('ERROR FIND ALL LIST');
-                        console.log(error);
-                    }
-                );
-        }
+                    .then(function (res){
+                            var response = res.data;
+                            $scope.lists = response;
+                            if (Object.keys($scope.lists).length == 0) {
+                                $scope.listsEmpty = true;
+                            }
+                            else {
+                                $scope.listsEmpty = false;
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR FIND ALL LIST');
+                            console.log(error);
+                        }
+                    );
+            }
+        };
+        $scope.findLists();
 
         $scope.showNewList = function() {
             $ionicPopup.show({
@@ -454,7 +443,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                     .then(function (res) {
                                             $scope.listData.list_description = "";
                                             $scope.listData.list_name = "";
-                                            $state.go($state.current, {}, {reload: true});
+                                            $scope.findLists();
+                                            //$state.go($state.current, {}, {reload: true});
                                         },
                                         function(error){
                                             console.warn('ERROR NEW LIST');
@@ -491,7 +481,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 buttons: [
                     { text: 'Annuler',
                         onTap:  function() {
-                            $state.go($state.current, {}, {reload: true})
+                            $scope.findLists();
                         }
                     },
                     {
@@ -514,7 +504,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                     })
 
                                     .then(function (res){
-                                            $state.go($state.current, {}, {reload: true});
+                                            $scope.findLists();
+                                            //$state.go($state.current, {}, {reload: true});
 
                                         }, function(error){
                                             console.warn('ERROR UPDATE LIST');
@@ -528,16 +519,16 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.deleteList = function(listId) {
+        $scope.deleteList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer cette liste ?',
-                template: "Les collaborateurs de cette liste n'y auront plus accès et tous les produits qu'elle contient seront effacés",
+                title: 'Êtes vous sûr de supprimer la liste <b>' + listName + '</b> ?',
+                template: "Ses utilisateurs n'y auront plus accès et tous les produits qu'elle contient seront effacés",
 
                 buttons: [
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $scope.findLists();
                         }
                     },
                     {
@@ -553,7 +544,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findLists();
+                                        //$state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DELETE LIST');
@@ -585,36 +577,40 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        if ($scope.logged == true) {
-            $http.post($scope.apiLink+"List/ListController.php", {
-                    type : 'list',
-                    action : 'findAllRequest',
-                    user: {
-                        user_id : $localStorage.currentUser.user_id
-                    }
-                })
-
-                .then(function (res){
-                        var response = res.data;
-                        $scope.lists = response;
-                        if (Object.keys($scope.lists).length == 0) {
-                            $scope.listsEmpty = true;
+        $scope.findRequests = function() {
+            if ($scope.logged == true) {
+                $http.post($scope.apiLink+"List/ListController.php", {
+                        type : 'list',
+                        action : 'findAllRequest',
+                        user: {
+                            user_id : $localStorage.currentUser.user_id
                         }
-                        else {
-                            $scope.listsEmpty = false;
+                    })
+
+                    .then(function (res){
+                            var response = res.data;
+                            $scope.lists = response;
+                            if (Object.keys($scope.lists).length == 0) {
+                                $scope.listsEmpty = true;
+                            }
+                            else {
+                                $scope.listsEmpty = false;
+                            }
+
+                        },
+                        function(error){
+                            console.warn('ERROR FIND ALL LIST');
+                            console.log(error);
                         }
+                    );
+            }
+        };
 
-                    },
-                    function(error){
-                        console.warn('ERROR FIND ALL LIST');
-                        console.log(error);
-                    }
-                );
-        }
+        $scope.findRequests();
 
-        $scope.decline = function(listId, listUser) {
+        $scope.decline = function(listId, listUser, listName) {
             $ionicPopup.confirm({
-                title: "Êtes vous sur de vouloir refuser l'invitation de <b>" + listUser + "</b> ?",
+                title: "Êtes vous sûr de refuser l'invitation à la liste <b>" + listName + "</b>, créée par <b>" + listUser +"</b>",
                 template: "Après cette action l'invitation sera supprimée et vous ne pourrez plus l'accepter",
 
                 buttons: [
@@ -640,7 +636,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                 })
 
                                 .then(function (res) {
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.findRequests();
+                                        //$state.go($state.current, {}, {reload: true});
                                     },
                                     function(error){
                                         console.warn('ERROR DECLINE LIST');
@@ -695,45 +692,100 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         }
 
-        $http.post($scope.apiLink+"List/ListController.php", {
-                type : 'list',
-                action : 'find',
-                list: {
-                    list_id : $stateParams['listId']
-                }
-            })
-
-            .then(function (res){
-                    var response = res.data;
-
-                    $scope.list = response['list'];
-
-                    $scope.products = response['products'];
-                    if (Object.keys($scope.products).length == 0) {
-                        $scope.listEmpty = true;
+        $scope.findList = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'find',
+                    list: {
+                        list_id : $stateParams['listId']
                     }
-                    else {
-                        $scope.listEmpty = false;
+                })
+
+                .then(function (res){
+                        var response = res.data;
+
+                        $scope.list = response['list'];
+
+                        $scope.products = response['products'];
+                        if (Object.keys($scope.products).length == 0) {
+                            $scope.listEmpty = true;
+                        }
+                        else {
+                            $scope.listEmpty = false;
+                        }
+
+                        $scope.users = response['users'];
+                        console.log($scope.users);
+                        if (Object.keys($scope.users).length == 1) {
+                            $scope.usersEmpty = true;
+                        }
+                        else {
+                            $scope.usersEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR FIND LIST');
+                        console.log(error);
                     }
+                );
+        };
 
-                    $scope.users = response['users'];
-                    console.log($scope.users);
-                    if (Object.keys($scope.users).length == 1) {
-                        $scope.usersEmpty = true;
+        $scope.refreshProducts = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'refreshProducts',
+                    list: {
+                        list_id : $stateParams['listId']
                     }
-                    else {
-                        $scope.usersEmpty = false;
+                })
+
+                .then(function (res){
+                        var response = res.data;
+
+                        $scope.products = response['products'];
+                        if (Object.keys($scope.products).length == 0) {
+                            $scope.listEmpty = true;
+                        }
+                        else {
+                            $scope.listEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR REFRESH PRODUCTS');
+                        console.log(error);
                     }
-                },
-                function(error){
-                    console.warn('ERROR FIND LIST');
-                    console.log(error);
-                }
-            );
+                );
+        };
 
-        console.log($scope.list);
+        $scope.refreshUsers = function() {
+            $http.post($scope.apiLink+"List/ListController.php", {
+                    type : 'list',
+                    action : 'refreshUsers',
+                    list: {
+                        list_id : $stateParams['listId']
+                    }
+                })
 
+                .then(function (res){
+                        var response = res.data;
 
+                        $scope.users = response['users'];
+                        console.log($scope.users);
+                        if (Object.keys($scope.users).length == 1) {
+                            $scope.usersEmpty = true;
+                        }
+                        else {
+                            $scope.usersEmpty = false;
+                        }
+                    },
+                    function(error){
+                        console.warn('ERROR REFRESH USERS');
+                        console.log(error);
+                    }
+                );
+        };
+
+        $scope.findList();
 
         $scope.showInfos = function(productId) {
             angular.forEach($scope.products, function(product)
@@ -742,17 +794,20 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                     $scope.product = product;
             });
             if ($scope.product.product_status == "Achete") {
-                $scope.info = ", et <b>acheté</b> par <b>" + $scope.product.by_user_name + "</b>";
+                $scope.info = "<li><b>Acheté</b> par <b>" + $scope.product.by_user_name + "</b></li>";
             }
             else if ($scope.product.product_status == 'Pris en charge') {
-                $scope.info = ", et <b>pris en charge</b> par <b>" + $scope.product.by_user_name + "</b>";
+                $scope.info = "<li><b>Pris en charge</b> par <b>" + $scope.product.by_user_name + "</b></li>";
             }
             else if ($scope.product.product_status == "En attente") {
-                $scope.info = ", et en attente";
+                $scope.info = "<li><b>En attente</b></li>";
             }
             $ionicPopup.alert({
-                title: "Informations sur " + '"' + $scope.product.product_name + '"',
-                template: "Produit ajouté par " + $scope.product.user_name + $scope.info
+                title: "Informations sur le produit <b>" + $scope.product.product_name + "</b>",
+                template:
+                            "<ul>" +
+                                "<li>Ajouté par " + $scope.product.user_name + "</li>"+ $scope.info +
+                            "</ul>"
             })
         };
 
@@ -826,7 +881,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                                                             text: '<b>Ok</b>',
                                                             type: 'button-positive',
                                                             onTap: function() {
-                                                                $state.go($state.current, {}, {reload: true});
+                                                                $state.go($state.current);
                                                             }
                                                         }
                                                     ]
@@ -847,14 +902,15 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.deleteUserFromList = function(userId, userName, listId) {
+        $scope.deleteUserFromList = function(userId, userName, listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer <b>' + userName + '</b> de cette liste ?',
+                title: 'Êtes vous sûr de supprimer <b>' + userName + '</b> de la liste <b>' + listName + "</b> ?",
                 buttons: [
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            $scope.findList();
+                            //$state.go($state.current, {}, {reload: true});
                         }
                     },
                     {
@@ -876,7 +932,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.refreshUsers();
+                                        //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
 
@@ -892,9 +949,9 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
             });
         };
 
-        $scope.quitList = function(listId) {
+        $scope.quitList = function(listId, listName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de quitter cette liste ?',
+                title: 'Êtes vous sûr de quitter la liste <b>' + listName + '</b> ?',
                 buttons: [
                     {
                         text: 'Non',
@@ -941,7 +998,7 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 buttons: [
                     { text: 'Annuler',
                         onTap:  function() {
-                            $state.go($state.current, {}, {reload: true})
+                            $state.go($state.current)
                         }
                     },
                     {
@@ -969,7 +1026,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                     .then(function (res){
                                             var response = res.data;
-                                            $state.go($state.current, {}, {reload: true});
+                                            //$state.go($state.current, {}, {reload: true});
+                                            $scope.refreshProducts();
                                             console.log(response);
                                             $scope.productData.product_name = "";
 
@@ -1000,7 +1058,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                 .then(function (res){
                         var response = res.data;
-                        $state.go($state.current, {}, {reload: true});
+                        $scope.refreshProducts();
+                        //$state.go($state.current, {}, {reload: true});
                         console.log(response);
 
                     }, function(error){
@@ -1010,14 +1069,15 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
                 );
         };
 
-        $scope.deleteProduct = function(productId) {
+        $scope.deleteProduct = function(productId, productName) {
             $ionicPopup.confirm({
-                title: 'Êtes vous sur de supprimer cet article ?',
+                title: 'Êtes vous sûr de supprimer le produit <b>' + productName + '</b> ?',
                 buttons: [
                     {
                         text: 'Non',
                         onTap: function () {
-                            $state.go($state.current, {}, {reload: true});
+                            //$state.go($state.current, {}, {reload: true});
+                            $scope.findList();
                         }
                     },
                     {
@@ -1034,7 +1094,8 @@ angular.module('starter.controllers', ['ngStorage', 'ngCordova'])
 
                                 .then(function (res){
                                         var response = res.data;
-                                        $state.go($state.current, {}, {reload: true});
+                                        $scope.refreshProducts();
+                                        //$state.go($state.current, {}, {reload: true});
                                         //$window.location.reload(true);
                                         console.log(response);
 

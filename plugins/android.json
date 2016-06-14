@@ -24,9 +24,6 @@
         },
         "ionic-plugin-keyboard": {
             "PACKAGE_NAME": "com.ionicframework.listo"
-        },
-        "com.cordova.plugins.sms": {
-            "PACKAGE_NAME": "com.ionicframework.listo"
         }
     },
     "dependent_plugins": {}
